@@ -1,0 +1,12 @@
+Así se usa: 
+PARA CONTACTOS
+	exec dbo.SendWhatsApp '593984958499', 'Saludos Programador, Somos Google queremos pagar 10 Mil dólares por tu programa en SQLServer','','','','AquiElTockenIDservicio'
+	exec dbo.SendWhatsApp '593984958499', 'Esta foto la hizo una IA', 'image/png', 'https://gptear.com/assets/images/photos/amadecasa1.png', 'amadecasa.png','AquiElTockenIDservicio'
+
+PARA GRUPOS
+
+	exec dbo.SendWhatsApp 'ELGRUPO', 'Saludos Programador, Somos Google queremos pagar 10 Mil dólares por tu programa en SQLServer','','','','AquiElTockenIDservicio','G'
+	exec dbo.SendWhatsApp 'ELGRUPO', 'Esta foto la hizo una IA', 'image/png', 'https://gptear.com/assets/images/photos/amadecasa1.png', 'amadecasa.png','AquiElTockenIDservicio','G'
+
+
+NOTA: Para enteder que es cada parámetros, por favor ver el Store Procedure dbo.SendWhatsApp()
