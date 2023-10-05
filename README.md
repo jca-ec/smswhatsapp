@@ -13,7 +13,7 @@ SMSWhatsApp API es una DLL de 32 bits y un servicio API REST que permite a los d
 
 ## Documentación
 
-Para obtener más información sobre cómo utilizar la API y cómo integrarla en tu aplicación, consulta nuestra [documentación](link_to_documentation).
+Para obtener más información sobre cómo utilizar la API y cómo integrarla en tu aplicación, consulta nuestra documentación que te enviaremos a tu correo.
 
 ## Ejemplos
 
@@ -26,6 +26,10 @@ Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en 
 - [Visual Basic 6](https://github.com/jca-ec/smswhatsapp/tree/main/VB6.0)
 - [Visual Fox Pro](https://github.com/jca-ec/smswhatsapp/tree/main/Visual%20FoxPro)
 - [WinDev](https://github.com/jca-ec/smswhatsapp/tree/main/WinDev) 
+
+## Demo en línea
+
+Prueba un demo de envío de mensajes a WhatsApp usando [https://mywhatsapp.jca.ec/demo](https://mywhatsapp.jca.ec/demo)
 
 ## Requisitos del Sistema
 
@@ -40,6 +44,18 @@ Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en 
 ## Problemas y Sugerencias
 
 Si encuentras algún problema o tienes sugerencias, por favor crea un [issue](https://github.com/jca-ec/smswhatsapp/issues) en este repositorio.
+
+## Contacto
+
+Jairo Cedeño
+
+Telef.: +593 98 495 8499
+
+Correo: admin@jca.ec
+
+[https://mywhatsapp.jca.ec/](https://mywhatsapp.jca.ec/)
+
+[wa.me/593984958499](https://wa.me/593984958499)
 
 ---
 
