@@ -11,11 +11,58 @@ SMSWhatsApp API es una DLL de 32 bits y un servicio API REST que permite a los d
 - Administración de grupos de WhatsApp.
 - Otras funcionalidades avanzadas.
 
-## Documentación
+## Enviando mensaje con Api Rest
 
-Para obtener más información sobre cómo utilizar la API y cómo integrarla en tu aplicación, consulta nuestra documentación que te enviaremos a tu correo.
+markdown
+Copy code
+## Uso de la API para enviar un mensaje de texto
 
-## Ejemplos
+Para enviar un mensaje de texto a un número de teléfono específico, utiliza el siguiente endpoint y los parámetros correspondientes:
+
+### Endpoint
+
+`POST https://mywhatsapp.jca.ec:5433/chat/sendmessage/:phone?number=token`
+
+### Parámetros
+
+- **phone** (obligatorio): Número de teléfono al que se enviará el mensaje.
+- **number** (obligatorio): Token de tu licencia de SMSWhatsApp, para pruebas usa el token Phone03.
+
+### Body
+
+- **message** (obligatorio): Mensaje de texto que se enviará.
+- **quoted**: Código único de mensaje citado (opcional).
+- **typing**: Envía simulación de escritura (opcional).
+- **nowait**: No espera confirmación de mensaje envíado (opcional).
+
+### Ejemplo
+
+```bash
+curl --location 'https://mywhatsapp.jca.ec:5433/chat/sendmessage/123456789?number=Phone03' \
+--header 'Content-Type: application/json' \
+--data '{
+    "message": "Hola Mundo!",   
+    "typing": "true"
+}'
+```
+
+Respuesta
+La API responderá según el éxito o fracaso de la operación.
+
+Código de respuesta 200 si el mensaje se envió exitosamente.
+Código de respuesta 400 si faltan parámetros obligatorios o hay un error en la solicitud.
+
+```json
+{
+  "success": true,
+  "message": "Mensaje enviado con éxito",
+  "id": "Código único del mensaje envíado"
+}
+```
+
+Recuerda reemplazar 123456789 con el número de teléfono al que deseas enviar el mensaje y personalizar el contenido del mensaje según tus necesidades.
+
+## Ejemplos en varios lenguajes
 
 Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en varios lenguajes de programación que muestran cómo utilizar la API.
 
