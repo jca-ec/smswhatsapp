@@ -51,7 +51,7 @@ Jairo Cedeño
 
 Telef.: +593 98 495 8499
 
-Correo: admin@jca.ec
+Correo: soporte@jca.ec
 
 [https://mywhatsapp.jca.ec/](https://mywhatsapp.jca.ec/)
 
