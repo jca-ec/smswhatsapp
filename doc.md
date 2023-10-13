@@ -1,11 +1,11 @@
-## API REST para enviar factura por WhatsApp
+## API REST para enviar PDF por WhatsApp
 
-Esta API REST te permite enviar una factura por WhatsApp a un número específico. A continuación, se muestra cómo usarla en diferentes lenguajes de programación:
+Esta API REST te permite enviar una documento PDF por WhatsApp a un número específico. A continuación, se muestra cómo usarla en diferentes lenguajes de programación:
 
 ### Ejemplo de uso con cURL
 
 ```bash
-curl --location "https://mywhatsapp.jca.ec:5433/chat/sendmedia/593969626740?number=Phone03" --header "Content-Type: application/json" --data "{
+curl --location "https://mywhatsapp.jca.ec:5433/chat/sendmedia/1234567890?number=Phone03" --header "Content-Type: application/json" --data "{
     \"caption\": \"Estimado cliente, gracias por preferirnos aquí está su factura\",
     \"media\": \"http://gptear.com/assets/docs/0.pdf\",
     \"type\": \"application/pdf\",
@@ -18,7 +18,7 @@ curl --location "https://mywhatsapp.jca.ec:5433/chat/sendmedia/593969626740?numb
 ```python
 import requests
 
-url = "https://mywhatsapp.jca.ec:5433/chat/sendmedia/593969626740?number=Phone03"
+url = "https://mywhatsapp.jca.ec:5433/chat/sendmedia/1234567890?number=Phone03"
 headers = {
     "Content-Type": "application/json"
 }
@@ -38,7 +38,7 @@ print(response.json())
 ```javascript
 const axios = require('axios');
 
-const url = "https://mywhatsapp.jca.ec:5433/chat/sendmedia/593969626740?number=Phone03";
+const url = "https://mywhatsapp.jca.ec:5433/chat/sendmedia/1234567890?number=Phone03";
 const headers = {
     "Content-Type": "application/json"
 };
@@ -58,6 +58,6 @@ axios.post(url, data, { headers })
     });
 ```
 
-Recuerda reemplazar los valores de `number` con el número de teléfono al que deseas enviar la factura.
+Recuerda reemplazar los valores de `1234567890` con el número de teléfono al que deseas enviar la factura.
 
 Espero que esta documentación te sea útil. Si tienes alguna otra pregunta, ¡no dudes en preguntar!
