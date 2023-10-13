@@ -62,6 +62,8 @@ Código de respuesta 400 si faltan parámetros obligatorios o hay un error en la
 
 Recuerda reemplazar 123456789 con el número de teléfono al que deseas enviar el mensaje y personalizar el contenido del mensaje según tus necesidades.
 
+***NOTA***: Mira un ejemplo más completo en: https://github.com/jca-ec/smswhatsapp/blob/main/doc.md 
+
 ## Ejemplos en varios lenguajes
 
 Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en varios lenguajes de programación que muestran cómo utilizar la API.
