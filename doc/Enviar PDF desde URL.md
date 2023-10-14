@@ -59,3 +59,5 @@ axios.post(url, data, { headers })
 ```
 
 Recuerda reemplazar los valores de `1234567890` con el número de teléfono al que deseas enviar la factura.
+
+> **Nota:** Al enviar un número telefónico por WhatsApp, asegúrate de incluir el código internacional del país, el código de área o ciudad (si es necesario) y el número de teléfono completo sin signo de más (+), espacios ni guiones. Por ejemplo, para un número en Estados Unidos, el formato sería: 1XXXXXXXXXX. Para un número de Ecuador sería: 5939XXXXXX.
