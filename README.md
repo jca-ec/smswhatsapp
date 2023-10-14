@@ -62,7 +62,7 @@ Código de respuesta 400 si faltan parámetros obligatorios o hay un error en la
 
 Recuerda reemplazar 123456789 con el número de teléfono al que deseas enviar el mensaje y personalizar el contenido del mensaje según tus necesidades.
 
-***NOTA***: Mira un ejemplo más completo en: https://github.com/jca-ec/smswhatsapp/blob/main/doc.md 
+***NOTA***: Mira un ejemplo más completo en: [https://github.com/jca-ec/smswhatsapp/blob/main/doc.md](https://github.com/jca-ec/smswhatsapp/tree/main/doc) 
 
 ## Ejemplos en varios lenguajes
 
