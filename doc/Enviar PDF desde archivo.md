@@ -121,3 +121,5 @@ axios.post(url, data, { headers })
 La respuesta de esta operación será un JSON que indica si el archivo PDF se envió correctamente por WhatsApp.
 
 Recuerda que puedes utilizar estos ejemplos en cURL, Python y Node.js para realizar el envío del archivo PDF en formato Base64 por WhatsApp en tu API REST. Solo necesitas reemplazar los valores de `{phone_number}` y `{token}` con los números de teléfono deseados, y personalizar los valores en el cuerpo de la solicitud según tus necesidades.
+
+> **Nota:** Al enviar un número telefónico por WhatsApp, asegúrate de incluir el código internacional del país, el código de área o ciudad (si es necesario) y el número de teléfono completo sin signo de más (+), espacios ni guiones. Por ejemplo, para un número en Estados Unidos, el formato sería: 1XXXXXXXXXX. Para un número de Ecuador sería: 5939XXXXXX.
