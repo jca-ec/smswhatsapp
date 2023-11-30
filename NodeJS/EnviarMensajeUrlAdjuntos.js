@@ -16,7 +16,7 @@ const data = {
     nowait: 'true',
     type: 'application/pdf',
     title: 'Factura.pdf',
-    media: 'https://www.bolsadeproductos.cl/application/normativas/Manual+de+Operaciones+con+Facturas.pdf'
+    media: 'https://mywhatsapp.jca.ec/assets/pdf/vivir.pdf'
 };
 
 // Realizar la solicitud POST usando axios
