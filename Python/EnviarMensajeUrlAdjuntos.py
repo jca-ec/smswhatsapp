@@ -17,7 +17,7 @@ fields = {
     'nowait': 'true',
     'type': 'application/pdf',
     'title': 'Factura.pdf',
-    'media' : 'https://jlsystem.tk/media_jlsystem/FV001002000000060.pdf'
+    'media' : 'https://mywhatsapp.jca.ec/assets/pdf/vivir.pdf'
 }
 
 # Convertir los datos a formato json
