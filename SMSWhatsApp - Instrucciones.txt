@@ -363,8 +363,8 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 		                                 && También contiene los números de contactos NO procesados con los métodos por manipulación de grupos.
 		loWS.cContactsSend	   	= ''     && Números de contactos que SI se han enviado mensajes.
 		loWS.cContactsNoSend   	= ''     && Números de contactos que NO se han enviado mensajes.
-		loWS.cCurContacts	   	= ''		&& Nombre del fichero que contiene los contactos obtenidos de la base celular.
-		loWS.lUseDNSContacts   	= .T.	&& Permite utilizar busqueda local para destinatarios utilizados, .F. desactiva la utilidad
+		loWS.cCurContacts	   	= ''	 && Nombre del fichero que contiene los contactos obtenidos de la base celular.
+		loWS.lUseDNSContacts   	= .T.	 && Permite utilizar busqueda local para destinatarios utilizados, .F. desactiva la utilidad
 		loWS.cDNSContacts      	= Sys(5) + Curdir() + 'DNSContacts.dbf'	
 		                                && Ruta y Nombre de la tabla de los contactos para busqueda local		
 		loWS.nTyping           	= 03     && Tiempo en segundos para simulación "escribiendo" humano [1 hasta 10sg max].
@@ -484,7 +484,7 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	  CUIL: 	27959293371
 	  ALIAS: 	TOPO.COLOR.BANDO
 	  
-	PayPal:
+	PayPal: Aplica recargos: 10 dolares plan anual, 1.50 plan mensual
 	  Cuenta: jairo_cedeno_adrian@outlook.com 
 
 	PayPhone:
