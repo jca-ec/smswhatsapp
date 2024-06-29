@@ -4,7 +4,7 @@ Ejemplo de como crear un cliente Sock para SMSWhatsApp para mediante una conexi�
 
 ## Funcionalidad del Servidor Sock
 
-El servidor Sock está disponible en la dirección `mywhatsapp.jca.ec` en el puerto `5026`. Los desarrolladores pueden conectarse mediante sus clientes de Socket en cualquier lenguaje de programación. Al conectarse, deben enviar su respectivo token para autenticarse. El servidor almacenará los últimos 100 eventos y los enviará tan pronto se conecten al servidor.
+El servidor Sock está disponible en la dirección `mywhatsapp.jca.ec` en el puerto `5026`. Los desarrolladores pueden conectarse mediante sus clientes de Socket en cualquier lenguaje de programación. Al conectarse, deben enviar su respectivo token para autenticarse. El servidor almacenará los últimos 50 eventos y los enviará tan pronto se conecten al servidor.
 
 ### Datos recibidos
 
@@ -50,8 +50,9 @@ hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
     "number": "TOKEN",
     "content": "media",
     "mediaKey": "XZ7ICZsETL7H/PARAq/+4ETotAbW4wEXeAT7+cDZ4M4=",
-    "mediaData": "(base64)",
-    "mimeType": "audio/ogg; codecs=opus"
+    "mediaData": "https://mywhatsapp.jca.ec/assets/buffer/archivo.ogg",
+    "mimeType": "audio/ogg; codecs=opus",
+    "fileName": "audio.ogg"
 }
 ```
 
@@ -60,9 +61,9 @@ hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
 number: Token del usuario.
 content: Tipo de contenido, en este caso "media".
 mediaKey: Clave del medio, utilizada para identificar el contenido multimedia.
-mediaData: Datos del medio codificados en base64.
+mediaData: URL del archivo.
 mimeType: Tipo MIME del contenido multimedia, en este caso "audio/ogg; codecs=opus".
-Mensajes de Voz
+fileName: Nombre del archivo.
 
 #### Mensaje recibido/leído
 
