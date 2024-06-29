@@ -30,18 +30,18 @@ Al conectarse al servidor socket, recibirás notificaciones en tiempo real sobre
 
 ##### Descripción de los Campos:
 
-number: Token del usuario.
-content: Tipo de contenido, en este caso "message".
-messageId: Identificador único del mensaje.
-from: Número de teléfono del remitente.
-to: Número de teléfono del destinatario.
-fromMe: Indica si el mensaje fue enviado por el usuario (true) o recibido (false).
-body: Cuerpo del mensaje de texto.
-type: Tipo de mensaje, en este caso "chat", si es un mensaje de voz será "ptt".
-timestamp: Marca de tiempo del mensaje.
-quotedMessage: Mensaje citado, si aplica.
-hasMedia: Indica si el mensaje tiene contenido multimedia (true o false).
-hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
+* number: Token del usuario.
+* content: Tipo de contenido, en este caso "message".
+* messageId: Identificador único del mensaje.
+* from: Número de teléfono del remitente.
+* to: Número de teléfono del destinatario.
+* fromMe: Indica si el mensaje fue enviado por el usuario (true) o recibido (false).
+* body: Cuerpo del mensaje de texto.
+* type: Tipo de mensaje, en este caso "chat", si es un mensaje de voz será "ptt".
+* timestamp: Marca de tiempo del mensaje.
+* quotedMessage: Mensaje citado, si aplica.
+* hasMedia: Indica si el mensaje tiene contenido multimedia (true o false).
+* hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
 
 #### Mensajes de Multimedia
 ```json
@@ -58,12 +58,12 @@ hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
 
 ##### Descripción de los Campos:
 
-number: Token del usuario.
-content: Tipo de contenido, en este caso "media".
-mediaKey: Clave del medio, utilizada para identificar el contenido multimedia.
-mediaData: URL del archivo.
-mimeType: Tipo MIME del contenido multimedia, en este caso "audio/ogg; codecs=opus".
-fileName: Nombre del archivo.
+* number: Token del usuario.
+* content: Tipo de contenido, en este caso "media".
+* mediaKey: Clave del medio, utilizada para identificar el contenido multimedia.
+* mediaData: URL del archivo.
+* mimeType: Tipo MIME del contenido multimedia, en este caso "audio/ogg; codecs=opus".
+* fileName: Nombre del archivo.
 
 #### Mensaje recibido/leído
 
@@ -78,10 +78,10 @@ fileName: Nombre del archivo.
 
 ##### Descripción de los Campos:
 
-number: Token del usuario.
-content: Tipo de contenido, en este caso "ack".
-messageId: Identificador único del mensaje.
-ack: 1 - Mensaje envíado, 2 - Mensaje leído, 3 - Multimedia reproducido, en caso de ser un vídeo o audio.
+* number: Token del usuario.
+* content: Tipo de contenido, en este caso "ack".
+* messageId: Identificador único del mensaje.
+* ack: 1 - Mensaje envíado, 2 - Mensaje leído, 3 - Multimedia reproducido, en caso de ser un vídeo o audio.
 
 ### Ejemplos de Clientes
 
