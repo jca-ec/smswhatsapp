@@ -182,7 +182,7 @@ A continuación se describen los diferentes tipos de datos que puedes recibir a 
     "fileName": "audio.ogg"
 }
 ```
-####Descripción de los Campos:
+#### Descripción de los Campos:
 
 * number: Token del usuario.
 * content: Tipo de contenido, en este caso "media".
