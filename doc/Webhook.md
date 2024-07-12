@@ -83,6 +83,58 @@ app.listen(PORT_WEB, () => {
     console.log(`Servidor web escuchando en el puerto ${PORT_WEB}`);
 });
 ```
+## Implementación de un Webhook en Python
+```python
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+PORT_WEB = 5025  # Puerto para el servidor web
+
+# Endpoint para el webhook
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    data = request.get_json()
+    content = data.pop('content', None)
+
+    if content == 'message':
+        # Procesar mensaje
+        print('Mensaje recibido:', data)
+    elif content == 'ack':
+        # Procesar ACK
+        print('ACK recibido:', data)
+    elif content == 'media':
+        # Procesar media
+        try:
+            data = save_media_data(data)
+        except Exception as error:
+            print("Error al guardar media", error)
+        print('Media recibida:', data)
+    else:
+        print('Tipo de contenido desconocido:', content)
+
+    try:
+        save_buffer({
+            'content': content,
+            **data
+        })
+    except Exception as error:
+        print("Error al guardar datos en archivo", error)
+
+    # Responder con éxito
+    return jsonify({'message': 'Datos recibidos con éxito'}), 200
+
+def save_media_data(data):
+    # Implementar lógica para guardar datos multimedia
+    pass
+
+def save_buffer(data):
+    # Implementar lógica para guardar datos en archivo
+    pass
+
+# Iniciar el servidor web
+if __name__ == '__main__':
+    app.run(port=PORT_WEB)
+```
 ### Datos Recibidos
 A continuación se describen los diferentes tipos de datos que puedes recibir a través del webhook.
 
