@@ -1,6 +1,7 @@
 ## Verificar si un número de teléfono pertenece a WhatsApp
 
-Esta operación te permite verificar si un número de teléfono específico pertenece a WhatsApp. A continuación, se muestra cómo puedes usar esta operación con diferentes lenguajes de programación:
+Esta operación te permite verificar si un número de teléfono específico pertenece a WhatsApp como cuenta válida.
+A continuación, se muestra cómo puedes usar esta operación con diferentes lenguajes de programación:
 
 **URL**
 ```
@@ -59,4 +60,4 @@ La respuesta de esta operación será un JSON que indica si el número de teléf
 
 Recuerda que puedes utilizar estos ejemplos en cURL, Python y Node.js para realizar la verificación del número de teléfono en tu API REST. Solo necesitas reemplazar los valores de `1234567890` por el número telefónico que deseas consultar y `Phone03` con el token de tu licencia de SMSWhatsApp, Phone03 es una licencia de prueba.
 
-> **Nota:** Al enviar un número telefónico por WhatsApp, asegúrate de incluir el código internacional del país, el código de área o ciudad (si es necesario) y el número de teléfono completo sin signo de más (+), espacios ni guiones. Por ejemplo, para un número en Estados Unidos, el formato sería: 1XXXXXXXXXX. Para un número de Ecuador sería: 5939XXXXXX.
+> **Nota:** Al enviar un número telefónico por WhatsApp, asegúrate de incluir el código internacional del país, el código de área o ciudad (si es necesario) y el número de teléfono completo sin signo de más (+), espacios ni guiones. Por ejemplo, para un número en Estados Unidos, el formato sería: 1XXXXXXXXXX. Para un número de Ecuador sería: 5939XXXXXXXX.
