@@ -1,6 +1,7 @@
 # SMSWhatsApp Webhook Documentation
 
-SMSWhatsApp es un servicio que permite a los programadores enviar mensajes mediante WhatsApp. Esta documentación explica cómo tus aplicaciones pueden recibir notificaciones en tiempo real utilizando webhooks.
+SMSWhatsApp es un servicio que permite a los programadores enviar mensajes mediante WhatsApp.
+Esta documentación explica cómo tus aplicaciones pueden recibir notificaciones en tiempo real utilizando webhooks.
 
 ## Registro de Webhooks
 
