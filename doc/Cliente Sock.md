@@ -185,4 +185,6 @@ except Exception as e:
 
 ```foxpro
 Usar el formulario que ha sido agregado en la ruta:
-https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket/WinSocket/WinSocket -SMSWhatsApp.scx
+https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket
+- Descargar WinSocket -SMSWhatsApp.scx y WinSocket -SMSWhatsApp.sct
+
