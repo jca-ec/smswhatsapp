@@ -184,50 +184,5 @@ except Exception as e:
 #### Cliente en Visual FoxPro
 
 ```foxpro
-#DEFINE SERVER "mywhatsapp.jca.ec"
-#DEFINE PORT 5026
-#DEFINE TOKEN "TOKEN"
-
-LOCAL oSocket
-oSocket = CREATEOBJECT("MSWinsock.Winsock")
-
-oSocket.RemoteHost = SERVER
-oSocket.RemotePort = PORT
-
-oSocket.Connect()
-
-ON ERROR DO errhand WITH ERROR(), MESSAGE(), MESSAGE(1), PROGRAM(), LINENO()
-oSocket.Event_OnConnect = "OnConnect"
-oSocket.Event_OnDataArrival = "OnDataArrival"
-oSocket.Event_OnClose = "OnClose"
-
-DO WHILE .T.
-    DOEVENTS
-ENDDO
-
-PROCEDURE OnConnect
-    LPARAMETERS nErrorCode
-    IF nErrorCode = 0
-        ? "Connected to server"
-        oSocket.SendData(TOKEN)
-    ELSE
-        ? "Connection error:", nErrorCode
-    ENDIF
-ENDPROC
-
-PROCEDURE OnDataArrival
-    LPARAMETERS nBytesTotal
-    LOCAL cData
-    oSocket.GetData(@cData, nBytesTotal)
-    ? "Received:", cData
-ENDPROC
-
-PROCEDURE OnClose
-    ? "Disconnected from server"
-ENDPROC
-
-PROCEDURE errhand
-    PARAMETERS nError, cMessage, cMethod, nLine
-    ? "Error:", nError, cMessage, cMethod, nLine
-ENDPROC
-```
+Usar el formulario que ha sido agregado en la ruta:
+https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket/WinSocket/WinSocket -SMSWhatsApp.scx
