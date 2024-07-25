@@ -183,8 +183,5 @@ except Exception as e:
 
 #### Cliente en Visual FoxPro
 
-```foxpro
-Usar el formulario que ha sido agregado en la ruta:
-https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket
-- Descargar WinSocket -SMSWhatsApp.scx y WinSocket -SMSWhatsApp.sct
+Usar el formulario que ha sido agregado en la ruta: https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket
 
