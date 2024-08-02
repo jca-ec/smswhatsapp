@@ -1,4 +1,4 @@
-# SMSWhatsApp AI Responder
+# SMSWhatsApp IA LLMGenerador
 
 Este proyecto es una implementación de un servicio de respuestas automatizadas usando inteligencia artificial a través de la plataforma SMSWhatsApp. El objetivo es demostrar cómo se pueden automatizar las respuestas a consultas de clientes utilizando modelos de lenguaje avanzados.
 
