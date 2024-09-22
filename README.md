@@ -1,6 +1,6 @@
-# SMSWhatsApp API
+# SMSWhatsApp: DLL y ApiRest
 
-SMSWhatsApp API es una DLL de 32 bits y un servicio API REST que permite a los desarrolladores conectar sus aplicaciones a WhatsApp para enviar mensajes de texto, audio, imágenes, vídeos, PDF y administrar grupos, entre otras funcionalidades.
+SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediante una DLL realizada en 32 Bits ambiente Windows y ApiRest para todo tipo de lenguaje y/o plataformas webs, ésto les permite a los desarrolladores conectar sus aplicaciones a WhatsApp para enviar mensajes con textos, audios, imágenes, vídeos, PDFs, administrar grupos, listas de difusión y entre otras funcionalidades.
 
 ## Características
 
