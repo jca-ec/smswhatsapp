@@ -31,7 +31,8 @@ Para enviar un mensaje de texto a un número de teléfono específico, utiliza e
 ### Body
 
 - **message** (obligatorio): Mensaje de texto que se enviará.
-- **quoted**: Código único de mensaje citado (opcional).
+- **
+quoted**: Código único de mensaje citado (opcional).
 - **typing**: Envía simulación de escritura (opcional).
 - **nowait**: No espera confirmación de mensaje envíado (opcional).
 
