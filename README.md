@@ -1,11 +1,15 @@
 # SMSWhatsApp: DLL y ApiRest
 
-SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediante una DLL realizada en 32 Bits ambiente Windows y ApiRest para todo tipo de lenguaje y/o plataformas webs, ésto les permite a los desarrolladores conectar sus aplicaciones a WhatsApp para enviar mensajes con textos, audios, imágenes, vídeos, PDFs, administrar grupos, listas de difusión y entre otras funcionalidades.
+SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediante una DLL realizada en 32 bits ambiente Windows y ApiRest para todo tipo de lenguaje de programación y/o plataformas webs; ésto les permite a los desarrolladores conectar sus aplicaciones a WhatsApp para enviar mensajes con textos, audios, imágenes, vídeos, PDFs, administrar grupos, listas de difusión y entre otras funcionalidades.
 
 ## Características
 
-- Envío de mensajes de texto.
-- Envío de mensajes de audio.
+- ### Enviar mensajes:
+  - Puedes enviar gran cantidad de mensajes sencillo, también puedes decorarlos con el uso de emojis.
+  - Se permiten enviar todo tipo de adjuntos:
+    - PDFs, imágenes, audios, videos, y demás tipos de archivos.
+    - Envío de urls como adjuntos, el receptor recibirá anexo el adjunto contenido de la url de internet.
+    - Se puede anexar una explicación textual a todos los archivos adjuntos.
 - Envío de imágenes y vídeos.
 - Envío de archivos PDF.
 - Administración de grupos de WhatsApp.
