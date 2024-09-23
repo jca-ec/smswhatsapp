@@ -31,22 +31,20 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
 
 ## Enviando mensaje con Api Rest
 
-markdown
-Copy code
-## Uso de la API para enviar un mensaje de texto
+## Ejemplo: Uso del endPoint para enviar un mensaje de texto
 
-Para enviar un mensaje de texto a un número de teléfono específico, utiliza el siguiente endpoint y los parámetros correspondientes:
+Para enviar un mensaje de texto a un número de teléfono específico (número en formato internacional), utilizar el siguiente endpoint y los parámetros correspondientes:
 
 ### Endpoint
 
-`POST https://mywhatsapp.jca.ec:5433/chat/sendmessage/:phone?number=token`
+`POST https://smswhatsapp.net:5433/chat/sendmessage/:phone?number=myTokenApiRest`
 
-### Parámetros
+#### Parámetros
 
-- **phone** (obligatorio): Número de teléfono al que se enviará el mensaje.
-- **number** (obligatorio): Token de tu licencia de SMSWhatsApp, para pruebas usa el token Phone03.
+- **phone** (obligatorio): Número de teléfono (en formato internacional) al que se enviará el mensaje.
+- **number** (obligatorio): Token del servicio ApiRest o ID del servicio, para pruebas usa el token Phone03.
 
-### Body
+#### Body
 
 - **message** (obligatorio): Mensaje de texto que se enviará.
 - **
