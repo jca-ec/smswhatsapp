@@ -1,0 +1,499 @@
+Pasos para usar la DLL SMSWhatsApp en Visual FoxPro y otros lenguajes soportados con DLLs
+
+Instalación: (SOLO para equipos en donde NUNCA ha sido probado el servicio de SMSWhatsApp)
+Aclaratoria: El instalador [SMSWhatsApp.exe] también le permite desinstalar la versión antigua que posea
+	Forma Automática: [RECOMENDABLE]
+	-----------------
+	A:) Este proceso se recomienda para DEMOS y clientes de PAGA (con licencia):
+	    El link tiene el instalador oficial con todos los componentes requeridos.
+		Variedad de ejemplos en varios lenguajes de programación.
+		https://mega.nz/folder/wYRnUYKJ#y0eV2vy-Bp1bx361Wm18IA
+		
+		1.-) Después de descargar y ejecutar el archivo SMSWhatsApp.exe, seguir los pasos y listo, todo está preparado.
+			1.1.-) Considerar que algunos Anti-Virus detecta la instalación como virus/troyano, deben desactivarlo temporalmente.
+		
+		2.-) SOLO Clientes con LICENCIAS:
+			2.1) Copiar el archivo de licencia que recibió por correo electrónico [SMSWhatsApp.cfg], único por cada cliente.
+		
+		3.-) Seguir las indicaciones adjuntas en éste archivo de texto, para su uso ir al apartado [ modo de uso ].
+	
+	B:) Considerar que SOLO deberá tener las siguientes librerias runtimes de VFP en la ruta:
+		C:\Program Files (x86)\Common Files\Microsoft Shared\VFP\
+		vfp9r.dll			v9.0.00.7423
+		VFP9RENU.DLL		v9.0.00.7423
+		vfp9t.dll			v9.0.00.7423
+
+		El siguiente archivo genera conflictos vfp9resn.dll (v9.0.00.2412) en ciertos ambientes en modo DESARROLLO / Estación,
+		debe ser ACTUALIZADA con el Service Pack 2 y fix respectivamente:
+			Link de Service Pack 2: https://mega.nz/folder/BQQVGC5T#hl8_rrprH-VdHQTkshK-Yg (Seguir Instrucciones)
+
+	Forma SIN Instalación: [Aplica para versiones VFP9 SP2 v9.0.0.7423 e inferiores]
+		1.) Crear una Carpeta con X nombre y copiar los siguientes archivos:
+			msvcr71.dll
+			SMSWhatsApp.dll
+			vfp9r.dll			v9.0.00.7423
+			VFP9RENU.DLL		v9.0.00.7423
+			vfp9t.dll			v9.0.00.7423
+			
+		2.) Ejecutar cmd.exe con derechos de Administrador.
+		3.) Pasarse a la Ruta X donde copío los archivos del paso #1.
+		4.) Ejecutar regsvr32 SMSWhatsApp.dll.
+		5.) Listo, ya puedes trabajar sin problemas.
+	
+-------------------------------------------------------------------------------------------------------------------------		
+Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
+	[ HACERLO UNA SOLA VEZ AL CARGAR SU PROGRAMA ]
+	*: Instanciar: Recordar que cada licencia (línea emisora) se instancia en un objeto independiente,
+	*: esto quiere decir que en un computadora puede instanciar N objetos = N licencias = N líneas emisoras.
+	
+	*: -- Las siguientes cuatros líneas hacerlas una única vez al cargar su aplicativo -- :*
+	*: -- por decir su main.prg o cualquier metodo de inicio -- :*
+	Alcance a dar al objeto contendor: [Puede ser Local/Public/Propiedad en Screen/Propiedad en Formulario Global ]
+		_Screen.AddProperty('oWS',CreateObject('SMSWhatsApp.ApiWhatsApp'),1,'Contendor para instanciar SMSwhatsApp')
+
+	Paso #1 Local loWS As Object				            	&& Estamos usando Alcance Local
+																
+	Paso #2 loWS = CreateObject('SMSWhatsApp.ApiWhatsApp')		&& Esto es NECESARIO para todos los clientes.
+	
+	Paso #3	loWS.LoadLicense('Ruta y NombreArchivo.CFG') 	    && [NECESARIO: Solo para clientes con licencia adquirida]
+		Nota: Por favor NO ASUMA la Ruta de su entorno Set Default / Set Path
+	
+	Paso #4 loWS.ValidateClient('ColocarCadenaTokenDeLaDLL')	&& [NECESARIO: Solo para clientes con licencia adquirida]
+
+	IMPORTANTE: Cuando ya no se requiera usar el objeto, liberarlo así:
+	    loWS = Null
+		Release loWS  	
+		*: loWS es el equivalente al objeto que ustedes definan en el lenguaje que lo implementen.
+
+	---------------------------------------------------------------------------------------------------------------------
+
+	*: --------------------------------------------------------------------------------------------------------------- :*
+	CONSIDERACIONES INICIALES BASICAS:
+	*: Requisitos previos primordiales:
+		--> Contar con un teléfono físico móvil con WhatsApp Messenger funcionando y actualizado.
+		--> Puede usar la versión Personal y/o Business o cualquier otra válida y vigente.
+
+	*: Considerar: Los números deben colocarse en formato Internacional como se muestra en los ejemplos.
+	*:             [ Es decir CódigoPais + Código Area + Número telefónico ]
+	*:             Como harán muchas pruebas [ DEMO ], indicar a sus contactos quien les está enviando el mensaje,
+    *:             ya que la DEMO usa un número como base central (Ecuador) exclusivo para tal caso.
+	*:             Solo se envían mensajes a números que usen WhatsApp Messenger (registrados y Activos en WhatsApp Central).
+	*:             NO se envían mensajes a números celulares que nunca se han regisrado y activado en WhatsApp Messenger.
+	*:             NO EXCEDER de 5 MB (10 MB en casos extremos) por archivos imagenes, adjuntos, etc.
+	*:             La licencia demo está abierta para todos 24/7/365 pero solo para pruebas (contiene publicidad).
+    *:       	   NO USAR para cosas personales, si detectamos tal cosa, reportaremos y bloquearemos los números destinos.
+    
+	*: P A R A M E T R O S
+	loWS.SendSMSWhatsApp(tcDestination, tcMessage, tcType, tcFile, tlGroup, tlDiffusion, tcIdMessageReply)
+		tcDestination	--> Se coloca el # de contacto destinatario en formato Internacional (SIN importar que sea un contacto nuestro registrado).
+		             	--> Para enviar a Grupos, solo poner el nombre correctamente, PERO debe ser un grupo REGISTRADO en la cuenta (teléfono) que envía.
+		tcMessage   	--> Cadena de texto a enviar, también puede enviar emojis pero enviarlos entre dos puntos así  :NombreEmojis:
+						Efectos: Negritas  		*texto deseado*
+								Cursivas  		_texto deseado_
+								Tachado   		~texto deseado~
+								Monoespaciado	```texto deseado```
+								Salto de línea \n 
+
+		tcType       	--> Existen tipos básicos: message / image / video / pdf:
+		                 	[Opcional: Según la necesidad, si envía vacío la DLL asumirá el que corresponda basándose en la extensión del adjunto]
+		tcFile       	--> Ruta y Nombre del archivo ha adjuntar, la DLL verificará su existencia y de no existir no continuará. [opcional]
+		tlGroup      	--> Booleano, .T. = Indica que es un grupo. [Opcional: Solo usar cuando es a un grupo que enviamos el mensaje]
+		tlDiffusion  	--> Booleano, .T. = Indica que es una difusión. [Opcional: Solo cuando es a una difisuión colocar en .T.]
+		tcIdMessageReply--> ID del mensaje recibo, será al que se le responda con un mensaje X (Hace el efecto de mostrar como mensaje respondido) 
+		                    (Para saber como obtener este ID - Ver Explicación de ésto en el método loWS.ReactMessage)
+	
+	NOTA: 593984958499 representa el # telefónico destino, por favor reemplazar por uno a su necesidad.
+		  
+	*: Enviar mensajes Simples:
+		loWS.SendSMSWhatsApp('593984958499','Esta es una prueba de mensaje simple usando la DLL de SMSWhatsApp')
+			Explicación: se envían 2 parámetros: Número y Texto
+		
+	*: Enviar mensajes con imágen/pdf/otrosFormatos, con o sin texto en la parte baja de la imágen/vídeo:
+		Considerar: El texto colocado se anexará en la parte del pie de imágen/video, para otros formatos el texto va primero
+					Dejar vacío si solo desea enviar la imágen, pdf, u otros formatos adjuntos.
+		Considerar: El parámetro del "nombre archivo" NO DEBE ir en formato base64:
+		            SOLO indicar la ruta+nombre.extensión del archivo accesible, la DLL verifica la existencia y convierte a base64.
+	
+	loWS.SendSMSWhatsApp('593984958499','Texto en la imágen', 'image', 'D:\Paso\FotoPerfil.png')
+		Explicación: se envían 4 parámetros: Número, Texto, Tipo , 'ruta+nombre del archivo imágen'
+
+	loWS.SendSMSWhatsApp('593984958499','Texto en explicativo previo al PDF', 'pdf', 'D:\Paso\Prueba1.pdf')
+		Explicación: se envían 4 parámetros: Número, Texto explicativo [opcional], Tipo , 'ruta+nombre del archivo pdf'
+
+	*: Enviar mensajes con otros tipos de formatos de archivos:
+		loWS.SendSMSWhatsApp('593984958499','Texto en explicativo previo archivo XLSX [Excel] adjunto', 'xlsx', 'D:\Paso\MiHojaExcel.xlsx')
+		loWS.SendSMSWhatsApp('593984958499','Texto en explicativo previo archivo PPTX [PowerPoint] adjunto', 'pptx', 'D:\Paso\PowerPoint.pptx')
+		loWS.SendSMSWhatsApp('593984958499','Texto en explicativo previo archivo cualquiera adjunto', '', 'D:\Paso\Instrucciones.txt')
+		Explicación: se envían 4 parámetros: Número, Texto explicativo [opcional], Tipo , 'ruta+nombre del archivo Excel xls/x,ppt/x entre otros formatos'
+
+	*: Enviar mensajes a Grupos:
+		Considerar: El Grupo de debe existir (estar registrado) en la cuenta/línea/número que usa el servicio de mensajería a WhatsApp.
+	
+	loWS.SendSMSWhatsApp('Grupo One','Texto para un grupo existente en la cuenta / teléfono ligado al servicio que envía', 'pdf', 'D:\Paso\Prueba1.pdf', .T.)
+		Explicación: se envían 5 parámetros: 
+					Nombre del Grupo, Texto o mensaje ha enviar, Tipo , 'ruta+nombre del archivo pdf', .T. como valor lógico que indica es un grupo [obligatorio]
+		Para enviar mensajes simples, imagenes, y archivos, para los grupos es igual a la forma usada con los números independientes, 
+		pero LA CONDICION ES QUE EL GRUPO EXISTA en la cuenta que envía.
+	
+	*: Enviar mensajes a Difusion:
+		La consideraciones son las mismas de Grupos, pero se envían 6 parámetros, es decir 1 parámetro adicional.
+		Adicional el número emisor debe ser un contacto registrado en cada receptor para que el mensaje pueda ser receptado.
+		Las listas de difisuión tiene una relación de uno a uno, es decir tanto el emisor como el receptor deben ser considerados
+		como contactos reconocidos entre ellos mismos.
+	
+	loWS.SendSMSWhatsApp('NombreDifusión','Texto que se desea enviar', 'pdf', 'D:\Paso\Prueba1.pdf', .F.,.T.)
+	
+	Otros usos: Así como ponen el parámetro image pueden usar otros que detallo:
+		ppt/pptx/xls/xlsx/doc/docx/txt/etc, etc
+	
+	[ MODELOS AVANZADOS ]
+		*: Enviar un mensaje o contenido a varios contactos:
+		   --> Puede colocar una lista de Contactos separados por coma [50 destinatarios como máximo] y con una sola linea.
+		loWS.SendSMSWhatsApp('593984958499,593984958490,593984958491,593984958492','Esta es una prueba de mensaje a varios contactos')
+
+	[ METODOS EXTRAS ]
+		*: Status de envío:
+		   [Esto es para verificar si se ha enviado o no respectivamente, recordar que el envío es silencioso]
+			MessageBox(loWS.nStatusCode)    && Imprime el codigo del estado [200 = Perfecto envío / Acción Correcta]
+			MessageBox(loWS.cLastError)		&& Muestra el mensaje de Error / Ok según corresponda.
+			MessageBox(loWS.ShowStatus())	&& Imprime el Status actual de la cuenta en uso (.T. lo hace por consola), adicional carga 4 propiedades de vital importancia.
+				*: Ver mas información en sección de propiedades
+				
+	
+		*: Mostrar información de la DLL y su versión compilada [YYYY-MM-DD]
+		loWS.GetInfoDeveloper()
+		
+		*: Recuperar los contactos de la cuenta vinculada (Solo clientes con licencias)
+		loWS.GetContacts(tlOnline As Boolean, tlContacts As Boolean, tlGroups As Boolean, tlUnRegistered As Boolean)
+			*: Parámetros.......: tlOnline        = .F. (Predeterminado)  .T. = Siempre los actuales online
+			*:                    tlContacts      = .T. (Predeterminado)   [Incluye los contactos registrados]
+			*:                    tlGroups        = .F. (Predeterminado) 
+			*:                    tlUnRegistered  = .F. (Predeterminado)  .T. = Contactos no registrados
+
+		*: Reactiva la sesión SMSWhatsApp cuando es interrumpida por otras sesiones, o esté en TimeOut
+		loWS.Reconnect()
+		
+		*: Carga un navegador para captura Código QR en caso de estar desvinculado: [Disponible con Licencia]
+		loWS.GetQR()
+		
+		*: Verificar si un # celular es una cuenta válida de WhatsApp, Retorna un Booleano: [Disponible con Licencia]
+		loWS.IsWhatsAppContact(Destinatario As String)
+		
+		*: Permite realizar un Delay o pausas, el valor indicado como parámetro se expresa en segundos.
+		loWS.WaitTime(tnSeconds As Integer)
+		
+		*: Lectura de Chats del teléfono móvil: [Disponible con Licencia]
+		loWS.GetChats(tlUnRead As Boolean, tlMarkRead As Boolean, tlLoadMsgs As Boolean)
+			*: Parámetros.......: tlUnRead        = .T. (Predeterminado)  .T. = Mensajes SIN leer.
+			*:                    tlMarkRead      = .T. (Predeterminado)  .T. = Marcar mensajes como leidos de los chats recuperados.
+			*:                    tlLoadMsgs      = .T. (Predeterminado)  .T. = Cargará todos los mensajes sin leer de los chats recuperados.
+			*:NOTA..............: TODOS los Chats es quivalente a números de contactos que escribieron y están en el teléfono móvil.
+			Por cada petición hecha, se crean dos tablas (DBF) las cuales tendrán los chats y mensajes de chats recuperados,
+			éstas tablas están indicadas en las propiedades siguientes de forma predeterminada:
+			
+			loWS.cTableChats		= Ruta y Nombre de la tabla de los Chats recuperados (sin leer):
+			                          El nombre predeterminado es ChatsUnRead.dbf --> puede ser cambiado a gusto o necesidad.
+			
+			loWS.cTableMsgChats		= Ruta y Nombre de la tabla de los mensajes de chats recuperados.
+			
+			CONSIDERAR: Para ambientes donde se quiere trabajar con las respuestas, 
+			            es necesario tomar esos datos y pasarlos a cursores como se antoje
+			            porque para que GetChats(.T.,.T.,.T.) tenga resultados,
+						no se deben estar usando (abiertas) las Tablas ChatsUnRead.dbf y MsgChats.dbf
+						
+		*: Lectura de un SOLO Chat del teléfono móvil: [Disponible con Licencia]
+		   (Esto SOLO si lo desea de forma independiente)
+		loWS.GetChat(tcFrom As String, tcNameUser As String, tnLimit As Integer)
+			*: Parámetros.......: tcFrom		= Número del cual a quien se ha enviado/recibido Chats, también conocido como ID del Chat.
+			*:                    tcNameUser	= Nombre tomado en GetChats, si se usa independiente dejar vacío.
+			*:                    tnLimit   	= Cantidad de mensajes a recuperar, será 1 (predeterminado) si no se indica.
+			*:                    tlTickRead	= .T. Marcar Chat como leido, .F. (Predeterminado)
+			*: Nota.............: Es llamado por GetChats o también de forma individual.
+			CONSIDERAR: Acá puede recuperar los mensajes que desee, leidos o sin leer, y traerá la cantidad que se le indique en tnLimit
+			            Los mensajes son almacenados en una tabla llamada: MsgChats.dbf
+			            Los estados según el ACK de WhatsApp Messenger Central son:
+						1 = Enviado		2 = Recibido	3 = Leido
+						
+		*: Lectura del Estado de un mensaje enviado: [Disponible con Licencia]
+		loWS.GetAckMessage(tcIDChat As String, tcIDMessage As String, tnLimit As Integer)
+			*: Parámetros.......: tcIDChat     = Esto se entiende como Identificador del Chat, es decir el # del contacto a quien se le envió un mensaje
+			*:                    tcIDMessage  = String que se puede obtener del ID de cada mensaje enviado, el valor está en loWS.cLastIdMessage
+			*:                    tnLimit      = Cantidad de mensajes que recuperará sobre los cuales se verificará cual de ellos es igual ha tcIDMessage
+                                                 (Será 1 como predeterminado si no se lo indica)
+			*:NOTA..............: Se devuelve el resultado en la propiedad loWS.cLastError, también puede checar las propiedades:
+			                      loWS.cAckMessage		= Conserva el # del ACK de un X mensaje consultado.
+								  loWS.cStatusMessage	= Conserva el estado de un X mensaje consultado baso en ACK.
+			CONSIDERAR: Para ambientes donde se quiere saber el estado de un X mensaje enviado, es muy recomendable hacer la consulta pasado un minuto,
+			            u otro tiempo prudente, esto es debido a que WhatsApp Messenger en ocasiones demora en responder por problemas de conexión
+                        con los destinatarios y los mensajes no les llegan hasta que el teléfono del destinatario se ponga ONLINE.
+		
+		*: Obtener la imágen de Perfil de un X número
+		loWS.GetUrlProfilePicture(tcContactUrl As String)
+			*: Parámetros.......: tcContactUrl	= Número del Contacto a consultar, del cual se obtendrá la URL de la foto de Perfil
+			*:NOTA..............: Se obtendrá url que puede ser usada mejor bien parezca
+
+		*: Obtener todos los Grupos y contactos de los Grupos obtenidos
+		loWS.GetContactsGroups(tcIdGroup As String, tlGetMembers As Boolean)
+			*: Parámetros.......: tcIdGroup 	= ID de un GRUPO (dejar vació si se desean todos)
+			*:                    tlGetMembers	= .T. Cargará los Miembros de cada GRUPO, .F. sin miembros
+			*: Nota.............: Se recupera un JSON, pero se extraen solo los datos necesarios
+
+		*: Obtener todos los miembros/contactos de un X grupo específico
+		loWS.GetContactsByGroup(tcIdGroup As String, tlDbfMembers As Boolean)
+			*: Parámetros.......: tcIdGroup     = ID de un GRUPO a evaluar (Obligatorio)
+			*:                    tlDbfMembers	= .F. (Predeterminado)
+			*:                                    .T. No Cierra ni llama a crear la tabla para miembros
+			*: Nota.............: Se recupera un JSON, pero se extraen solo los datos necesarios
+		
+		*: Enviar a un archivo TXT todos los contactos obtenidos de WS
+		loWS.SendContactsToFile(tcDestinationFile As String)
+			*: Parámetros.......: tcDestinationFile = Ruta y Nombre del archivo TXT que recibirá los contactos obtenidos previamente.
+			*: NOTA.............: Previamente debió haber obtenidos los contactos con loWS.GetContacts()
+		
+		loWS.SetProtocols(tlSecureProtocols As Boolean)
+			*: Objetividad......: Cambiar de Puerto y Protocolo Seguro a Inseguro o viceversa
+			*: Parámetros.......: tlSecureProtocols	= .F. = No Seguro   .T. = Seguro			
+
+		loWS.MarkReadChats(tcChat As String, tlIsGroup As Boolean)
+			*: Objetividad......: Marcar como leido Chats
+			*: Parametros.......: tcChat     = ID que es el serializado del chat a marcar (se obtiene desde GetChats())
+			*:                    tlIsGroup  = .F. (Predeterminada)  .T. = Es un grupo
+	
+		*: Enviar reacción hacia un X mensaje
+		loWS.ReactMessage(tcIDMessage As String, tcEmojis As String)
+			*: Parámetros.......: tcIDMessage	= ID del mensaje enviado o recibido según sea el caso
+			                                      ID Enviado  --> Obtenido de loWS.cLastIdMessage
+												  ID Recibido --> Obtenido con GetChats(), buscar en la tabla contenido en loWS.cTableMsgChats Columna Serialized
+			*:                    tcEmojis		= Nombre del Emojis, enviarlo entre dos puntos, Ejemplo  :computer:
+
+		*: Reenviar un X mensaje recibido hacia otro contado que se requiera
+		loWS.ResendMessage(tcIdMessage As String, tcDestination As String)
+			tcIdMessage		--> (Para saber como obtener este ID - Ver Explicación de ésto en el método loWS.ReactMessage)
+			tcDestination	--> Número telefónico del contacto destino, debe ser en formato Internacional
+
+		loWS.SendButtons(tcDestination As String, tcMessageBody As String, tcButtons As String, tcTitle As String, tcFooter As String)
+			*: Objetividad......: Enviar Botones (máximo 3 botones)
+			*: Parámetros.......: tcDestination	= Número de teléfono del destino
+			*:                    tcMessageBody = Cuerpo del mensaje
+			*:                    tcButtons     = Texto de cada o por cada botón separado por punto y coma
+			*:                    tcTitle		= Título o encabezado del mensaje con botones (Opcional)
+			*:                    tcFooter      = Pie del mensaje (Opcional)		
+
+		loWS.GetResponseChat(tcIdChat As String, tcIDMessage As String, tnLimit As Integer)
+			*: Objetividad......: Recuperar una respuesta/selección de cualquier tipo de mensajes
+			*: Parámetros.......: tcIdChat		= Número de teléfono del chat o contacto en comunicación
+			*:                    tcIDMessage 	= ID del mensaje enviado o recibido según sea el caso
+			*:                    tnLimit     	= # límite de mensaje sobre los cuales evaluar, máximo 100
+
+			loWS.GetResponseChat('593984958499','true_593984958499@c.us_3EB04986CD0ABD5590CB2D',10)
+
+
+		loWS.DownloadMedia(tcIDChat As String, tcIDMessage As String, tcMediaKey As String, tcDestinationRoute As String, tcNameFile As String)	
+			*: Objetividad......: Descargar los MediaKey que se recuperan con GetChat de Chats y mensajes
+			*: Parametros.......: tcIDChat			= ID del Chat o número de teléfono del cual se consultará (quien nos ha escrito)
+			*:                    tcIDMessage		= ID del mensaje del cual quiere ser consultado el MediaKey 
+			*:                                        (Para saber como obtener este ID - Ver Explicación de ésto en el método loWS.ReactMessage)
+			*:                    tcMediaKey   		= MediaKey del cual se obtendrá la cadena en Base64
+			*:                    tcDestinationRoute= Ruta a donde se quiere guardar el archivo convertido (opcional)
+			*:                    tcNameFile		= Nombre del archivo sin extensión, se colocará el Base64 convertido (opcional)
+			*: Nota.............: Es llamado a petición (loWS.lIncludeMediaKey debe estar .T. para que consideres los MediaKey)
+			*: consideraciones..: Depende de GetChats y/o GetChat para obtener los datos requeridos
+			*:                    tcIDChat / tcIDMessage / tcMediaKey (estos tres datos son obligatorios)
+
+		loWS.CreateGroup(tcGrupo As String, tcParticipants As String)
+			*: Objetividad......: Crear un Grupo en WhatsApp Messenger dentro del número Emisor y adicionar participantes
+			*: Parámetros.......: tcGrupo			= Nombre del Grupo, se recomienda que sea alfabético
+			*:                    tcParticipants	= Lista de contactos para ser adicionados al grupo
+			*:                                        Los contactos deben ir separados por coma
+			Ejemplo: loWS.CreateGroup('MyGrupoEspecial','593984958499,5493456454282')
+			NOTA: Al invocar la creación del grupo nos devolverá el ID respectivamente, este ID lo encontrará temporal en loWS.cLastIdGroup
+		
+		loWS.AddParticipants(tcIdGrupo As String, tcParticipants As String)
+			*: Objetividad......: Agregar uno o varios contactos ha un determinado Grupo de WhatsApp
+			*: Parámetros.......: tcIdGrupo   		= ID del grupo
+			*:                    tcParticipants	= Lista de contactos para ser adicionados del grupo
+			*:                                        Los contactos deben ir separados por coma		
+			Ejemplo: loWS.AddParticipants('1233641428266464414@g.us','593984958487,5493456454414')
+			NOTA: loWS.cContactsNoReg contendrá los contactos que NO se pudieron adicionar
+	
+		loWS.RemoveParticipants(tcIdGrupo As String, tcParticipants As String)
+			*: Objetividad......: Remover participantes de un grupo en WhatsApp
+			*: Parámetros.......: tcIdGrupo   		= ID del grupo a eliminar
+			*:                    tcParticipants	= Lista de contactos para ser eliminados del grupo
+			*:                                        Los contactos deben ir separados por coma	
+			Ejemplo: loWS.RemoveParticipants('1233641428266464414@g.us','593984958487,5493456454414')
+
+		loWS.PromoteParticipants(tcIdGrupo As String, tcParticipants As String)
+			*: Objetividad......: Promover uno o varios contactos como Administradores de un Grupo
+			*: Parámetros.......: tcIdGrupo   		= ID del grupo
+			*:                    tcParticipants	= Contactos para ser promocionados Administradores
+			*:                                        Los contactos deben ir separados por coma
+			Ejemplo: loWS.PromoteParticipants('1233641428266464414@g.us','593984958487,5493456454414')
+
+		loWS.DemoteParticipants(tcIdGrupo As String, tcParticipants As String)
+			*: Objetividad......: Des-Promover uno o varios contactos como Administradores del Grupo
+			*: Parámetros.......: tcIdGrupo   		= ID del grupo
+			*:                    tcParticipants	= Contactos para ser promocionados Administradores
+			*:                                        Los contactos deben ir separados por coma
+			Ejemplo: loWS.DemoteParticipants('1233641428266464414@g.us','593984958487,5493456454414')
+		
+		loWS.SetOnlyAdmins(tcIdGrupo As String, tlOnlyAdmins As Boolean)
+			*: Objetividad......: Setear al grupo para que solo los Administradores o todos puedan escribir
+			*: Parámetros.......: tcIdGrupo   	= ID del grupo ha aplicar
+			*:                    tlOnlyAdmins	= .T. para Solo administradores, .F. Todos
+			Ejemplo: loWS.SetOnlyAdmins('1233641428266464414@g.us',.T.)
+
+		loWS.GetContactsGroups()
+			*: Objetividad......: Obtener unicamente todos los IDs de Grupo, esto crea un tabla llamada Groups.dbf
+			*: Parámetros.......: Ninguno
+
+	[ PROPIEDADES A CONSIDERAR ]
+	
+		loWS.cLanguage		   	= 'ES'   && Idioma a usar: ES = Español (Predeterminado)  EN = English
+		loWS.lAddDateTime      	= .T.	&& Por default está en .T. 
+		                                   Esto permite que a cada mensaje se anexe día, fecha y hora como pie del mismo, es decir al final.
+                                           Con .F. le indicamos que no se adjunte nada para los mensajes.
+										   RECOMENDABLE dejar el .T., de ésta manera cada mensajes será diferente por el texto anexo.
+		loWS.nWaitTime		   	= 00		&& Por Default NO se hace pausa entre envíos de mensajes, poner un valor mayor a cero hará que se pause automáticamente.
+										   Según conteo de mensajes, rangos 3,5,7,etc., para evitar el banneo de la cuenta emisora.
+										
+		loWS.lCheckInternet    	= .T.    && Por default está en .T., esto permite que chequee si hay internet, .F. NO lo hará por cada petición.
+		loWS.lValidRegistered  	= .T.    && Por default está en .T., esto verifica si un número es una cuenta de WhatsApp válida.
+		loWS.cContactsNoReg    	= ''     && Lista de contactos NO registrados en WhatsApp Messenger (toma de los contactos destinatarios).
+		                                 && También contiene los números de contactos NO procesados con los métodos por manipulación de grupos.
+		loWS.cContactsSend	   	= ''     && Números de contactos que SI se han enviado mensajes.
+		loWS.cContactsNoSend   	= ''     && Números de contactos que NO se han enviado mensajes.
+		loWS.cCurContacts	   	= ''	 && Nombre del fichero que contiene los contactos obtenidos de la base celular.
+		loWS.lUseDNSContacts   	= .T.	 && Permite utilizar busqueda local para destinatarios utilizados, .F. desactiva la utilidad
+		loWS.cDNSContacts      	= Sys(5) + Curdir() + 'DNSContacts.dbf'	
+		                                && Ruta y Nombre de la tabla de los contactos para busqueda local		
+		loWS.nTyping           	= 03     && Tiempo en segundos para simulación "escribiendo" humano [1 hasta 10sg max].
+		loWS.lNoWait		   	= .T.    && .T. Predeterminado (recomendado), .F. espera respuesta del WS.
+		loWS.cLastIdMessage	   	= ''     && String con el ID de cada mensaje enviado (SOLO si loWS.lNoWait = .F.), este cambia por cada mensaje nuevo.
+		loWS.cLastIdGroup      	= ''     && Contiene último ID del grupo creado
+		loWS.lIncludeMediaKey  	= .F.    && .T. = hará que los chats con archivos multimedios se descarguen con GetChat() y estén disponibles
+
+		loWS.lAuthenticate		= .T.	 && Guardará el dato booleano al recuperar el Estado de la linea consultado al WebServices de SMSWhatsApp
+		loWS.cTechnicianPhone	= ''	 && Número de teléfono del Responsable / Técnico / Programador
+		loWS.cExpire			= ''	 && Fecha y Hora de expiración de licenciamiento
+		loWS.cLastState			= ''	 && Ultimo / Actual estado de la linea o servicio
+		loWS.lIncludeMediaKey   = .F.	 && Colocar .T. para que considere los adjuntos, tomará los MediaKey
+		loWS.lSeparateTextAdj 	= .F.	 && De forma predeterminada se adiciona el texto de un mensaje con archivos adjuntos en un solo mensaje (Jun-2023)
+		                                   .T. hará separación, usará el modelo antiguo
+	
+	[ Emojis ]
+	Para poder usar una figura de emojis solo colocar el nombre de la figura entre dos puntos así:
+		:NombreFigura:
+	
+		loWS.SendSMSWhatsApp('593984958499','Esta es una prueba con emojise :gear: :bulb: :computer: :floppy_disk:')
+		*: Solicitar la lista de emojis a su proveedor del servicio.
+
+	[ CONSIDERACIONES ]	
+		WhatsApp solo permite 2 (dos) sesiones a la vez (en versiones antiguas de WhatsApp Messenger):
+		La primera en el celular como WhatsApp Messenger.
+		La segunda, cargando con un código QR en una sola sesión en los siguientes ambientes:
+			* WhatsApp Desktop (Programa que se ha instalado en el computador personal).
+			* WhatsApp Web (Usando cualquier navegador de su elección)
+			* Otro servicio como SMSWhatsApp (RECOMENDADO)
+		NOTA: en el caso de tener Multi-Devices oficial, el límite de sesiones es hasta 4.
+		
+		Para mantener el servicio SMSWhatsApp Online es necesario condiserar lo siguiente:
+			* NO USAR WhatsApp Desktop ni WhatsApp Web (Navegador), versiones antiguas.
+			* NO CERRAR la sesión cargada (vinculada) al servicio SMSWhatsApp.
+			
+		Activación BETA [Multi-Devices] - Versiones con licencias de Pago (únicamente si aún posee BETA)
+			Seguir éstos pasos:
+			1.- Notificar a (wa.me/593984958499) que desea entrar en modo BETA.
+			2.- Cerrar sesión actual con SMSWhatsApp, si está vinculado al servicio.
+			3.- En su teléfono base celular emisora, entrar en modo Multi-Devices.
+			4.- Vincular la linea emisora al servicio SMSWhatsApp.
+			5.- Realizar los envíos normalmente.
+			6.- Si desea cargar una sesión adicional ya sea con WhatsApp Desktop / Navegador, hacerlo.
+			7.- Proceda a usar el Servicio de SMSWhatsApp.
+			
+	[ ACLARATORIA ]
+		La DLL en modalidad DEMO:
+			* NO está autorizada para enviar mensajes con número propio del testeador.
+			* El número emisor es propio del servicio SMSWhatsApp para las pruebas.
+			* Usar la DLL al 100% funcional para efectos de pruebas.
+			* NO realizar envíos con cosas personales, de detectar éstas acciones reportaremos a WhatsApp como Spam los números destinatarios.
+			* Debe informar a quien envía mensajes de pruebas, recibirá publicidad de nuestros servicios.
+			* Una vez comprobado el servicio, podrá adquirir una licencia según le convenga.
+			* La vinculación con número celular propio de ustedes SOLO EN MODO PAGA (con licencias).
+
+----------------------------------- C O M E R C I A L I Z A C I O N -----------------------------------
+	[ COSTOS ]
+		Cada Cuenta = UNA LICENCIA = UN # Teléfono emisor vinculado, que hará de base central.
+		Los costos presentados son en DOLARES AMERICANOS:
+		La renovación del servicio es MENSUAL o ANUAL, según el plan adquirido.
+	 
+	  Costos Anual: SOLO para programadores (DISTRIBUIDORES):  
+	  Individual           $160                 		
+	  Kit de  2 licencias: $155 cada una 				
+	  Kit de  4 licencias: $150 cada una 				
+	  Kit de  6 Licencias: $145 cada una				
+	  Kit de  8 Licencias: $140 cada una				
+	  Kit de 10 Licencias: $135 cada una				
+	  Kit de 12 Licencias: $130 cada una				
+	  Kit de 15 Licencias: $125 cada una
+	  Kit de ++ Licencias: $120 cada una              
+
+	  Costos Mensual: SOLO para programadores (DISTRIBUIDORES):  
+	  Individual           $17                 		
+	  Kit de  2 licencias: $16 cada una 				
+	  Kit de  4 licencias: $15 cada una 				
+	  Kit de  6 Licencias: $14 cada una				
+	  Kit de  8 Licencias: $13 cada una				
+	  Kit de 10 Licencias: $12 cada una				
+	  Kit de 12 Licencias: $11 cada una				
+	  Kit de ++ Licencias: $10 cada una 
+
+	[ CANALES de PAGOS ]
+	Transferencia Bancaria dentro de ECUADOR: 
+	Banco: PICHINCHA
+	Tipo Cuenta: AHORROS
+	Nro. Cuenta: 5066727100
+	Nombres:     JAIRON HERNAN
+	Apellidos:   CEDEÑO ADRIAN
+	C.I.         1309184750
+	Correo:      ventas@jca.ec
+	  
+	  En Ecuador, contamos con el pago y cobro mediante el servicio DEUNA
+	  
+	WESTER UNION:
+	  Nombres:   JAIRON HERNAN
+	  Apellidos: CEDEÑO ADRIAN 
+	  C.I.:      1309184750
+	  País:      Ecuador
+	  Ciudad:    Manta
+	  Dirección: Cdla. La Pradera calle HG4
+	  
+	ARGENTINA: Cuenta en Dólares
+	  Banco:    Galicia
+	  DU:   	95929337
+	  CTA:  	4014963-2 080-6
+	  CBU:  	0070080131004014963267
+	  CUIL: 	27959293371
+	  ALIAS: 	TOPO.POEMA.BANDO
+	  
+	ARGENTINA: Cuenta en Pesos
+	  Banco:    Galicia
+	  DU:   	95929337
+	  CTA:  	4061696-6 080-1
+	  CBU:  	0070080130004061696616
+	  CUIL: 	27959293371
+	  ALIAS: 	TOPO.COLOR.BANDO
+	  
+	PayPal: Aplica recargos: 10 dolares plan anual, 1.50 plan mensual
+	  Cuenta: jairo_cedeno_adrian@outlook.com 
+
+	PayPhone:
+	  Jairon Hernán Cedeño Adrián
+	  (+593) 984958499
+	  	  
+	  Para beneficiarse de los costos por kits, el pago debe ser total equivalente a las cuentas adquiridas;
+	  por citar un ejemplo 2 x 140 = $280
+	  y así con los demas kits y cantidades.
+	  Información a:
+		info@jca.ec / ventas@jca.ec / soporte@jca.ec / +593 984 958 499 [Jairo Cedeño Adrián]
+	  
