@@ -14,16 +14,19 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
 - ### Recibir mensajes:
   - Recuperar mensajes de chats leidos y pendietes de lectura, muy útil para la elaboración de bots asistentes.
   - Reenviar mensajes recibidos.
+  - Responder a mensajes recibidos.
   - Generar reacciones a mensajes recibidos.
   - Marcar chats como leidos.
   - Borrar chats y sus mensajes.
   - y mas opciones...
 
-- Otras utilidades:
+- ### Otras utilidades:
+- Activar la DLL usando Licencia + Token DLL  o usando activación mediante ID del Servicio (Token apiRest).
 - Administración de grupos de WhatsApp: Crear grupos, adicionar/eliminiar/promover participantes dentro de un grupo.
 - Obtener lista de contactos de WhatsApp del número vinculado al servicio.
 - Obtener lista de grupos y lista de sus participantes.
 - Verificar si un contacto o destinatario es una cuenta de WhatsAppp válida.
+- Verificar el estado de un mensaje enviado: Enviado / Recibido / Leido.
 - Otras funcionalidades avanzadas.
 
 ## Enviando mensaje con Api Rest
