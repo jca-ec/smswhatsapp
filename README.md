@@ -95,7 +95,7 @@ Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en 
 
 ## Demo en línea
 
-Prueba un demo de envío de mensajes a WhatsApp usando [https://mywhatsapp.jca.ec/demo](https://mywhatsapp.jca.ec/demo)
+Prueba un demo de envío de mensajes a WhatsApp usando [Demo](https://mywhatsapp.jca.ec/demo)
 
 ## Requisitos del Sistema
 
@@ -104,7 +104,7 @@ Prueba un demo de envío de mensajes a WhatsApp usando [https://mywhatsapp.jca.e
 
 ## Instalación
 
-1. Descarga la DLL desde [Mega](https://mega.nz/folder/wYRnUYKJ#y0eV2vy-Bp1bx361Wm18IA/file/1MwSGaLB) el archivo SMSWhatsApp.exe.
+1. Descarga la DLL desde [GitHub](https://github.com/jca-ec/smswhatsapp/blob/main/SMSWhatsApp.exe) el archivo SMSWhatsApp.exe.
 2. Sigue las instrucciones de instalación.
 
 ## Problemas y Sugerencias
