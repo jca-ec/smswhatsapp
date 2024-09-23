@@ -22,10 +22,10 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
 
 - ### Otras utilidades:
 - Activar la DLL usando Licencia + Token DLL  o usando activación mediante ID del Servicio (Token apiRest).
-- Administración de grupos de WhatsApp: Crear grupos, adicionar/eliminiar/promover participantes dentro de un grupo.
+- Administración de grupos de WhatsApp: Crear/adicionar/eliminar/promover participantes dentro de un grupo.
 - Obtener lista de contactos de WhatsApp del número vinculado al servicio.
-- Obtener lista de grupos y lista de sus participantes.
-- Verificar si un contacto o destinatario es una cuenta de WhatsAppp válida.
+- Obtener lista de grupos y lista de sus respectivos participantes.
+- Verificar si un contacto o destinatario es una cuenta válida en WhatsAppp.
 - Verificar el estado de un mensaje enviado: Enviado / Recibido / Leido.
 - Otras funcionalidades avanzadas.
 
