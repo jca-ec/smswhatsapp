@@ -5,14 +5,25 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
 ## Características
 
 - ### Enviar mensajes:
-  - Puedes enviar gran cantidad de mensajes sencillo, también puedes decorarlos con el uso de emojis.
+  - Puedes enviar gran cantidad de mensajes sencillos, adicional puedes decorarlos con el uso de emojis.
   - Se permiten enviar todo tipo de adjuntos:
-    - PDFs, imágenes, audios, videos, y demás tipos de archivos.
+    - PDFs, imágenes, audios, videos, y mas tipos de archivos.
     - Envío de urls como adjuntos, el receptor recibirá anexo el adjunto contenido de la url de internet.
     - Se puede anexar una explicación textual a todos los archivos adjuntos.
-- Envío de imágenes y vídeos.
-- Envío de archivos PDF.
-- Administración de grupos de WhatsApp.
+
+- ### Recibir mensajes:
+  - Recuperar mensajes de chats leidos y pendietes de lectura, muy útil para la elaboración de bots asistentes.
+  - Reenviar mensajes recibidos.
+  - Generar reacciones a mensajes recibidos.
+  - Marcar chats como leidos.
+  - Borrar chats y sus mensajes.
+  - y mas opciones...
+
+- Otras utilidades:
+- Administración de grupos de WhatsApp: Crear grupos, adicionar/eliminiar/promover participantes dentro de un grupo.
+- Obtener lista de contactos de WhatsApp del número vinculado al servicio.
+- Obtener lista de grupos y lista de sus participantes.
+- Verificar si un contacto o destinatario es una cuenta de WhatsAppp válida.
 - Otras funcionalidades avanzadas.
 
 ## Enviando mensaje con Api Rest
