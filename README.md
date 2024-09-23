@@ -39,17 +39,16 @@ Para enviar un mensaje de texto a un número de teléfono específico (número e
 
 `POST https://smswhatsapp.net:5433/chat/sendmessage/:phone?number=myTokenApiRest`
 
-#### Parámetros
+#### Parámetros:
 
-- **phone** (obligatorio): Número de teléfono (en formato internacional) al que se enviará el mensaje.
+- **phone**  (obligatorio): Número de teléfono (en formato internacional) al que se enviará el mensaje.
 - **number** (obligatorio): Token del servicio ApiRest o ID del servicio, para pruebas usa el token Phone03.
 
 #### Body
 
-- **message** (obligatorio): Mensaje de texto que se enviará.
-- **
-quoted**: Código único de mensaje citado (opcional).
-- **typing**: Envía simulación de escritura (opcional).
+- **message** (obligatorio): Contenido del mensaje de texto ha enviar.
+- **quoted**: Código único de mensaje citado, es decir si estamos haciendo un reenvío de un mensaje recibido (opcional).
+- **typing**: Envía simulación de escritura, el valor es numérico (opcional).
 - **nowait**: No espera confirmación de mensaje envíado (opcional).
 
 ### Ejemplo
@@ -58,12 +57,13 @@ quoted**: Código único de mensaje citado (opcional).
 curl --location 'https://mywhatsapp.jca.ec:5433/chat/sendmessage/123456789?number=Phone03' \
 --header 'Content-Type: application/json' \
 --data '{
-    "message": "Hola Mundo!",   
-    "typing": "true"
+    "message": "Hola Mundo!",
+    "typing": 1,
+    "nowait": "true"
 }'
 ```
 
-Respuesta
+Respuesta:
 La API responderá según el éxito o fracaso de la operación.
 
 Código de respuesta 200 si el mensaje se envió exitosamente.
@@ -77,7 +77,7 @@ Código de respuesta 400 si faltan parámetros obligatorios o hay un error en la
 }
 ```
 
-Recuerda reemplazar 123456789 con el número de teléfono al que deseas enviar el mensaje y personalizar el contenido del mensaje según tus necesidades.
+Recuerda reemplazar 123456789 con el número de teléfono (en formato internacional) al que deseas enviar el mensaje y personalizar el contenido del mensaje según tus necesidades.
 
 ***NOTA***: Mira un ejemplo más completo en: [https://github.com/jca-ec/smswhatsapp/blob/main/doc.md](https://github.com/jca-ec/smswhatsapp/tree/main/doc) 
 
@@ -113,9 +113,9 @@ Si encuentras algún problema o tienes sugerencias, por favor crea un [issue](ht
 
 ## Contacto
 
-Jairo Cedeño
+Jairo Cedeño Adrián
 
-Telef.: +593 98 495 8499
+Móvil.: +593 984 958 499
 
 Correo: soporte@jca.ec
 
