@@ -1,0 +1,10 @@
+# Instalación de la DLL y requisitos previos
+
+## Usando el ejecutable (Windows) - Recomendado
+- Descargar el instalador desde GitHub [Instalador](https://github.com/jca-ec/smswhatsapp/blob/main/SMSWhatsApp.exe).
+- Excluir alertas si algún anti-virus menciona con problemas al ejecutar SMSWhatsApp.exe, el nivel de encriptación es alto y por eso puede provocar un falso positivo.
+- El proceso de instalación es solo avanzar siguiente, siguiente, una vez terminado el proceso todo quedará listo.
+- El instalador automático le colocará los requisitos básicos en la siguiente ruta C:\Program Files (x86)\Common Files\Microsoft Shared\VFP\
+  * vfp9r.dll			v9.0.00.7423
+  * VFP9RENU.DLL	v9.0.00.7423
+  * vfp9t.dll			v9.0.00.7423
