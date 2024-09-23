@@ -5,7 +5,7 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
 ## Características
 
 - ### Enviar mensajes:
-  - Puedes enviar gran cantidad de mensajes sencillos, adicional puedes decorarlos con el uso de emojis.
+  - Puedes enviar gran cantidad de mensajes sencillos, adicional decorarlos con el uso de emojis.
   - Se permiten enviar todo tipo de adjuntos:
     - PDFs, imágenes, audios, videos, y mas tipos de archivos.
     - Envío de urls como adjuntos, el receptor recibirá anexo el adjunto contenido de la url de internet.
