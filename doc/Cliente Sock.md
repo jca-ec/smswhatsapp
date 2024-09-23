@@ -1,10 +1,13 @@
 # Cliente Sock para SMSWhatsApp
 
-Ejemplo de como crear un cliente Sock para SMSWhatsApp para mediante una conexión de socket para recibir notificaciones en tiempo real sobre mensajes recibidos, multimedia y notificaciones de mensajes leídos.
+Ejemplo de como crear un cliente Sock para SMSWhatsApp mediante una conexión de Socket, esto permitirá recibir notificaciones en tiempo real sobre mensajes recibidos, multimedia y notificaciones de mensajes leídos.
 
 ## Funcionalidad del Servidor Sock
 
-El servidor Sock está disponible en la dirección `mywhatsapp.jca.ec` en el puerto `5026`. Los desarrolladores pueden conectarse mediante sus clientes de Socket en cualquier lenguaje de programación. Al conectarse, deben enviar su respectivo token para autenticarse. El servidor almacenará los últimos 50 eventos y los enviará tan pronto se conecten al servidor.
+- El servidor Sock está disponible en la dirección `smswhatsapp.net` en el puerto `5026`.
+- Los desarrolladores pueden conectarse mediante sus clientes de Socket en cualquier lenguaje de programación.
+- Al conectarse, deben enviar su respectivo token para autenticarse.
+- El servidor almacenará los últimos 50 eventos y los enviará tan pronto se conecten al servidor.
 
 ### Datos recibidos
 
@@ -90,7 +93,7 @@ Al conectarse al servidor socket, recibirás notificaciones en tiempo real sobre
 const net = require('net');
 
 const client = net.createConnection({
-    host: 'mywhatsapp.jca.ec',
+    host: 'smswhatsapp.net',
     port: 5026
 }, () => {
     console.log('Connected to server');
@@ -119,7 +122,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string server = "mywhatsapp.jca.ec";
+        string server = "smswhatsapp.net";
         int port = 5026;
         string token = "TOKEN";
 
@@ -158,7 +161,7 @@ class Program
 ```python
 import socket
 
-server = 'mywhatsapp.jca.ec'
+server = 'smswhatsapp.net'
 port = 5026
 token = 'TOKEN'
 
@@ -183,5 +186,5 @@ except Exception as e:
 
 #### Cliente en Visual FoxPro
 
-Usar el formulario que ha sido agregado en la ruta: https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket
+Usar el formulario que ha sido agregado en la ruta: [Formulario WinSock](https://github.com/jca-ec/smswhatsapp/tree/main/WinSocket)
 
