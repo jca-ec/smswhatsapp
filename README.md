@@ -37,7 +37,7 @@ Para enviar un mensaje de texto a un número de teléfono específico (número e
 
 ### Endpoint
 
-`POST https://smswhatsapp.net:5433/chat/sendmessage/:phone?number=myTokenApiRest`
+`POST https://smswhatsapp.net:5433/chat/sendmessage/phone?number=myTokenApiRest`
 
 #### Parámetros:
 
@@ -95,14 +95,14 @@ Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en 
 
 ## Demo en línea
 
-Prueba un demo de envío de mensajes a WhatsApp usando [Demo](https://mywhatsapp.jca.ec/demo)
+Prueba un demo de envío de mensajes a WhatsApp usando [Demo](https://smswhatsapp.net/demo)
 
 ## Requisitos del Sistema
 
 - DLL de 32 bits compatible con lenguajes de programación de 32bits como: VisualFoxPro, Visual Basic, etc..
-- Acceso a Internet para la API REST, compatible con todos los lenguajes de programación.
+- Acceso a Internet para la API REST, compatible con todos los lenguajes de programación, no necesitas instalar componentes, solo usar.
 
-## Instalación
+## Instalación para usar la DLL de SMSWhatsApp
 
 1. Descarga la DLL desde [GitHub](https://github.com/jca-ec/smswhatsapp/blob/main/SMSWhatsApp.exe) el archivo SMSWhatsApp.exe.
 2. Sigue las instrucciones de instalación.
@@ -125,4 +125,4 @@ Correo: soporte@jca.ec
 
 ---
 
-© 2023 Jairo Cedeño
+© 2024 Jairo Cedeño Adrián
