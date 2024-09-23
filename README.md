@@ -12,7 +12,7 @@ SMSWhatsApp es un servicio de mensajería a WhatsApp que puede ser usado mediant
     - Se puede anexar una explicación textual a todos los archivos adjuntos.
 
 - ### Recibir mensajes:
-  - Recuperar mensajes de chats leidos y pendietes de lectura, muy útil para la elaboración de bots asistentes.
+  - Recuperar mensajes de chats leidos y pendientes de lectura, muy útil para la elaboración de bots asistentes.
   - Reenviar mensajes recibidos.
   - Responder a mensajes recibidos.
   - Generar reacciones a mensajes recibidos.
