@@ -1,0 +1,103 @@
+﻿// Phone03 es el token de la DEMO, reemplazar por el token cuando se adquiere una licencia
+
+// to es el destinatario: debe ser un número en formato internacional
+// to es el destinatario: puede ser un grupo, PERO debe estar registrado en la base emisora
+
+// URLS según la necesidad:
+
+// Para enviar a destinatarios contactos (números)
+	// url = 'https://smswhatsapp.net:5433/chat/sendmessage/' +SMSWhatsApp.to + '?number=' + SMSWhatsApp.token;
+
+// Para enviar a grupos
+	// url = 'https://smswhatsapp.net:5433/group/sendmessage/' +SMSWhatsApp.to + '?number=' + SMSWhatsApp.token;
+
+// puede usar protocolor seguro, es decir https, para ellos solo reemplazar http por https y 5001 por 5433
+
+// El siguiente script debe ser copiado dentro de la definición y area de scrip del Media Type
+
+
+var SMSWhatsApp = {
+        url: null,
+        token: null,
+        to: null,
+        subject: null,
+	
+	escapeMarkup: function (str, mode) {
+        switch (mode) {
+            case 'markdown':
+                return str.replace(/([_*\[`])/g, '\\$&');
+
+            case 'markdownv2':
+                return str.replace(/([_*\[\]()~`>#+\-=|{}.!])/g, '\\$&');
+
+            case 'html':
+                return str.replace(/<(\s|[^a-z\/])/g, '&lt;$1');
+
+            default:
+                return str;
+        }
+    },
+
+    sendMessage: function () {
+        var params = {
+            message: '*' + SMSWhatsApp.subject + '*' + '\n\n' + SMSWhatsApp.message
+        },
+        data,
+        response,
+        request = new HttpRequest(),
+        sendMsgUrl = SMSWhatsApp.url + '/' + SMSWhatsApp.to + '?number=' + SMSWhatsApp.token;
+
+        if (SMSWhatsApp.parse_mode !== null) {
+            params['parse_mode'] = SMSWhatsApp.parse_mode;
+        }
+		
+        request.addHeader('Content-Type: application/json');
+        data = JSON.stringify(params);
+
+        // Remove replace() function if you want to see the exposed token in the log file.
+        Zabbix.log(4, '[SMSWhatsApp Webhook] URL: ' + sendMsgUrl.replace(SMSWhatsApp.token, '<TOKEN>'));
+        Zabbix.log(4, '[SMSWhatsApp Webhook] params: ' + data);
+        response = request.post(sendMsgUrl, data);
+        Zabbix.log(4, '[SMSWhatsApp Webhook] HTTP code: ' + request.getStatus() + ' ' + response);
+
+        try {
+            response = JSON.parse(response);
+        }
+        catch (error) {
+            response = null;
+        }
+
+        if (request.getStatus() !== 200 || response.status !== 'success') {
+            if (typeof response.message === 'string') {
+                throw response.message;
+            }
+            else {
+                throw 'Unknown error. Check debug log for more information.';
+            }
+        }
+    }
+};
+
+try {
+    var params = JSON.parse(value);
+
+    if (typeof params.Token === 'undefined') {
+        throw 'Incorrect value is given for parameter "Token": parameter is missing';
+    }
+
+    SMSWhatsApp.token = params.Token;
+
+    
+    SMSWhatsApp.url = params.url;
+    SMSWhatsApp.to = params.To;
+    SMSWhatsApp.subject = params.Subject;
+    SMSWhatsApp.message = params.Message;
+
+    SMSWhatsApp.sendMessage();
+
+    return 'OK';
+}
+catch (error) {
+    Zabbix.log(4, '[SMSWhatsApp Webhook] notification failed: ' + error);
+    throw 'Sending failed: ' + error + '.';
+}
