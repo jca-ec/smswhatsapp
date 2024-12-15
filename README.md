@@ -37,7 +37,7 @@ Para enviar un mensaje de texto a un número de teléfono específico (número e
 
 ### Endpoint
 
-`POST https://smswhatsapp.net:5433/chat/sendmessage/phone?number=myTokenApiRest`
+`POST https://mywhatsapp.jca.ec:5433/chat/sendmessage/phone?number=myTokenApiRest`
 
 #### Parámetros:
 
@@ -95,7 +95,7 @@ Echa un vistazo a cada carpeta de este proyecto para ver ejemplos de código en 
 
 ## Demo en línea
 
-Prueba un demo de envío de mensajes a WhatsApp usando [Demo](https://smswhatsapp.net/demo)
+Prueba un demo de envío de mensajes a WhatsApp usando [Demo](https://mywhatsapp.jca.ec/demo)
 
 ## Requisitos del Sistema
 
