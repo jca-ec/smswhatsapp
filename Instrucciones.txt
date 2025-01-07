@@ -428,25 +428,25 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 		La renovación del servicio es MENSUAL o ANUAL, según el plan adquirido.
 	 
 	  Costos Anual: SOLO para programadores (DISTRIBUIDORES):  
-	  Individual           $160                 		
-	  Kit de  2 licencias: $155 cada una 				
-	  Kit de  4 licencias: $150 cada una 				
-	  Kit de  6 Licencias: $145 cada una				
-	  Kit de  8 Licencias: $140 cada una				
-	  Kit de 10 Licencias: $135 cada una				
-	  Kit de 12 Licencias: $130 cada una				
-	  Kit de 15 Licencias: $125 cada una
-	  Kit de ++ Licencias: $120 cada una              
+	  Individual           $170                 		
+	  Kit de  2 licencias: $165 cada una 				
+	  Kit de  4 licencias: $160 cada una 				
+	  Kit de  6 Licencias: $155 cada una				
+	  Kit de  8 Licencias: $150 cada una				
+	  Kit de 10 Licencias: $145 cada una				
+	  Kit de 12 Licencias: $140 cada una				
+	  Kit de 15 Licencias: $135 cada una
+	  Kit de ++ Licencias: $130 cada una              
 
 	  Costos Mensual: SOLO para programadores (DISTRIBUIDORES):  
-	  Individual           $17                 		
-	  Kit de  2 licencias: $16 cada una 				
-	  Kit de  4 licencias: $15 cada una 				
-	  Kit de  6 Licencias: $14 cada una				
-	  Kit de  8 Licencias: $13 cada una				
-	  Kit de 10 Licencias: $12 cada una				
-	  Kit de 12 Licencias: $11 cada una				
-	  Kit de ++ Licencias: $10 cada una 
+	  Individual           $18.50                 		
+	  Kit de  2 licencias: $18 cada una 				
+	  Kit de  4 licencias: $17 cada una 				
+	  Kit de  6 Licencias: $16 cada una				
+	  Kit de  8 Licencias: $15 cada una				
+	  Kit de 10 Licencias: $14 cada una				
+	  Kit de 12 Licencias: $13 cada una				
+	  Kit de ++ Licencias: $12 cada una 
 
 	[ CANALES de PAGOS ]
 	Transferencia Bancaria dentro de ECUADOR: 
@@ -483,16 +483,23 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	  CBU:  	0070080130004061696616
 	  CUIL: 	27959293371
 	  ALIAS: 	TOPO.COLOR.BANDO
-	  
-	PayPal: Aplica recargos: 10 dolares plan anual, 1.50 plan mensual
+
+	💳 Mercado Pago: Pesos  
+	👤 Melanie Deyaneira Cedeno Chumo  
+	🏦 CVU: 0000003100086387132406  
+	🔑 Alias: Melanie1506  
+	📜 CUIT/CUIL: 27-95929337-1  	  
+
+	PayPal: 
 	  Cuenta: jairo_cedeno_adrian@outlook.com 
+	  https://www.paypal.com/paypalme/jairocedenoadrian
 
 	PayPhone:
 	  Jairon Hernán Cedeño Adrián
 	  (+593) 984958499
 	  	  
 	  Para beneficiarse de los costos por kits, el pago debe ser total equivalente a las cuentas adquiridas;
-	  por citar un ejemplo 2 x 140 = $280
+	  por citar un ejemplo 2 x 165 = $330
 	  y así con los demas kits y cantidades.
 	  Información a:
 		info@jca.ec / ventas@jca.ec / soporte@jca.ec / +593 984 958 499 [Jairo Cedeño Adrián]
