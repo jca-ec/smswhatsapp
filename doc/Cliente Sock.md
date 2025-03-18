@@ -4,14 +4,28 @@ Ejemplo de como crear un cliente Sock para SMSWhatsApp mediante una conexión de
 
 ## Funcionalidad del Servidor Sock
 
-- El servidor Sock está disponible en la dirección `smswhatsapp.net` en el puerto `5026`.
+- El servidor Sock está disponible en la dirección `mywhatsapp.jca.ec` en el puerto `5026`.
 - Los desarrolladores pueden conectarse mediante sus clientes de Socket en cualquier lenguaje de programación.
 - Al conectarse, deben enviar su respectivo token para autenticarse.
 - El servidor almacenará los últimos 50 eventos y los enviará tan pronto se conecten al servidor.
 
+## Activación del Wenhook local en SMSWhatsApp para usar el Sock
+- Se debe establecer mediante una petición POST con las credenciales correspondientes a la licencia deseada.
+- Para registrar un webhook, los clientes deben ejecutar el siguiente endpoint con un `body` que contenga la URL del webhook local:
+
+POST https://mywhatsapp.jca.ec:5433/auth/setWebhook?number={token}
+### Body del Request
+```json
+{
+  "webhookUrl": "http://mywhatsapp.jca.ec:5025/webhook"
+}
+```
+
 ### Datos recibidos
 
-Al conectarse al servidor socket, recibirás notificaciones en tiempo real sobre mensajes de WhatsApp. Los datos se envían en formato JSON y contienen información detallada sobre cada evento. A continuación se describen los diferentes tipos de datos que puedes recibir:
+Al conectarse al servidor socket, recibirás notificaciones en tiempo real sobre mensajes de WhatsApp.
+Los datos se envían en formato JSON y contienen información detallada sobre cada evento.
+A continuación se describen los diferentes tipos de datos que puedes recibir:
 
 #### Mensajes de Texto
 ```json
@@ -93,7 +107,7 @@ Al conectarse al servidor socket, recibirás notificaciones en tiempo real sobre
 const net = require('net');
 
 const client = net.createConnection({
-    host: 'smswhatsapp.net',
+    host: 'mywhatsapp.jca.ec',
     port: 5026
 }, () => {
     console.log('Connected to server');
@@ -122,7 +136,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string server = "smswhatsapp.net";
+        string server = "mywhatsapp.jca.ec";
         int port = 5026;
         string token = "TOKEN";
 
@@ -161,7 +175,7 @@ class Program
 ```python
 import socket
 
-server = 'smswhatsapp.net'
+server = 'mywhatsapp.jca.ec'
 port = 5026
 token = 'TOKEN'
 
