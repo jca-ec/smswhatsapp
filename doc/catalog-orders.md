@@ -6,7 +6,7 @@
 - **Descripción**: Token de autenticación de SmsWhatsApp
 - **Tipo**: `string`
 - **Obligatorio**: Sí
-- **Ejemplo**: `593985202404`
+- **Ejemplo**: `Phone03`
 
 ### **Parámetro `userId`**
 - **Descripción**: Número de teléfono del usuario/negocio
