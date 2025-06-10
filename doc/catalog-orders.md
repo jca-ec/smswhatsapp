@@ -1,5 +1,3 @@
-¡Tienes razón! Ahora que hemos optimizado el código para usar los métodos nativos del objeto `Product`, la documentación debe reflejar las respuestas actualizadas. Aquí está la documentación corregida:
-
 # 📚 **Documentación API - Catálogos y Órdenes de WhatsApp Business** (Actualizada)
 
 ## 🔐 **Autenticación y Parámetros Globales**
