@@ -1,4 +1,4 @@
-# 📚 **Documentación API - Catálogos y Órdenes de WhatsApp Business** (Actualizada)
+# 📚 **Catálogos y Órdenes de WhatsApp Business**
 
 ## 🔐 **Autenticación y Parámetros Globales**
 
