@@ -28,7 +28,7 @@ Obtiene el catálogo personal del usuario autenticado usando métodos nativos de
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/personal?number=593985202404" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/personal?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json"
 ```
 
@@ -85,7 +85,7 @@ Obtiene el catálogo de un negocio externo.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/external/593984958499?number=593985202404" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/external/593984958499?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json"
 ```
 
@@ -144,7 +144,7 @@ Obtiene productos de una colección específica.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/collection/593985202404/COL_001/products?number=593985202404" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/collection/593985202404/COL_001/products?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json"
 ```
 
@@ -194,7 +194,7 @@ Obtiene información detallada de un producto específico usando métodos nativo
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/product/593985202404/9935077999908299?number=593985202404" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/product/593985202404/9935077999908299?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json"
 ```
 
@@ -253,7 +253,7 @@ Envía el catálogo personal por WhatsApp a un contacto con formateo nativo.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/personal?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/personal?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "toChat": "593969626740@c.us",
@@ -307,7 +307,7 @@ Envía un catálogo externo por WhatsApp a un contacto.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/external?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/external?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "toChat": "593969626740@c.us",
@@ -344,7 +344,7 @@ Envía información de un producto específico por WhatsApp usando datos nativos
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/product?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/product?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "toChat": "593969626740@c.us",
@@ -394,7 +394,7 @@ Obtiene información de una orden específica.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/order/ORD_123456789?number=593985202404&token=abc123&chatId=593969626740@c.us" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/order/ORD_123456789?number=TokenSmsWhatsApp&token=abc123&chatId=593969626740@c.us" \
   -H "Content-Type: application/json"
 ```
 
@@ -443,7 +443,7 @@ Procesa y confirma una orden recibida.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/order/confirm?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/order/confirm?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "orderId": "ORD_123456789",
@@ -501,7 +501,7 @@ Obtiene el historial de órdenes procesadas.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/order/history?number=593985202404&limit=20&chatId=593969626740@c.us" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/order/history?number=TokenSmsWhatsApp&limit=20&chatId=593969626740@c.us" \
   -H "Content-Type: application/json"
 ```
 
@@ -561,7 +561,7 @@ Actualiza el estado de una orden.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X PUT "https://mywhatsapp.jca.ec:5433/order/ORD_123456789/status?number=593985202404" \
+curl -X PUT "https://mywhatsapp.jca.ec:5433/order/ORD_123456789/status?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "status": "ready",
@@ -603,7 +603,7 @@ Envía información detallada de una orden citada.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/order/quote/info?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/order/quote/info?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{
     "messageId": "false_593969626740@c.us_3EB0123456789ABCDEF",
@@ -626,7 +626,7 @@ Genera un reporte de órdenes por período.
 
 #### **Ejemplo cURL:**
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/order/report?number=593985202404&startDate=2023-11-01&endDate=2023-11-30" \
+curl -X GET "https://mywhatsapp.jca.ec:5433/order/report?number=TokenSmsWhatsApp&startDate=2023-11-01&endDate=2023-11-30" \
   -H "Content-Type: application/json"
 ```
 
@@ -699,10 +699,10 @@ curl -X GET "https://mywhatsapp.jca.ec:5433/order/report?number=593985202404&sta
 ### **Flujo: Obtener y Enviar Catálogo Personal con Precios Nativos**
 ```bash
 # 1. Obtener catálogo personal (precios formateados automáticamente)
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/personal?number=593985202404"
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/personal?number=TokenSmsWhatsApp"
 
 # 2. Enviar catálogo a un cliente (usa formateo nativo)
-curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/personal?number=593985202404" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/personal?number=TokenSmsWhatsApp" \
   -H "Content-Type: application/json" \
   -d '{"toChat": "593969626740@c.us", "maxProducts": 5}'
 ```
@@ -710,7 +710,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/catalog/send/personal?number=593985
 ### **Flujo: Obtener Producto Específico con Formateo Nativo**
 ```bash
 # Obtener producto específico (precio formateado automáticamente)
-curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/product/593985202404/9935077999908299?number=593985202404"
+curl -X GET "https://mywhatsapp.jca.ec:5433/catalog/product/593985202404/9935077999908299?number=TokenSmsWhatsApp"
 ```
 
 ---
