@@ -222,7 +222,7 @@ Cuando **`controlBan: true`**, el sistema ejecuta la siguiente secuencia:
 ### Envío con chat desbloqueado:
 
 ```bash
-curl -X POST "http://localhost:3000/sendmessage/5491112345678?number=token_sms_whatsapp" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/sendmessage/5491112345678?number=token_sms_whatsapp" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Hola mundo",
