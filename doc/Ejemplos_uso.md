@@ -8,12 +8,12 @@ Este documento contiene ejemplos prácticos de uso con cURL para todas las nueva
 
 ### Marcar chat como no leído
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/markunread/5491234567890@c.us?number=5491234567890"
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/markunread/5491234567890@c.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Limpiar mensajes de un chat
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/clearmessages/5491234567890@c.us?number=5491234567890"
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/clearmessages/5491234567890@c.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 ---
@@ -22,7 +22,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/clearmessages/5491234567890@c.
 
 ### Establecer foto de perfil (desde URL)
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "media": "https://example.com/profile-pic.jpg",
@@ -32,7 +32,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=54912
 
 ### Establecer foto de perfil (desde base64)
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "media": "/9j/4AAQSkZJRgABAQEAYABgAAD...",
@@ -42,12 +42,12 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setprofilepicture?number=54912
 
 ### Eliminar foto de perfil
 ```bash
-curl -X DELETE "https://mywhatsapp.jca.ec:5433/chat/deleteprofilepicture?number=5491234567890"
+curl -X DELETE "https://mywhatsapp.jca.ec:5433/chat/deleteprofilepicture?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Establecer nombre de visualización
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setdisplayname?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setdisplayname?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "displayName": "Bot de Soporte"
@@ -56,7 +56,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setdisplayname?number=54912345
 
 ### Establecer estado (bio)
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setstatus?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setstatus?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "status": "Disponible 24/7 para ayudarte"
@@ -65,7 +65,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/setstatus?number=5491234567890
 
 ### Obtener contactos bloqueados
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getblockedcontacts?number=5491234567890"
+curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getblockedcontacts?number=TOKEN_SMSWHATSAPP"
 ```
 
 ---
@@ -74,7 +74,7 @@ curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getblockedcontacts?number=54912
 
 ### Buscar mensajes
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/searchmessages?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/searchmessages?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "factura",
@@ -91,17 +91,17 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/searchmessages?number=54912345
 
 ### Obtener todas las etiquetas
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getlabels?number=5491234567890"
+curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getlabels?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Obtener etiquetas de un chat
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getchatlabels/5491234567890@c.us?number=5491234567890"
+curl -X GET "https://mywhatsapp.jca.ec:5433/chat/getchatlabels/5491234567890@c.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Agregar etiquetas a chats
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/chat/addoreditlabels?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/chat/addoreditlabels?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "labelIds": ["1", "2"],
@@ -115,7 +115,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/chat/addoreditlabels?number=5491234
 
 ### Aceptar invitación de grupo
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/acceptinvite?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/acceptinvite?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "inviteCode": "InV1T3C0d3ExAmpl3"
@@ -124,12 +124,12 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/group/acceptinvite?number=549123456
 
 ### Salir de un grupo
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/leave/1234567890-1234567890@g.us?number=5491234567890"
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/leave/1234567890-1234567890@g.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Cambiar nombre del grupo
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/setsubject/1234567890-1234567890@g.us?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/setsubject/1234567890-1234567890@g.us?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "subject": "Equipo de Ventas 2024"
@@ -138,7 +138,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/group/setsubject/1234567890-1234567
 
 ### Cambiar descripción del grupo
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/setdescription/1234567890-1234567890@g.us?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/setdescription/1234567890-1234567890@g.us?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "description": "Grupo oficial del equipo de ventas. Solo mensajes relacionados con trabajo."
@@ -147,7 +147,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/group/setdescription/1234567890-123
 
 ### Restringir edición a solo admins
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-1234567890@g.us?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-1234567890@g.us?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "adminsOnly": true
@@ -156,7 +156,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-
 
 ### Permitir edición a todos
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-1234567890@g.us?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-1234567890@g.us?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "adminsOnly": false
@@ -169,7 +169,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/group/setinfoadminsonly/1234567890-
 
 ### Crear un canal
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/channel/create?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/channel/create?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Noticias de la Empresa",
@@ -181,12 +181,12 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/channel/create?number=5491234567890
 
 ### Listar todos los canales
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/channel/list?number=5491234567890"
+curl -X GET "https://mywhatsapp.jca.ec:5433/channel/list?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Buscar canales
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/channel/search?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/channel/search?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "searchOptions": {
@@ -198,12 +198,12 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/channel/search?number=5491234567890
 
 ### Suscribirse a un canal
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/channel/subscribe/123456789@newsletter?number=5491234567890"
+curl -X POST "https://mywhatsapp.jca.ec:5433/channel/subscribe/123456789@newsletter?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Desuscribirse de un canal
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/channel/unsubscribe/123456789@newsletter?number=5491234567890" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/channel/unsubscribe/123456789@newsletter?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "options": {
@@ -214,12 +214,12 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/channel/unsubscribe/123456789@newsl
 
 ### Obtener canal por código de invitación
 ```bash
-curl -X GET "https://mywhatsapp.jca.ec:5433/channel/byinvitecode/InV1T3C0d3?number=5491234567890"
+curl -X GET "https://mywhatsapp.jca.ec:5433/channel/byinvitecode/InV1T3C0d3?number=TOKEN_SMSWHATSAPP"
 ```
 
 ### Eliminar un canal
 ```bash
-curl -X DELETE "https://mywhatsapp.jca.ec:5433/channel/delete/123456789@newsletter?number=5491234567890"
+curl -X DELETE "https://mywhatsapp.jca.ec:5433/channel/delete/123456789@newsletter?number=TOKEN_SMSWHATSAPP"
 ```
 
 ---
@@ -231,7 +231,7 @@ Si prefieres usar Postman, aquí tienes cómo configurar las peticiones:
 ### Ejemplo: Crear Canal
 
 1. **Method**: POST
-2. **URL**: `https://mywhatsapp.jca.ec:5433/channel/create?number=5491234567890`
+2. **URL**: `https://mywhatsapp.jca.ec:5433/channel/create?number=TOKEN_SMSWHATSAPP`
 3. **Headers**:
    ```
    Content-Type: application/json
@@ -249,7 +249,7 @@ Si prefieres usar Postman, aquí tienes cómo configurar las peticiones:
 ### Ejemplo: Buscar Mensajes
 
 1. **Method**: POST
-2. **URL**: `https://mywhatsapp.jca.ec:5433/chat/searchmessages?number=5491234567890`
+2. **URL**: `https://mywhatsapp.jca.ec:5433/chat/searchmessages?number=TOKEN_SMSWHATSAPP`
 3. **Headers**:
    ```
    Content-Type: application/json
