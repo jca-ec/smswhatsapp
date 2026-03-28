@@ -107,12 +107,12 @@ ACK 3: 👁️ Leído por el destinatario
 **Propósito:** Obtener el número de mensajes sin recibir para un chat específico.
 
 #### Parámetros:
-- **`number`** (query, requerido): Número del cliente WhatsApp
+- **`number`** (query, requerido): **Token de SmsWhatsApp** del cliente.
 - **`chatid`** (path, requerido): ID del chat (ej: `5491112345678@c.us`)
 
 #### Ejemplo de Uso:
 ```bash
-curl "https://mywhatsapp.jca.ec:5433/undelivered-count/5491112345678@c.us?number=5491198765432"
+curl "https://mywhatsapp.jca.ec:5433/undelivered-count/5491112345678@c.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 #### Respuesta:
@@ -137,11 +137,11 @@ curl "https://mywhatsapp.jca.ec:5433/undelivered-count/5491112345678@c.us?number
 **Propósito:** Obtener solo los chats que tienen mensajes sin recibir (> 0).
 
 #### Parámetros:
-- **`number`** (query, requerido): Número del cliente WhatsApp
+- **`number`** (query, requerido): **Token de SmsWhatsApp** del cliente.
 
 #### Ejemplo de Uso:
 ```bash
-curl "https://mywhatsapp.jca.ec:5433/undelivered-count-all?number=5491198765432"
+curl "https://mywhatsapp.jca.ec:5433/undelivered-count-all?number=TOKEN_SMSWHATSAPP"
 ```
 
 #### Respuesta:
@@ -175,12 +175,12 @@ curl "https://mywhatsapp.jca.ec:5433/undelivered-count-all?number=5491198765432"
 **Propósito:** Reiniciar (poner en 0) el contador de un chat específico.
 
 #### Parámetros:
-- **`number`** (query, requerido): Número del cliente WhatsApp  
+- **`number`** (query, requerido): **Token de SmsWhatsApp** del cliente.
 - **`chatid`** (path, requerido): ID del chat a reiniciar
 
 #### Ejemplo de Uso:
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/reset-undelivered-count/5491112345678@c.us?number=5491198765432"
+curl -X POST "https://mywhatsapp.jca.ec:5433/reset-undelivered-count/5491112345678@c.us?number=TOKEN_SMSWHATSAPP"
 ```
 
 #### Respuesta:
@@ -330,7 +330,7 @@ const undeliveredMessages = messages.filter(msg => msg.fromMe && msg.ack <= 1);
 ### Ejemplo 1: Envío Simple con Anti-Baneo
 
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/sendmessage/5491112345678?number=5491198765432" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/sendmessage/5491112345678?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "¡Hola! ¿Cómo estás?",
@@ -341,7 +341,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/sendmessage/5491112345678?number=54
 ### Ejemplo 2: Envío de Media con Verificación
 
 ```bash
-curl -X POST "https://mywhatsapp.jca.ec:5433/sendmedia/5491112345678?number=5491198765432" \
+curl -X POST "https://mywhatsapp.jca.ec:5433/sendmedia/5491112345678?number=TOKEN_SMSWHATSAPP" \
   -H "Content-Type: application/json" \
   -d '{
     "media": "data:image/jpeg;base64,/9j/4AAQ...",
@@ -355,7 +355,7 @@ curl -X POST "https://mywhatsapp.jca.ec:5433/sendmedia/5491112345678?number=5491
 
 ```javascript
 // 1. Verificar estado general
-const response = await fetch('/undelivered-count-all?number=5491198765432');
+const response = await fetch('/undelivered-count-all?number=TOKEN_SMSWHATSAPP');
 const data = await response.json();
 
 console.log(`Chats con problemas: ${data.message.chatsWithUndeliveredMessages}`);
@@ -461,7 +461,7 @@ async function respondToCustomer(customerPhone, response) {
 
 ```javascript
 async function getDashboardStats() {
-    const allCounts = await fetch('/undelivered-count-all?number=5491198765432');
+    const allCounts = await fetch('/undelivered-count-all?number=TOKEN_SMSWHATSAPP');
     const data = await allCounts.json();
     
     return {
