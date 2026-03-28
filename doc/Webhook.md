@@ -1,198 +1,183 @@
-# SMSWhatsApp Webhook Documentation
+# 🔗 SMSWhatsApp Webhook Documentation
 
-SMSWhatsApp es un servicio que permite a los programadores enviar mensajes mediante WhatsApp.
-Esta documentación explica cómo tus aplicaciones pueden recibir notificaciones en tiempo real utilizando webhooks.
+SMSWhatsApp permite que tus aplicaciones reciban notificaciones en tiempo real (Push) cada vez que ocurre un evento en tu cuenta de WhatsApp (mensajes recibidos, entrega de mensajes, llamadas entrantes, etc.).
 
-## Registro de Webhooks
+---
 
-Para registrar un webhook, los clientes deben ejecutar el siguiente endpoint con un `body` que contenga la URL del webhook:
+## 🛠️ Registro de Webhooks
 
-POST https://mywhatsapp.jca.ec:5433/auth/setWebhook?number={token}
+Para comenzar a recibir notificaciones, debes configurar la URL de tu servidor mediante el endpoint `setWebhook`.
 
-### Body del Request
+**POST** `https://mywhatsapp.jca.ec:5433/auth/setWebhook?number=TOKEN_SMSWHATSAPP`
 
+### Body (JSON)
 ```json
 {
-  "webhookUrl": "url"
+  "webhookUrl": "https://tu-servidor.com/webhook"
 }
 ```
 
-## Definir el Webhook con curl
+### Ejemplo con cURL
 ```bash
-curl -X POST https://mywhatsapp.jca.ec:5433/auth/setWebhook?number=your_token_here \
+curl -X POST "https://mywhatsapp.jca.ec:5433/auth/setWebhook?number=TOKEN_SMSWHATSAPP" \
      -H "Content-Type: application/json" \
-     -d '{
-           "webhookUrl": "https://your-webhook-url.com/webhook"
-         }'
+     -d '{"webhookUrl": "https://tu-api.com/v1/whatsapp-webhook"}'
 ```
-## Implementación de un Webhook en Node.js
-Aquí hay un ejemplo de cómo puedes implementar un webhook en un servidor Node.js para recibir notificaciones de mensajes en tiempo real.
 
-Código de Ejemplo
+---
+
+## 📋 Lista de Eventos y Payloads
+
+Todas las peticiones enviadas a tu webhook son de tipo **POST** con formato **JSON**.
+
+### 1. Mensajes Recibidos (`content: "message"`)
+Se dispara cuando recibes un mensaje nuevo o envías uno desde el dispositivo.
+
+```json
+{
+  "number": "TOKEN_SMSWHATSAPP",
+  "content": "message",
+  "messageId": "false_593999999999@c.us_705C8AA536FF8F65CD",
+  "from": "593912345678@c.us",
+  "to": "593984958499@c.us",
+  "fromMe": false,
+  "body": "Hola, ¿cómo estás?",
+  "type": "chat",
+  "timestamp": 1719598097,
+  "quotedMessage": null,
+  "hasMedia": false,
+  "hasQuoteMsg": false
+}
+```
+
+### 2. Multimedia (`content: "media"`)
+Se envía inmediatamente después de un evento `message` si el mensaje contiene archivos (imagen, audio, video, etc.).
+
+```json
+{
+  "number": "TOKEN_SMSWHATSAPP",
+  "content": "media",
+  "mediaKey": "XZ7ICZsETL7H/PARAq/+4ETotAbW4wEXeAT7+cDZ4M4=",
+  "mediaData": "BASE64_STRING_DEL_ARCHIVO_COMPLETO",
+  "mimeType": "image/jpeg",
+  "fileName": "foto.jpg"
+}
+```
+
+### 3. Estados de Entrega (`content: "ack"`)
+Informa si el mensaje fue enviado (1), recibido en el dispositivo (2) o leído/reproducido (3).
+
+```json
+{
+  "number": "TOKEN_SMSWHATSAPP",
+  "content": "ack",
+  "messageId": "true_593999999999@c.us_598740991526F70A89D883A5EB29B5EB",
+  "ack": 2
+}
+```
+
+### 4. Llamadas Entrantes (`content: "call"`)
+Recibe una notificación cuando alguien intenta llamar o hacer una videollamada.
+
+```json
+{
+  "number": "TOKEN_SMSWHATSAPP",
+  "content": "call",
+  "id": "123456789",
+  "from": "593912345678@c.us",
+  "fromMe": false,
+  "isGroup": false,
+  "isVideo": false,
+  "participants": [],
+  "timestamp": 1719598100
+}
+```
+
+### 5. Desconexión (`content: "disconnected"`)
+Notifica si la sesión de WhatsApp se cierra manualmente o por errores críticos.
+
+```json
+{
+  "number": "TOKEN_SMSWHATSAPP",
+  "content": "disconnected",
+  "reason": "LOGOUT",
+  "other": "..."
+}
+```
+
+---
+
+## 💻 Ejemplos de Implementación
+
+### Node.js (Express)
 ```javascript
 const express = require('express');
-const bodyParser = require('body-parser');
-
 const app = express();
-const PORT_WEB = process.env.PORT || 3000; // Puerto para el servidor web
 
-// Aumentar el límite de tamaño del cuerpo de la solicitud
-app.use(bodyParser.json({ limit: '100mb' }));
-app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(express.json({ limit: '100mb' }));
 
-// Endpoint para el webhook
-app.post('/webhook', async (req, res) => {
-    let { content, ...data } = req.body;
+app.post('/webhook', (req, res) => {
+    const { number, content, ...data } = req.body;
+    console.log(`Evento [${content}] recibido para token: ${number}`);
 
     switch (content) {
         case 'message':
-            // Procesar mensaje
-            console.log('Mensaje recibido:', data);
-            break;
-        case 'ack':
-            // Procesar ACK
-            console.log('ACK recibido:', data);
+            console.log('Mensaje:', data.body);
             break;
         case 'media':
-            // Procesar media
-            console.log('Media recibida:', data);
+            console.log('Archivo recibido:', data.fileName);
+            // El buffer del archivo está en data.mediaData (base64)
             break;
-        default:
-            console.log('Tipo de contenido desconocido:', content);
+        case 'call':
+            console.log('Llamada de:', data.from);
+            break;
+        case 'disconnected':
+            console.warn('Sesión desconectada:', data.reason);
+            break;
     }
 
-    // Responder con éxito
-    res.status(200).send('Datos recibidos con éxito');
+    res.status(200).send('OK');
 });
 
-// Iniciar el servidor web
-app.listen(PORT_WEB, () => {
-    console.log(`Servidor web escuchando en el puerto ${PORT_WEB}`);
-});
+app.listen(3000, () => console.log('Servidor webhook en puerto 3000'));
 ```
-## Implementación de un Webhook en Python
+
+### Python (Flask)
 ```python
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-PORT_WEB = 5025  # Puerto para el servidor web
 
-# Endpoint para el webhook
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    data = request.get_json()
-    content = data.pop('content', None)
+    payload = request.get_json()
+    token = payload.get('number')
+    event_type = payload.get('content')
+    
+    print(f"Evento {event_type} recibido para {token}")
 
-    if content == 'message':
-        # Procesar mensaje
-        print('Mensaje recibido:', data)
-    elif content == 'ack':
-        # Procesar ACK
-        print('ACK recibido:', data)
-    elif content == 'media':
-        # Procesar media
-        try:
-            data = save_media_data(data)
-        except Exception as error:
-            print("Error al guardar media", error)
-        print('Media recibida:', data)
-    else:
-        print('Tipo de contenido desconocido:', content)
+    if event_type == 'message':
+        print(f"Mensaje de {payload.get('from')}: {payload.get('body')}")
+    elif event_type == 'media':
+        mime = payload.get('mimeType')
+        print(f"Archivo recibido tipo: {mime}")
+    elif event_type == 'call':
+        print(f"Llamada entrante de: {payload.get('from')}")
+    elif event_type == 'disconnected':
+        print(f"ALERTA: Sesion {token} desconectada")
 
-    try:
-        save_buffer({
-            'content': content,
-            **data
-        })
-    except Exception as error:
-        print("Error al guardar datos en archivo", error)
+    return jsonify({"status": "received"}), 200
 
-    # Responder con éxito
-    return jsonify({'message': 'Datos recibidos con éxito'}), 200
-
-def save_media_data(data):
-    # Implementar lógica para guardar datos multimedia
-    pass
-
-def save_buffer(data):
-    # Implementar lógica para guardar datos en archivo
-    pass
-
-# Iniciar el servidor web
 if __name__ == '__main__':
-    app.run(port=PORT_WEB)
-```
-### Datos Recibidos
-A continuación se describen los diferentes tipos de datos que puedes recibir a través del webhook.
-
-#### Mensajes de Texto
-```json
-{
-    "number": "TOKEN",
-    "content": "message",
-    "messageId": "false_593123456789@c.us_705C8AA536FF8F65CD",
-    "from": "593123456789@c.us",
-    "to": "593123456789@c.us",
-    "fromMe": false,
-    "body": "Mensaje de texto",
-    "type": "chat",
-    "timestamp": 1719598097,
-    "quotedMessage": null,
-    "hasMedia": false,
-    "hasQuoteMsg": false
-}
+    app.run(port=5000)
 ```
 
-#### Descripción de los Campos:
+---
 
-* number: Token del usuario.
-* content: Tipo de contenido, en este caso "message".
-* messageId: Identificador único del mensaje.
-* from: Número de teléfono del remitente.
-* to: Número de teléfono del destinatario.
-* fromMe: Indica si el mensaje fue enviado por el usuario (true) o recibido (false).
-* body: Cuerpo del mensaje de texto.
-* type: Tipo de mensaje, en este caso "chat", si es un mensaje de voz será "ptt".
-* timestamp: Marca de tiempo del mensaje.
-* quotedMessage: Mensaje citado, si aplica.
-* hasMedia: Indica si el mensaje tiene contenido multimedia (true o false).
-* hasQuoteMsg: Indica si el mensaje tiene una cita (true o false).
-* Mensajes de Multimedia
+## 🛡️ Detalles Técnicos y Retries
 
-```json
-{
-    "number": "TOKEN",
-    "content": "media",
-    "mediaKey": "XZ7ICZsETL7H/PARAq/+4ETotAbW4wEXeAT7+cDZ4M4=",
-    "mediaData": "https://mywhatsapp.jca.ec/assets/buffer/archivo.ogg",
-    "mimeType": "audio/ogg; codecs=opus",
-    "fileName": "audio.ogg"
-}
-```
-#### Descripción de los Campos:
+1.  **Buffer de Seguridad**: Si tu servidor de webhook está caído, SMSWhatsApp guarda las notificaciones en un buffer local e intenta reenviarlas automáticamente cuando tu servidor vuelva a estar online.
+2.  **Tiempo de Respuesta**: Tu webhook debe responder con un `HTTP 200 OK` en menos de 5 segundos.
+3.  **Lid Resolution**: Los números de teléfono siempre se envían en formato internacional (`5939...`) incluso si WhatsApp usa IDs internos (@lid).
+4.  **Base64**: Las imágenes y audios se envían en el campo `mediaData` como cadenas Base64 completas.
 
-* number: Token del usuario.
-* content: Tipo de contenido, en este caso "media".
-* mediaKey: Clave del medio, utilizada para identificar el contenido multimedia.
-* mediaData: URL del archivo.
-* mimeType: Tipo MIME del contenido multimedia, en este caso "audio/ogg; codecs=opus".
-* fileName: Nombre del archivo.
-
-#### Mensaje Recibido/Leído
-```json
-{
-    "number": "TOKEN",
-    "content": "ack",
-    "messageId": "false_593123456789@c.us_598740991526F70A89D883A5EB29B5EB",
-    "ack": 2
-}
-```
-#### Descripción de los Campos:
-
-* number: Token del usuario.
-* content: Tipo de contenido, en este caso "ack".
-* messageId: Identificador único del mensaje.
-ack:
-1: Mensaje enviado.
-2: Mensaje leído.
-3: Multimedia reproducido (en caso de ser un vídeo o audio).
