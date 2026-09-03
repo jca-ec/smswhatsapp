@@ -427,26 +427,8 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 		Los costos presentados son en DOLARES AMERICANOS:
 		La renovación del servicio es MENSUAL o ANUAL, según el plan adquirido.
 	 
-	  Costos Anual: SOLO para programadores (DISTRIBUIDORES):  
-	  Individual           $170                 		
-	  Kit de  2 licencias: $165 cada una 				
-	  Kit de  4 licencias: $160 cada una 				
-	  Kit de  6 Licencias: $155 cada una				
-	  Kit de  8 Licencias: $150 cada una				
-	  Kit de 10 Licencias: $145 cada una				
-	  Kit de 12 Licencias: $140 cada una				
-	  Kit de 15 Licencias: $135 cada una
-	  Kit de ++ Licencias: $130 cada una              
-
-	  Costos Mensual: SOLO para programadores (DISTRIBUIDORES):  
-	  Individual           $18.50                 		
-	  Kit de  2 licencias: $18 cada una 				
-	  Kit de  4 licencias: $17 cada una 				
-	  Kit de  6 Licencias: $16 cada una				
-	  Kit de  8 Licencias: $15 cada una				
-	  Kit de 10 Licencias: $14 cada una				
-	  Kit de 12 Licencias: $13 cada una				
-	  Kit de ++ Licencias: $12 cada una 
+	  Costos Anual 170 dólares : SOLO para programadores (DISTRIBUIDORES):  
+	  Costos Mensual 18.50 dólares: SOLO para programadores (DISTRIBUIDORES):  
 
 	[ CANALES de PAGOS ]
 	Transferencia Bancaria dentro de ECUADOR: 
@@ -457,10 +439,10 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	Apellidos:   CEDEÑO ADRIAN
 	C.I.         1309184750
 	Correo:      ventas@jca.ec
-	  
+	 
 	  En Ecuador, contamos con el pago y cobro mediante el servicio DEUNA
 	  
-	WESTER UNION:
+	✅WESTER UNION:
 	  Nombres:   JAIRON HERNAN
 	  Apellidos: CEDEÑO ADRIAN 
 	  C.I.:      1309184750
@@ -468,7 +450,7 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	  Ciudad:    Manta
 	  Dirección: Cdla. La Pradera calle HG4
 	  
-	ARGENTINA: Cuenta en Dólares
+	🇦🇷 ARGENTINA: Cuenta en Dólares
 	  Banco:    Galicia
 	  DU:   	95929337
 	  CTA:  	4014963-2 080-6
@@ -476,7 +458,7 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	  CUIL: 	27959293371
 	  ALIAS: 	TOPO.POEMA.BANDO
 	  
-	ARGENTINA: Cuenta en Pesos
+	🇦🇷 ARGENTINA: Cuenta en Pesos
 	  Banco:    Galicia
 	  DU:   	95929337
 	  CTA:  	4061696-6 080-1
@@ -490,17 +472,8 @@ Modo de Uso en Visual Foxpro v9 y otras versiones inferiores.
 	🔑 Alias: Melanie1506  
 	📜 CUIT/CUIL: 27-95929337-1  	  
 
-	PayPal: 
-	  Cuenta: jairo_cedeno_adrian@outlook.com 
-	  https://www.paypal.com/paypalme/jairocedenoadrian
-
-	PayPhone:
-	  Jairon Hernán Cedeño Adrián
-	  (+593) 984958499
-	  	  
-	  Para beneficiarse de los costos por kits, el pago debe ser total equivalente a las cuentas adquiridas;
-	  por citar un ejemplo 2 x 165 = $330
-	  y así con los demas kits y cantidades.
-	  Información a:
+	💲PayPal y PayPhone 💳: 
+	  Cuenta: solicitar link de pago 
+	
+	🌐Información a:
 		info@jca.ec / ventas@jca.ec / soporte@jca.ec / +593 984 958 499 [Jairo Cedeño Adrián]
-	  
