@@ -1,1 +1,2146 @@
-La ayunda inicial
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMSWhatsApp: guía del desarrollador</title>
+<meta name="description" content="Guía técnica de la DLL COM smswhatsapp.ApiWhatsApp: requisitos, instalación, licencia y activación, y la referencia de cada método y propiedad con ejemplos.">
+<style>
+:root {
+	--bg: #f4f6f4;
+	--surface: #ffffff;
+	--surface-2: #eef2ef;
+	--ink: #14201b;
+	--muted: #56685f;
+	--line: #dbe3de;
+	--brand: #0d7556;
+	--brand-ink: #ffffff;
+	--brand-soft: #dff2ea;
+	--accent: #2459a6;
+	--accent-soft: #e3ecfa;
+	--warn: #9a6400;
+	--warn-soft: #fbf0d9;
+	--danger: #b42828;
+	--danger-soft: #fbe3e3;
+	--ok: #18794e;
+	--code-bg: #0f1a16;
+	--code-ink: #e3ece7;
+	--code-line: #24342d;
+	--shadow: 0 1px 2px rgba(16, 32, 26, .06), 0 4px 16px rgba(16, 32, 26, .05);
+	--radius: 12px;
+	--side: 290px;
+	--mono: "Cascadia Code", "Cascadia Mono", Consolas, "Courier New", monospace;
+	--sans: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #0c1210;
+		--surface: #131b18;
+		--surface-2: #18231f;
+		--ink: #e5ede8;
+		--muted: #97aba1;
+		--line: #253530;
+		--brand: #2fbf8a;
+		--brand-ink: #062118;
+		--brand-soft: #143128;
+		--accent: #7aa7ee;
+		--accent-soft: #1a2740;
+		--warn: #e6b450;
+		--warn-soft: #2e2511;
+		--danger: #f07a7a;
+		--danger-soft: #361b1b;
+		--ok: #4fd39a;
+		--code-bg: #0a110e;
+		--code-line: #1f2d27;
+		--shadow: 0 1px 2px rgba(0, 0, 0, .4);
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #0c1210;
+	--surface: #131b18;
+	--surface-2: #18231f;
+	--ink: #e5ede8;
+	--muted: #97aba1;
+	--line: #253530;
+	--brand: #2fbf8a;
+	--brand-ink: #062118;
+	--brand-soft: #143128;
+	--accent: #7aa7ee;
+	--accent-soft: #1a2740;
+	--warn: #e6b450;
+	--warn-soft: #2e2511;
+	--danger: #f07a7a;
+	--danger-soft: #361b1b;
+	--ok: #4fd39a;
+	--code-bg: #0a110e;
+	--code-line: #1f2d27;
+	--shadow: 0 1px 2px rgba(0, 0, 0, .4);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font: 15.5px/1.65 var(--sans);
+	-webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, kbd { font-family: var(--mono); font-size: .9em; }
+:not(pre) > code {
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	padding: .05em .4em;
+	overflow-wrap: anywhere;
+}
+h1, h2, h3, h4 { line-height: 1.25; margin: 0; }
+h2 { font-size: 1.65rem; letter-spacing: -.01em; }
+h3 { font-size: 1.15rem; margin-top: 1.8rem; }
+h4 { font-size: 1rem; margin-top: 1.2rem; }
+p { margin: .6rem 0; }
+ul, ol { padding-left: 1.3rem; }
+li { margin: .25rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+th, td { text-align: left; vertical-align: top; padding: .55rem .7rem; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; background: var(--surface-2); }
+.tabla { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); margin: 1rem 0; }
+.tabla table { min-width: 560px; }
+.tabla tr:last-child td { border-bottom: 0; }
+
+/* ---------- Barra superior ---------- */
+.top {
+	position: sticky; top: 0; z-index: 30;
+	display: flex; align-items: center; gap: 12px;
+	height: 60px; padding: 0 16px;
+	background: color-mix(in srgb, var(--surface) 88%, transparent);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid var(--line);
+}
+.marca { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.marca:hover { text-decoration: none; }
+.marca svg { width: 30px; height: 30px; flex: none; }
+.marca small { display: block; font-weight: 500; color: var(--muted); font-size: .75rem; line-height: 1.1; }
+.top .sep { flex: 1; }
+.btn {
+	display: inline-flex; align-items: center; gap: 6px;
+	border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+	border-radius: 9px; padding: 6px 11px; font: inherit; font-size: .88rem; cursor: pointer;
+}
+.btn:hover { border-color: var(--brand); }
+.btn svg { width: 16px; height: 16px; }
+.solo-movil { display: none; }
+
+/* ---------- Estructura ---------- */
+.contenedor { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); }
+.lateral {
+	position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto;
+	border-right: 1px solid var(--line); background: var(--surface); padding: 14px 12px 40px;
+}
+.buscar { position: relative; margin-bottom: 12px; }
+.buscar input {
+	width: 100%; padding: 9px 12px 9px 34px; border-radius: 10px;
+	border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: .92rem;
+}
+.buscar input:focus { outline: 2px solid var(--brand); outline-offset: 0; border-color: transparent; }
+.buscar svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
+.nav-grupo { margin: 14px 0 4px; padding: 0 8px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.lateral a.nav {
+	display: block; padding: 5px 10px; border-radius: 8px; color: var(--ink); font-size: .92rem;
+	white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.lateral a.nav:hover { background: var(--surface-2); text-decoration: none; }
+.lateral a.nav.activo { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+.lateral a.nav.metodo { font-family: var(--mono); font-size: .84rem; padding-left: 18px; }
+.lateral .sin-resultados { padding: 8px 10px; color: var(--muted); font-size: .9rem; display: none; }
+main { padding: 0 40px 80px; min-width: 0; }
+.seccion { max-width: 940px; margin: 0 auto; padding-top: 54px; }
+.seccion > h2 { display: flex; align-items: center; gap: 12px; margin-bottom: .4rem; }
+.seccion > h2 .num {
+	display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+	background: var(--brand); color: var(--brand-ink); font-size: 1rem; flex: none;
+}
+.bajada { color: var(--muted); font-size: 1.02rem; margin-top: .2rem; }
+
+/* ---------- Portada ---------- */
+.portada { max-width: 940px; margin: 0 auto; padding-top: 44px; }
+.portada .etiqueta { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); background: var(--brand-soft); padding: 4px 10px; border-radius: 99px; }
+.portada h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); letter-spacing: -.02em; margin: 14px 0 10px; }
+.portada .lead { font-size: 1.12rem; color: var(--muted); max-width: 760px; }
+.datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 26px 0 8px; }
+.dato { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+.dato.doble { grid-column: span 2; }
+.dato b { display: block; font-size: 1.35rem; letter-spacing: -.01em; }
+.dato b code { background: none; border: 0; padding: 0; font-size: 1.05rem; color: var(--brand); }
+.dato span { color: var(--muted); font-size: .86rem; }
+.dato span code { font-size: .8rem; }
+.mapa { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 22px; }
+.mapa a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; color: var(--ink); transition: border-color .15s, transform .15s; }
+.mapa a:hover { border-color: var(--brand); transform: translateY(-1px); text-decoration: none; }
+.mapa a b { display: block; margin-bottom: 2px; }
+.mapa a span { color: var(--muted); font-size: .88rem; }
+
+/* ---------- Avisos ---------- */
+.aviso { display: flex; gap: 12px; border-radius: var(--radius); padding: 12px 16px; margin: 1rem 0; border: 1px solid; }
+.aviso svg { width: 20px; height: 20px; flex: none; margin-top: 3px; }
+.aviso p:first-child { margin-top: 0; }
+.aviso p:last-child { margin-bottom: 0; }
+.aviso.info { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.aviso.info svg { color: var(--accent); }
+.aviso.ok { background: var(--brand-soft); border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+.aviso.ok svg { color: var(--brand); }
+.aviso.cuidado { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.aviso.cuidado svg { color: var(--warn); }
+.aviso.peligro { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 35%, transparent); }
+.aviso.peligro svg { color: var(--danger); }
+
+/* ---------- Código ---------- */
+.codigo { position: relative; margin: 1rem 0; border-radius: var(--radius); background: var(--code-bg); border: 1px solid var(--code-line); overflow: hidden; }
+.codigo .cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 8px 6px 14px; border-bottom: 1px solid var(--code-line); color: #8fa59a; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; }
+.codigo pre { margin: 0; padding: 14px 16px; overflow-x: auto; color: var(--code-ink); font: 13.5px/1.6 var(--mono); tab-size: 4; }
+.codigo.salida { background: #111816; }
+.codigo.salida .cab { color: #7fd1ad; }
+.codigo.salida pre { color: #cfe9dc; }
+.copiar { background: transparent; border: 1px solid #2c3e36; color: #b9cbc2; border-radius: 7px; padding: 3px 9px; font: inherit; font-size: .74rem; cursor: pointer; text-transform: none; letter-spacing: 0; flex: none; }
+.copiar:hover { border-color: #49c493; color: #fff; }
+.tk-com { color: #7c9389; font-style: italic; }
+.tk-str { color: #f0c27b; }
+.tk-kw { color: #7fb8ff; }
+.tk-lit { color: #ff9e9e; }
+.tk-num { color: #c4a2ff; }
+.tk-prop { color: #7be0b3; }
+
+/* ---------- Pestañas ---------- */
+.pestanas { margin: 1rem 0; }
+.pestanas [role="tablist"] { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.pestanas [role="tab"] { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 14px; font: inherit; font-size: .92rem; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+.pestanas [role="tab"][aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
+.pestanas [role="tabpanel"] { padding-top: .4rem; }
+.pestanas [role="tabpanel"][hidden] { display: none; }
+
+/* ---------- Infografías ---------- */
+.figura { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin: 1.2rem 0; box-shadow: var(--shadow); }
+.figura figcaption { color: var(--muted); font-size: .86rem; margin-top: 10px; }
+.figura svg { width: 100%; height: auto; display: block; }
+.svg-caja { fill: var(--surface-2); stroke: var(--line); }
+.svg-caja-brand { fill: var(--brand-soft); stroke: var(--brand); }
+.svg-caja-acc { fill: var(--accent-soft); stroke: var(--accent); }
+.svg-texto { fill: var(--ink); font: 600 14px var(--sans); }
+.svg-sub { fill: var(--muted); font: 12px var(--sans); }
+.svg-mono { fill: var(--muted); font: 11.5px var(--mono); }
+.svg-flecha { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.svg-punta { fill: var(--muted); }
+
+.pasos { counter-reset: paso; display: grid; gap: 14px; margin: 1.2rem 0; }
+.paso { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+.paso::before { counter-increment: paso; content: counter(paso); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--brand); color: var(--brand-ink); font-weight: 700; font-size: 1.1rem; }
+.paso h4 { margin: 2px 0 4px; font-size: 1.05rem; }
+.paso .codigo { margin: .6rem 0 .2rem; }
+
+.arbol { font: 13.5px/1.75 var(--mono); background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; white-space: pre; margin-top: .6rem; }
+.arbol .carp { color: var(--accent); font-weight: 600; }
+.arbol .req { color: var(--brand); font-weight: 600; }
+.arbol .opc { color: var(--muted); }
+.arbol .gen { color: var(--warn); }
+
+.anatomia { background: var(--code-bg); border-radius: var(--radius); padding: 22px 18px 16px; font: 14px/1.6 var(--mono); color: var(--code-ink); overflow-x: auto; }
+.anatomia .linea { white-space: nowrap; }
+.anatomia .p1 { color: #7be0b3; border-bottom: 2px solid #7be0b3; }
+.anatomia .p2 { color: #f0c27b; border-bottom: 2px solid #f0c27b; }
+.anatomia .p3 { color: #9fb6ff; border-bottom: 2px solid #9fb6ff; }
+.leyenda { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 14px; font-family: var(--sans); font-size: .86rem; }
+.leyenda div { display: flex; gap: 8px; align-items: baseline; color: #c9d6cf; }
+.leyenda i { width: 10px; height: 10px; border-radius: 3px; flex: none; display: inline-block; transform: translateY(1px); }
+
+.rangos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 1rem 0; }
+.rango { border-radius: 10px; padding: 12px; border: 1px solid var(--line); background: var(--surface); }
+.rango b { display: block; font-family: var(--mono); font-size: .95rem; }
+.rango span { font-size: .84rem; color: var(--muted); }
+.rango.r0 { border-top: 4px solid var(--ok); }
+.rango.r1 { border-top: 4px solid var(--accent); }
+.rango.r2 { border-top: 4px solid var(--warn); }
+.rango.r3 { border-top: 4px solid #8a63d2; }
+.rango.r4 { border-top: 4px solid var(--danger); }
+
+.ack { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin: 1rem 0; }
+.ack div { text-align: center; padding: 12px 6px; border: 1px solid var(--line); background: var(--surface); font-size: .85rem; }
+.ack div:first-child { border-radius: 10px 0 0 10px; }
+.ack div:last-child { border-radius: 0 10px 10px 0; }
+.ack b { display: block; font-family: var(--mono); font-size: 1.2rem; }
+.ack .neg { background: var(--danger-soft); }
+.ack .pen { background: var(--warn-soft); }
+.ack .bien { background: var(--brand-soft); }
+
+.flujo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.4rem 0; }
+.via { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); position: relative; }
+.via.recomendada { border: 2px solid var(--brand); }
+.via .insignia { position: absolute; top: -11px; left: 14px; background: var(--brand); color: var(--brand-ink); font-size: .72rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; letter-spacing: .03em; }
+.via h4 { margin: 4px 0 10px; }
+.via ol { list-style: none; padding: 0; margin: 0; }
+.via ol li { position: relative; padding: 8px 10px 8px 38px; margin: 0 0 8px; background: var(--surface-2); border-radius: 9px; font-size: .92rem; }
+.via ol li::before { content: attr(data-n); position: absolute; left: 9px; top: 8px; width: 20px; height: 20px; border-radius: 6px; background: var(--brand); color: var(--brand-ink); font-size: .75rem; font-weight: 700; display: grid; place-items: center; }
+
+.relacion { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 1rem 0; }
+.ent { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: .85rem; }
+.ent b { display: block; background: var(--brand); color: var(--brand-ink); padding: 6px 10px; font-family: var(--mono); }
+.ent div { padding: 3px 10px; font-family: var(--mono); border-top: 1px solid var(--line); }
+.ent .clave { background: var(--brand-soft); font-weight: 600; }
+.relacion .une { text-align: center; color: var(--muted); font-size: .8rem; }
+.relacion .une svg { width: 60px; height: 20px; display: block; margin: 0 auto 2px; }
+
+/* ---------- Métodos ---------- */
+.herramientas { display: flex; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 99px; padding: 5px 12px; font: inherit; font-size: .85rem; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.grupo-titulo { margin: 2.2rem 0 .3rem; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+.grupo-titulo .cuenta { font-size: .78rem; font-weight: 600; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); padding: 1px 8px; border-radius: 99px; }
+.grupo-desc { color: var(--muted); margin: 0 0 .6rem; }
+details.metodo { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin: 10px 0; box-shadow: var(--shadow); scroll-margin-top: 76px; }
+details.metodo[open] { border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); }
+details.metodo > summary { list-style: none; cursor: pointer; padding: 14px 18px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; }
+details.metodo > summary::-webkit-details-marker { display: none; }
+details.metodo > summary .nombre { font-family: var(--mono); font-weight: 700; font-size: 1rem; color: var(--ink); overflow-wrap: anywhere; }
+details.metodo > summary .nombre .par { font-weight: 400; color: var(--muted); }
+details.metodo > summary .resumen { grid-column: 1 / 2; color: var(--muted); font-size: .92rem; }
+details.metodo > summary .marcas { grid-row: 1 / 3; grid-column: 2; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+details.metodo > summary .giro { width: 18px; height: 18px; color: var(--muted); transition: transform .2s; }
+details.metodo[open] > summary .giro { transform: rotate(90deg); }
+.marca-m { font-size: .7rem; font-weight: 700; letter-spacing: .03em; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.marca-m.lic { background: var(--accent-soft); color: var(--accent); }
+.marca-m.cambia { background: var(--danger-soft); color: var(--danger); }
+.marca-m.ret { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.cuerpo-m { padding: 0 18px 16px; border-top: 1px solid var(--line); }
+.cuerpo-m h5 { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 1.1rem 0 .4rem; }
+.firma { font-family: var(--mono); font-size: .9rem; background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 9px 12px; margin-top: 14px; overflow-wrap: anywhere; }
+.firma .t { color: var(--accent); }
+.params td:first-child { font-family: var(--mono); font-weight: 600; white-space: nowrap; }
+.params td:nth-child(2) { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+.oculto { display: none !important; }
+
+/* ---------- Herramientas interactivas ---------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin: 1.2rem 0; box-shadow: var(--shadow); }
+.panel h4 { margin-top: 0; display: flex; align-items: center; gap: 8px; }
+.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.form label { display: grid; gap: 4px; font-size: .85rem; color: var(--muted); }
+.form .ancho { grid-column: 1 / -1; }
+.form input[type="text"], .form select, .busca-codigo input {
+	font: inherit; font-size: .93rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; width: 100%;
+}
+.form .casillas { display: flex; flex-wrap: wrap; gap: 14px; grid-column: 1 / -1; }
+.form .casillas label { display: flex; align-items: center; gap: 6px; color: var(--ink); font-size: .9rem; }
+.busca-codigo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.busca-codigo input { max-width: 180px; font-family: var(--mono); }
+.respuesta-codigo { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); min-height: 48px; }
+.respuesta-codigo b { font-family: var(--mono); }
+.lista-control { list-style: none; padding: 0; margin: 0; }
+.lista-control li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.lista-control li:last-child { border-bottom: 0; }
+.lista-control input { margin-top: 5px; width: 17px; height: 17px; accent-color: var(--brand); flex: none; }
+.lista-control li.hecho span { color: var(--muted); text-decoration: line-through; }
+.barra-avance { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; margin: 6px 0 12px; border: 1px solid var(--line); }
+.barra-avance i { display: block; height: 100%; width: 0; background: var(--brand); transition: width .25s; }
+
+.faq details { border-bottom: 1px solid var(--line); padding: 10px 0; }
+.faq summary { cursor: pointer; font-weight: 600; }
+
+footer { max-width: 940px; margin: 60px auto 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+
+/* ---------- Pantallas chicas ---------- */
+@media (max-width: 980px) {
+	.contenedor { grid-template-columns: 1fr; }
+	.lateral { position: fixed; z-index: 40; top: 60px; left: 0; width: min(320px, 88vw); transform: translateX(-102%); transition: transform .2s; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+	.lateral.abierto { transform: none; }
+	.solo-movil { display: inline-flex; }
+	main { padding: 0 16px 60px; }
+	.flujo, .form { grid-template-columns: 1fr; }
+	.rangos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.ack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.ack div { border-radius: 0 !important; }
+	.relacion { grid-template-columns: 1fr; }
+	.relacion .une svg { transform: rotate(90deg); }
+	.top .titulo-largo, .top .btn span { display: none; }
+	.paso { grid-template-columns: 1fr; }
+	.figura { overflow-x: auto; }
+	.figura svg { min-width: 680px; }
+	details.metodo > summary { grid-template-columns: 1fr; }
+	details.metodo > summary .marcas { grid-row: auto; grid-column: 1; justify-content: flex-start; }
+}
+@media print {
+	.top, .lateral, .copiar, .herramientas { display: none !important; }
+	.contenedor { display: block; }
+	details.metodo { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+	<button class="btn solo-movil" id="abrirMenu" aria-label="Abrir el índice" aria-expanded="false">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+	</button>
+	<a class="marca" href="#inicio">
+		<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--brand)"/><path d="M9 10.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.5L11 25v-3.5H9a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z" fill="none" stroke="var(--brand-ink)" stroke-width="1.8" stroke-linejoin="round"/><path d="M11.5 16h9M11.5 13.5h6" stroke="var(--brand-ink)" stroke-width="1.8" stroke-linecap="round"/></svg>
+		<span>SMSWhatsApp <small class="titulo-largo">Guía del desarrollador · versión 2026.10.09</small></span>
+	</a>
+	<span class="sep"></span>
+	<button class="btn" id="expandirTodo" title="Abrir o cerrar todas las fichas de métodos">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 9l5-5 5 5M7 15l5 5 5-5"/></svg>
+		<span>Fichas</span>
+	</button>
+	<button class="btn" id="tema" aria-label="Cambiar entre tema claro y oscuro">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+		<span>Tema</span>
+	</button>
+</header>
+
+<div class="contenedor">
+<nav class="lateral" id="lateral" aria-label="Índice">
+	<div class="buscar">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+		<input type="search" id="filtro" placeholder="Buscar un método o tema…" aria-label="Buscar un método o tema" autocomplete="off">
+	</div>
+	<div id="navSecciones">
+		<div class="nav-grupo">Empezar</div>
+		<a class="nav" href="#inicio">Qué es SMSWhatsApp</a>
+		<a class="nav" href="#requisitos">1. Requisitos</a>
+		<a class="nav" href="#instalacion">2. Instalación y registro</a>
+		<a class="nav" href="#primeros-pasos">3. Primeros pasos</a>
+		<a class="nav" href="#licencia">4. Licencia y activación</a>
+		<a class="nav" href="#resultados">5. Cómo leer los resultados</a>
+		<a class="nav" href="#configuracion">6. Configuración</a>
+		<div class="nav-grupo">Referencia</div>
+		<a class="nav" href="#metodos">7. Los 38 métodos</a>
+		<a class="nav" href="#propiedades">8. Propiedades de resultado</a>
+		<a class="nav" href="#tablas">9. Tablas que crea la DLL</a>
+		<a class="nav" href="#codigos">10. Códigos de error</a>
+		<div class="nav-grupo">Guías</div>
+		<a class="nav" href="#recetas">11. Recetas</a>
+		<a class="nav" href="#buenas-practicas">12. Buenas prácticas y límites</a>
+		<a class="nav" href="#problemas">13. Solución de problemas</a>
+		<a class="nav" href="#version-anterior">14. Si vienes de la versión anterior</a>
+		<a class="nav" href="#soporte">15. Soporte</a>
+	</div>
+	<div id="navMetodos"></div>
+	<div class="sin-resultados" id="sinResultados">Nada coincide con la búsqueda.</div>
+</nav>
+
+<main id="contenido">
+
+<!-- ======================= PORTADA ======================= -->
+<section class="portada" id="inicio">
+	<span class="etiqueta">DLL COM · Visual FoxPro 9 · 32 bits</span>
+	<h1>SMSWhatsApp para desarrolladores</h1>
+	<p class="lead">Todo lo que necesitas para integrar <code>smswhatsapp.ApiWhatsApp</code> en tu aplicación: qué instalar, cómo registrarla, cómo activarla y cómo usar cada método, con ejemplos y la salida real de cada llamada.</p>
+
+	<div class="datos">
+		<div class="dato doble"><b><code>smswhatsapp.ApiWhatsApp</code></b><span>ProgID para <code>CreateObject</code></span></div>
+		<div class="dato"><b>38</b><span>métodos públicos</span></div>
+		<div class="dato"><b>66</b><span>propiedades: configuración y resultados</span></div>
+		<div class="dato"><b>32 bits</b><span>runtime de Visual FoxPro 9</span></div>
+		<div class="dato"><b>2026.10.09</b><span>versión de la DLL</span></div>
+	</div>
+
+	<figure class="figura">
+		<svg viewBox="0 0 900 250" role="img" aria-label="Cómo viaja un mensaje: tu aplicación crea el objeto COM, la DLL llama al WebService de SMSWhatsApp por https, el servidor lo entrega a WhatsApp y llega al teléfono del destinatario. La DLL deja tablas y un log en la carpeta de tu aplicación.">
+			<defs><marker id="pt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="svg-punta"/></marker></defs>
+			<rect x="4" y="40" width="166" height="92" rx="14" class="svg-caja"/>
+			<text x="87" y="76" text-anchor="middle" class="svg-texto">Tu aplicación</text>
+			<text x="87" y="98" text-anchor="middle" class="svg-sub">VFP, .NET (x86), VBScript…</text>
+			<text x="87" y="116" text-anchor="middle" class="svg-mono">CreateObject(…)</text>
+
+			<rect x="260" y="30" width="180" height="112" rx="14" class="svg-caja-brand"/>
+			<text x="350" y="66" text-anchor="middle" class="svg-texto">smswhatsapp.dll</text>
+			<text x="350" y="88" text-anchor="middle" class="svg-sub">objeto COM ApiWhatsApp</text>
+			<text x="350" y="106" text-anchor="middle" class="svg-sub">licencia · ritmo · reintentos</text>
+			<text x="350" y="124" text-anchor="middle" class="svg-mono">cLastError · nStatusCode</text>
+
+			<rect x="530" y="40" width="170" height="92" rx="14" class="svg-caja-acc"/>
+			<text x="615" y="76" text-anchor="middle" class="svg-texto">WebService</text>
+			<text x="615" y="98" text-anchor="middle" class="svg-sub">servidor de SMSWhatsApp</text>
+			<text x="615" y="116" text-anchor="middle" class="svg-mono">https</text>
+
+			<rect x="756" y="40" width="140" height="92" rx="14" class="svg-caja"/>
+			<text x="826" y="76" text-anchor="middle" class="svg-texto">WhatsApp</text>
+			<text x="826" y="98" text-anchor="middle" class="svg-sub">tu número vinculado</text>
+			<text x="826" y="116" text-anchor="middle" class="svg-sub">→ destinatarios</text>
+
+			<path d="M174 76h82" class="svg-flecha" marker-end="url(#pt)"/>
+			<path d="M256 98h-82" class="svg-flecha" marker-end="url(#pt)"/>
+			<path d="M444 76h82" class="svg-flecha" marker-end="url(#pt)"/>
+			<path d="M526 98h-82" class="svg-flecha" marker-end="url(#pt)"/>
+			<path d="M704 86h48" class="svg-flecha" marker-end="url(#pt)"/>
+			<text x="215" y="66" text-anchor="middle" class="svg-mono">llama</text>
+			<text x="215" y="116" text-anchor="middle" class="svg-mono">resultado</text>
+			<text x="485" y="66" text-anchor="middle" class="svg-mono">petición</text>
+			<text x="485" y="116" text-anchor="middle" class="svg-mono">JSON</text>
+
+			<path d="M350 142v38" class="svg-flecha" marker-end="url(#pt)"/>
+			<rect x="185" y="184" width="330" height="54" rx="12" class="svg-caja"/>
+			<text x="350" y="207" text-anchor="middle" class="svg-texto">Carpeta de trabajo de tu aplicación</text>
+			<text x="350" y="227" text-anchor="middle" class="svg-mono">WSContacts · Groups · MsgChats · log diario</text>
+		</svg>
+		<figcaption>La DLL es el único punto de contacto: tu código llama a un método, la DLL habla con el WebService y te deja el resultado en propiedades y, según el método, en tablas DBF de tu carpeta de trabajo.</figcaption>
+	</figure>
+
+	<div class="mapa">
+		<a href="#instalacion"><b>Instalarla</b><span>Archivos del runtime, carpeta y <code>regsvr32</code>.</span></a>
+		<a href="#licencia"><b>Activarla</b><span>Con el ID del servicio o con el archivo <code>.cfg</code>.</span></a>
+		<a href="#m-SendSMSWhatsApp"><b>Enviar un mensaje</b><span>Texto, archivos, grupos, listas de difusión.</span></a>
+		<a href="#m-GetChats"><b>Leer lo recibido</b><span>Chats, mensajes y archivos multimedia.</span></a>
+		<a href="#codigos"><b>Entender un error</b><span>Busca cualquier <code>nErrorCode</code>.</span></a>
+		<a href="#problemas"><b>Algo no funciona</b><span>Los errores típicos y su solución.</span></a>
+	</div>
+</section>
+
+<!-- ======================= 1. REQUISITOS ======================= -->
+<section class="seccion" id="requisitos">
+	<h2><span class="num">1</span>Requisitos</h2>
+	<p class="bajada">Lo que necesita el equipo donde corre tu aplicación.</p>
+
+	<div class="tabla"><table>
+		<thead><tr><th style="width:30%">Requisito</th><th>Detalle</th></tr></thead>
+		<tbody>
+			<tr><td><b>Windows</b></td><td>Windows 8.1, 10 u 11, o Windows Server 2012 R2 en adelante, de 32 o de 64 bits. En versiones anteriores (7, 8, Server 2008) la conexión puede no ser cifrada: revisa la <a href="#buenas-practicas">sección 12</a>.</td></tr>
+			<tr><td><b>Aplicación de 32 bits</b></td><td>La DLL es de 32 bits: la pueden crear VFP 9, VFP Advanced de 32 bits, .NET compilado para <b>x86</b>, VBScript con el <code>cscript</code>/<code>wscript</code> de 32 bits, VB6, Delphi de 32 bits, etc. Un programa de 64 bits no la encuentra.</td></tr>
+			<tr><td><b>Runtime de Visual FoxPro 9</b></td><td>Tres archivos (tabla de abajo). Si en el equipo ya hay una aplicación de VFP 9 instalada, normalmente ya están.</td></tr>
+			<tr><td><b>Internet</b></td><td>Salida por https hacia el servidor de SMSWhatsApp. Un filtro web o un portal de acceso (el Wi-Fi de un hotel, por ejemplo) se detecta y se informa con el código <code>204</code>.</td></tr>
+			<tr><td><b>Permisos</b></td><td>Administrador <b>solo para registrar</b> la DLL. Para usarla, basta con poder escribir en la carpeta de trabajo de tu aplicación (tablas, caché y log) y, si tu aplicación es de VFP, en la carpeta de la DLL (<a href="#program-files">ver por qué</a>).</td></tr>
+			<tr><td><b>Licencia</b></td><td>El ID del servicio, o el archivo <code>.cfg</code> con su token. Sin ellos funciona como DEMO (<a href="#licencia">sección 4</a>).</td></tr>
+		</tbody>
+	</table></div>
+
+	<h3 id="runtime">Archivos del runtime de Visual FoxPro 9 (32 bits)</h3>
+	<p>Versión 9.0 SP2 (9.00.7423). Elige <b>una</b> de las dos formas: copiarlos junto a la DLL, o instalarlos con el instalador del runtime de VFP 9 SP2.</p>
+	<div class="tabla"><table>
+		<thead><tr><th>Archivo</th><th>¿Hace falta?</th><th>Para qué</th></tr></thead>
+		<tbody>
+			<tr><td><code>vfp9r.dll</code></td><td><span class="marca-m lic">Obligatorio</span></td><td>El runtime de Visual FoxPro 9.</td></tr>
+			<tr><td><code>vfp9renu.dll</code></td><td><span class="marca-m lic">Obligatorio</span></td><td>Los recursos del runtime (inglés). Lo necesita <code>vfp9r.dll</code>.</td></tr>
+			<tr><td><code>msvcr71.dll</code></td><td><span class="marca-m lic">Obligatorio</span></td><td>La biblioteca de C que usa el runtime.</td></tr>
+			<tr><td><code>vfp9resn.dll</code></td><td><span class="marca-m ret">Opcional</span></td><td>Los recursos del runtime en español. Los mensajes de la DLL no dependen de él: los elige la propiedad <code>cLanguage</code>.</td></tr>
+			<tr><td><code>gdiplus.dll</code></td><td><span class="marca-m ret">No copiar</span></td><td>Ya viene con Windows.</td></tr>
+			<tr><td><code>vfp9t.dll</code></td><td><span class="marca-m ret">No hace falta</span></td><td>Es el runtime multihilo; esta DLL usa <code>vfp9r.dll</code>.</td></tr>
+		</tbody>
+	</table></div>
+	<div class="aviso info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+		<div><p><b>Con el instalador del runtime</b> los archivos quedan en <code>C:\Program Files (x86)\Common Files\Microsoft Shared\VFP\</code> y <code>msvcr71.dll</code> en <code>C:\Windows\SysWOW64\</code>. Ese instalador también se puede correr sin ventanas desde el tuyo, como administrador: <code>/s /v"/qn"</code>.</p></div>
+	</div>
+</section>
+
+<!-- ======================= 2. INSTALACIÓN ======================= -->
+<section class="seccion" id="instalacion">
+	<h2><span class="num">2</span>Instalación y registro</h2>
+	<p class="bajada">Cuatro pasos. Solo el registro pide permisos de administrador.</p>
+
+	<div class="pasos">
+		<div class="paso"><div>
+			<h4>Elige la carpeta de la DLL</h4>
+			<p>Una carpeta donde los usuarios de tu aplicación <b>puedan escribir</b>, por ejemplo la de tu aplicación o <code>C:\SMSWhatsApp\</code>. Evita <code>Program Files</code> si tu aplicación es de VFP, salvo que tu instalador haga lo que dice el <a href="#program-files">aviso de abajo</a>.</p>
+		</div></div>
+		<div class="paso"><div>
+			<h4>Copia los archivos</h4>
+			<p>La DLL protegida es un solo archivo: <code>smswhatsapp.dll</code>. No necesita los archivos <code>.tlb</code> ni <code>.vbr</code>. Junto a ella, los tres archivos del runtime si no lo instalaste con su instalador.</p>
+			<div class="arbol"><span class="carp">C:\SMSWhatsApp\</span>
+├── <span class="req">smswhatsapp.dll</span>        <span class="opc">← la DLL</span>
+├── <span class="req">vfp9r.dll</span>              <span class="opc">← runtime (si no está instalado)</span>
+├── <span class="req">vfp9renu.dll</span>
+├── <span class="req">msvcr71.dll</span>
+└── <span class="gen">smswhatsappr1.dll</span>      <span class="opc">← la crea el runtime la primera vez (ver aviso)</span></div>
+		</div></div>
+		<div class="paso"><div>
+			<h4>Regístrala como administrador</h4>
+			<p>Abre <b>Símbolo del sistema</b> con <i>Ejecutar como administrador</i>. En Windows de 64 bits usa el <code>regsvr32</code> de 32 bits:</p>
+			<div class="codigo" data-lang="cmd"><div class="cab"><span>Windows de 64 bits</span><button class="copiar">Copiar</button></div><pre>C:\Windows\SysWOW64\regsvr32.exe "C:\SMSWhatsApp\smswhatsapp.dll"</pre></div>
+			<div class="codigo" data-lang="cmd"><div class="cab"><span>Windows de 32 bits</span><button class="copiar">Copiar</button></div><pre>regsvr32 "C:\SMSWhatsApp\smswhatsapp.dll"</pre></div>
+			<p>Debe responder <i>«DllRegisterServer en … se realizó correctamente»</i>. Desde un instalador, agrega <code>/s</code> para que no muestre ventanas.</p>
+		</div></div>
+		<div class="paso"><div>
+			<h4>Comprueba que se crea</h4>
+			<p>Desde VFP (o el lenguaje de tu aplicación):</p>
+			<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS = CreateObject('smswhatsapp.ApiWhatsApp')
+? loWS.cLastError
+? loWS.GetInfoDeveloper()</pre></div>
+			<div class="codigo salida"><div class="cab"><span>Salida</span><button class="copiar">Copiar</button></div><pre>OK: [Se cargó la versión DEMO. Para usar todas las funciones, adquiere una licencia.]
+Nombre de Aplicación: SMSWhatsApp
+Versión [YYYY-MM-DD]: 2026.10.09
+…</pre></div>
+			<p>La versión <code>2026.10.09</code> confirma que se cargó esta DLL. Si ves otra, en el equipo quedó registrada otra copia: vuelve a registrar esta.</p>
+		</div></div>
+	</div>
+
+	<div class="aviso cuidado" id="program-files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+		<div><p><b>La DLL en <code>Program Files</code> con una aplicación de VFP.</b> La primera vez que una aplicación de VFP crea el objeto, el runtime de VFP 9 deja junto a la DLL una copia de sí mismo llamada <code>smswhatsappr1.dll</code>. En <code>Program Files</code>, un usuario sin permisos de administrador no puede crearla y <code>CreateObject</code> falla con <code>0x80004005</code> («Error no especificado»).</p>
+		<p>Soluciones: instala la DLL en una carpeta donde el usuario pueda escribir, <b>o</b> haz que tu instalador (que corre como administrador) copie <code>vfp9r.dll</code> en la carpeta de la DLL con el nombre <code>smswhatsappr1.dll</code>. Las aplicaciones que no son de VFP (.NET, VBScript) no necesitan esa copia.</p></div>
+	</div>
+
+	<h3>Actualizar, volver atrás o desinstalar</h3>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:28%">Para…</th><th>Haz esto (como administrador)</th></tr></thead>
+		<tbody>
+			<tr><td><b>Actualizar</b> a una versión nueva</td><td>Cierra las aplicaciones que la usan, reemplaza <code>smswhatsapp.dll</code> y vuelve a registrarla con <code>regsvr32</code>.</td></tr>
+			<tr><td><b>Volver</b> a la versión anterior</td><td>Registra otra vez la DLL anterior con <code>regsvr32</code>. Las tablas tienen la misma estructura: no hay nada que convertir.</td></tr>
+			<tr><td><b>Desinstalar</b></td><td><code>C:\Windows\SysWOW64\regsvr32.exe /u "C:\SMSWhatsApp\smswhatsapp.dll"</code> y borra la carpeta. Si <code>smswhatsappr1.dll</code> no se deja borrar, quítale el atributo de solo lectura: <code>attrib -r smswhatsappr1.dll</code>.</td></tr>
+		</tbody>
+	</table></div>
+	<div class="aviso info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+		<div><p><b>Una sola DLL registrada por equipo.</b> Todas las aplicaciones que crean el objeto con <code>CreateObject('smswhatsapp.ApiWhatsApp')</code> usan la <b>última</b> DLL registrada con ese nombre.</p></div>
+	</div>
+
+	<div class="panel" id="checklist">
+		<h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 12 4 4 10-10"/></svg>Lista de control de la instalación</h4>
+		<div class="barra-avance"><i id="avance"></i></div>
+		<ul class="lista-control" id="listaControl">
+			<li><input type="checkbox" id="c1"><label for="c1"><span>El runtime de VFP 9 está instalado, o sus tres archivos están junto a la DLL.</span></label></li>
+			<li><input type="checkbox" id="c2"><label for="c2"><span>La DLL está en una carpeta donde el usuario puede escribir (o el instalador dejó <code>smswhatsappr1.dll</code>).</span></label></li>
+			<li><input type="checkbox" id="c3"><label for="c3"><span>La registré como administrador y <code>regsvr32</code> dijo que se realizó correctamente.</span></label></li>
+			<li><input type="checkbox" id="c4"><label for="c4"><span>Mi aplicación es de 32 bits (o .NET compilado para x86).</span></label></li>
+			<li><input type="checkbox" id="c5"><label for="c5"><span><code>GetInfoDeveloper()</code> muestra la versión 2026.10.09.</span></label></li>
+			<li><input type="checkbox" id="c6"><label for="c6"><span>Fijo la carpeta de trabajo antes de crear el objeto (<a href="#primeros-pasos">sección 3</a>).</span></label></li>
+			<li><input type="checkbox" id="c7"><label for="c7"><span>La activé y <code>ShowStatus(.F., .T.)</code> devuelve <code>.T.</code> (<a href="#licencia">sección 4</a>).</span></label></li>
+		</ul>
+	</div>
+</section>
+
+<!-- ======================= 3. PRIMEROS PASOS ======================= -->
+<section class="seccion" id="primeros-pasos">
+	<h2><span class="num">3</span>Primeros pasos</h2>
+	<p class="bajada">Crear el objeto, elegir la carpeta de trabajo y entender su ciclo de vida.</p>
+
+	<h3>La carpeta de trabajo</h3>
+	<p>Cada objeto toma, <b>en el momento en que se crea</b>, la carpeta actual del proceso. Ahí deja sus tablas de salida, la caché de contactos y el log, y ahí busca la licencia <code>SMSWhatsApp.cfg</code> si no le das otra ruta. Fíjala antes de crear el objeto:</p>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:28%">Lenguaje</th><th>Fija la carpeta con</th></tr></thead>
+		<tbody>
+			<tr><td>Visual FoxPro</td><td><code>Set Default To C:\MiApp\Datos</code></td></tr>
+			<tr><td>.NET</td><td><code>Directory.SetCurrentDirectory(@"C:\MiApp\Datos");</code></td></tr>
+			<tr><td>VBScript</td><td><code>CreateObject("WScript.Shell").CurrentDirectory = "C:\MiApp\Datos"</code></td></tr>
+		</tbody>
+	</table></div>
+	<div class="aviso cuidado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+		<div><p>Un <b>servicio de Windows</b> arranca en <code>C:\Windows\System32</code>, y un programa .NET en la carpeta desde la que lo lanzaron, no en la de su <code>.exe</code>. Si no puedes fijar la carpeta, asigna después las rutas (<code>cDNSContacts</code>, <code>cCurContacts</code>, <code>cTableGroups</code>, <code>cTableMembers</code>, <code>cTableChats</code>, <code>cTableMsgChats</code>) y carga la licencia con su ruta completa. El log siempre queda en la carpeta que había al crear el objeto.</p></div>
+	</div>
+
+	<h3>Crear el objeto</h3>
+	<div class="pestanas" data-pestanas>
+		<div role="tablist" aria-label="Lenguaje">
+			<button role="tab" aria-selected="true">Visual FoxPro</button>
+			<button role="tab" aria-selected="false">C# (.NET x86)</button>
+			<button role="tab" aria-selected="false">VBScript</button>
+		</div>
+		<div role="tabpanel">
+			<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>Local loWS
+Set Default To C:\MiApp\Datos
+
+*: Se crea una vez y se reúsa para todos los envíos
+loWS = CreateObject('smswhatsapp.ApiWhatsApp')
+
+*: Activar (sección 4) y trabajar
+loWS.ActivateWithApiToken('TU-ID-DE-SERVICIO')
+If loWS.ShowStatus(.F., .T.) Then
+	loWS.SendSMSWhatsApp('593987654321', 'Hola desde mi aplicación')
+	? loWS.nStatusCode, loWS.cLastError
+EndIf
+
+*: Al terminar: se libera y escribe el log pendiente
+loWS = .Null.</pre></div>
+		</div>
+		<div role="tabpanel" hidden>
+			<div class="codigo" data-lang="cs"><div class="cab"><span>C# · proyecto compilado para x86</span><button class="copiar">Copiar</button></div><pre>// Enlace tardío: no hace falta agregar una referencia COM al proyecto
+Directory.SetCurrentDirectory(@"C:\MiApp\Datos");
+Type tipo = Type.GetTypeFromProgID("smswhatsapp.ApiWhatsApp");
+dynamic ws = Activator.CreateInstance(tipo);
+
+ws.ActivateWithApiToken("TU-ID-DE-SERVICIO");
+if (ws.ShowStatus(false, true))
+{
+    ws.SendSMSWhatsApp("593987654321", "Hola desde .NET");
+    Console.WriteLine($"{ws.nStatusCode} {ws.cLastError}");
+}
+System.Runtime.InteropServices.Marshal.ReleaseComObject(ws);</pre></div>
+			<p>En las propiedades del proyecto, <b>Destino de la plataforma: x86</b>. Con <i>Any CPU</i> en un Windows de 64 bits, el proceso es de 64 bits y no encuentra la DLL.</p>
+		</div>
+		<div role="tabpanel" hidden>
+			<div class="codigo" data-lang="vbs"><div class="cab"><span>VBScript · con C:\Windows\SysWOW64\cscript.exe</span><button class="copiar">Copiar</button></div><pre>CreateObject("WScript.Shell").CurrentDirectory = "C:\MiApp\Datos"
+Set ws = CreateObject("smswhatsapp.ApiWhatsApp")
+ws.ActivateWithApiToken "TU-ID-DE-SERVICIO"
+If ws.ShowStatus(False, True) Then
+    ws.SendSMSWhatsApp "593987654321", "Hola desde VBScript"
+    WScript.Echo ws.nStatusCode & " " & ws.cLastError
+End If
+Set ws = Nothing</pre></div>
+			<p>En Windows de 64 bits, el <code>cscript.exe</code> de <code>System32</code> es de 64 bits y da <code>0x800A01AD</code>. Usa el de <code>SysWOW64</code>.</p>
+		</div>
+	</div>
+
+	<h3>Ciclo de vida del objeto</h3>
+	<figure class="figura">
+		<svg viewBox="0 0 900 150" role="img" aria-label="Ciclo de vida: crear el objeto, activar, configurar, llamar a métodos y leer resultados repetidamente, y liberar.">
+			<defs><marker id="pt2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" class="svg-punta"/></marker></defs>
+			<rect x="10" y="40" width="150" height="70" rx="12" class="svg-caja"/>
+			<text x="85" y="70" text-anchor="middle" class="svg-texto">1 · Crear</text>
+			<text x="85" y="92" text-anchor="middle" class="svg-mono">CreateObject</text>
+			<rect x="190" y="40" width="150" height="70" rx="12" class="svg-caja-brand"/>
+			<text x="265" y="70" text-anchor="middle" class="svg-texto">2 · Activar</text>
+			<text x="265" y="92" text-anchor="middle" class="svg-mono">ActivateWith…</text>
+			<rect x="370" y="40" width="150" height="70" rx="12" class="svg-caja"/>
+			<text x="445" y="70" text-anchor="middle" class="svg-texto">3 · Configurar</text>
+			<text x="445" y="92" text-anchor="middle" class="svg-mono">nWaitTime, …</text>
+			<rect x="550" y="40" width="190" height="70" rx="12" class="svg-caja-acc"/>
+			<text x="645" y="70" text-anchor="middle" class="svg-texto">4 · Llamar y leer</text>
+			<text x="645" y="92" text-anchor="middle" class="svg-mono">nStatusCode = 200 ?</text>
+			<rect x="770" y="40" width="120" height="70" rx="12" class="svg-caja"/>
+			<text x="830" y="70" text-anchor="middle" class="svg-texto">5 · Liberar</text>
+			<text x="830" y="92" text-anchor="middle" class="svg-mono">= .Null.</text>
+			<path d="M160 75h26" class="svg-flecha" marker-end="url(#pt2)"/>
+			<path d="M340 75h26" class="svg-flecha" marker-end="url(#pt2)"/>
+			<path d="M520 75h26" class="svg-flecha" marker-end="url(#pt2)"/>
+			<path d="M740 75h26" class="svg-flecha" marker-end="url(#pt2)"/>
+			<path d="M600 110 q45 32 90 0" class="svg-flecha" marker-end="url(#pt2)"/>
+			<text x="645" y="144" text-anchor="middle" class="svg-sub">se repite: un objeto para todo</text>
+		</svg>
+		<figcaption>Crea el objeto una vez y reúsalo: crearlo por cada mensaje es lento y vuelve a cargar la licencia cada vez.</figcaption>
+	</figure>
+
+	<h3>Varios objetos y varios programas</h3>
+	<ul>
+		<li>Cada objeto tiene su propia sesión de datos y su propio resultado: el error de uno no aparece en otro.</li>
+		<li>Varios programas pueden usar la misma carpeta a la vez: las tablas de salida, la caché y el log no se dañan.</li>
+		<li>Mientras un método trabaja, tu aplicación espera; Windows no la marca como «No responde». Si un Timer o un clic llama a <b>otro</b> método del <b>mismo</b> objeto durante la espera, esa llamada se rechaza con el código <code>134</code> sin tocar la que está en curso.</li>
+	</ul>
+</section>
+
+<!-- ======================= 4. LICENCIA ======================= -->
+<section class="seccion" id="licencia">
+	<h2><span class="num">4</span>Licencia y activación</h2>
+	<p class="bajada">Dos formas de activar el objeto. La recomendada es la del ID del servicio.</p>
+
+	<h3>Qué recibes con tu licencia</h3>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:30%">Dato</th><th>Para qué sirve</th><th style="width:30%">Dónde lo consigues</th></tr></thead>
+		<tbody>
+			<tr><td><b>ID del servicio</b> (token de la API REST)</td><td>Activar con <code>ActivateWithApiToken()</code>. No necesita archivo.</td><td>Te lo envía el proveedor al generar tu licencia, y lo ves en el <b>panel de control</b> de tu servicio en la web.</td></tr>
+			<tr><td>Archivo de licencia <b><code>.cfg</code></b></td><td>Cargar con <code>LoadLicense()</code> los datos cifrados de tu servicio.</td><td>Te lo envía el proveedor al generar tu licencia.</td></tr>
+			<tr><td><b>Token de activación</b> del <code>.cfg</code></td><td>Activar ese archivo con <code>ValidateClient()</code>.</td><td>Viene junto con el <code>.cfg</code>.</td></tr>
+		</tbody>
+	</table></div>
+
+	<div class="flujo">
+		<div class="via recomendada">
+			<span class="insignia">RECOMENDADA</span>
+			<h4>A · Con el ID del servicio</h4>
+			<ol>
+				<li data-n="1"><code>CreateObject('smswhatsapp.ApiWhatsApp')</code></li>
+				<li data-n="2"><code>ActivateWithApiToken('TU-ID')</code></li>
+				<li data-n="3"><code>ShowStatus(.F., .T.)</code> → <code>.T.</code> confirma que el ID sirve y que la cuenta está vinculada</li>
+			</ol>
+			<p style="margin-bottom:0;font-size:.9rem;color:var(--muted)">Sin archivos que distribuir. Cambiar de servicio es cambiar un texto.</p>
+		</div>
+		<div class="via">
+			<h4>B · Con el archivo <code>.cfg</code></h4>
+			<ol>
+				<li data-n="1"><code>CreateObject(…)</code> (si <code>SMSWhatsApp.cfg</code> está en la carpeta de trabajo, se carga solo)</li>
+				<li data-n="2"><code>LoadLicense('C:\MiApp\SMSWhatsApp.cfg')</code></li>
+				<li data-n="3"><code>ValidateClient('TU-TOKEN')</code></li>
+				<li data-n="4"><code>ShowStatus(.F., .T.)</code> para confirmar</li>
+			</ol>
+		</div>
+	</div>
+
+	<div class="pestanas" data-pestanas>
+		<div role="tablist" aria-label="Forma de activar">
+			<button role="tab" aria-selected="true">A · ID del servicio</button>
+			<button role="tab" aria-selected="false">B · Archivo .cfg y token</button>
+		</div>
+		<div role="tabpanel">
+			<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS = CreateObject('smswhatsapp.ApiWhatsApp')
+loWS.ActivateWithApiToken('TU-ID-DE-SERVICIO')
+
+*: La activación no consulta al servidor: se confirma con una consulta de solo lectura
+If loWS.nStatusCode = 200 And loWS.ShowStatus(.F., .T.) Then
+	? 'Lista: activada y con la cuenta vinculada'
+Else
+	? loWS.cLastError        && el motivo
+	? loWS.cLastState        && p. ej. UNPAIRED: la cuenta no está vinculada (usa GetQR)
+EndIf</pre></div>
+			<div class="codigo salida"><div class="cab"><span>Salida: activación y verificación correctas</span><button class="copiar">Copiar</button></div><pre>ActivateWithApiToken('TU-ID-DE-SERVICIO')
+  → OK: [La activación se realizó correctamente.]          nStatusCode 200 · nErrorCode 0
+ShowStatus(.F., .T.)
+  → .T.   OK: [La cuenta está autenticada en WhatsApp.]    nStatusCode 200 · nErrorCode 0</pre></div>
+			<div class="codigo salida"><div class="cab"><span>Salida: el servidor rechaza la consulta, o el ID está vacío</span><button class="copiar">Copiar</button></div><pre>ShowStatus(.F., .T.)
+  → .F.   ERROR: [la sesion no esta iniciada]              nStatusCode 0 · nErrorCode 131
+ActivateWithApiToken('')
+  → ERROR: [No se pudo realizar la activación: el token está vacío o no es válido.]   nErrorCode 33</pre></div>
+			<div class="aviso info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+				<div><p><b>¿Por qué verificar?</b> <code>ActivateWithApiToken()</code> deja el objeto listo con ese ID sin preguntarle al servidor. Si el ID está mal escrito o la cuenta no está vinculada, lo verías recién en el primer envío. <code>ShowStatus(.F., .T.)</code> lo pregunta enseguida, sin enviar nada. El texto del motivo (con <code>nErrorCode</code> 131) lo da el servidor.</p></div>
+			</div>
+		</div>
+		<div role="tabpanel" hidden>
+			<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS = CreateObject('smswhatsapp.ApiWhatsApp')
+loWS.LoadLicense('C:\MiApp\SMSWhatsApp.cfg')
+If loWS.nStatusCode = 200 Then
+	loWS.ValidateClient('TU-TOKEN-DE-ACTIVACION')
+EndIf
+If loWS.nStatusCode = 200 And loWS.ShowStatus(.F., .T.) Then
+	? 'Lista'
+Else
+	? loWS.cLastError
+EndIf</pre></div>
+			<div class="codigo salida"><div class="cab"><span>Salidas posibles</span><button class="copiar">Copiar</button></div><pre>LoadLicense('C:\MiApp\SMSWhatsApp.cfg')
+  → OK: [Licencia cargada correctamente.]
+LoadLicense('C:\MiApp\NoExiste.cfg')
+  → ERROR: [No se encontró el archivo de configuración. Se cargó la versión DEMO. Para usar todas las funciones, adquiere una licencia.]   nErrorCode 35
+ValidateClient('TokenEquivocado')
+  → ERROR: [No se pudo realizar la activación: el token está vacío o no es válido.]   nErrorCode 33</pre></div>
+			<ul>
+				<li><code>LoadLicense()</code> <b>carga</b> los datos pero no activa: sin <code>ValidateClient()</code> el objeto sigue como DEMO.</li>
+				<li>Un nombre sin carpeta (<code>'SMSWhatsApp.cfg'</code>) se busca en la carpeta de trabajo del objeto.</li>
+				<li>Si cargas el <code>.cfg</code> de <b>otra</b> cuenta, vuelve a llamar a <code>ValidateClient()</code> con su token.</li>
+				<li>Si otro programa tiene abierto el <code>.cfg</code>, la DLL espera medio segundo y, si sigue tomado, carga la DEMO con <code>nErrorCode</code> 136.</li>
+			</ul>
+		</div>
+	</div>
+
+	<h3 id="demo">La versión DEMO</h3>
+	<p>Sin activar, el objeto funciona como DEMO:</p>
+	<ul>
+		<li><b>20 mensajes por día</b> por objeto (el cupo vuelve a 0 al cambiar el día). Al agotarse: <code>nErrorCode</code> 4.</li>
+		<li>Cada mensaje lleva un <b>pie</b> con datos del equipo que envía (nombre del equipo, usuario de Windows, IP local y pública, MAC, país, ciudad), y el destinatario los ve. La IP pública y la ubicación se consultan a un servicio externo, una vez por objeto.</li>
+		<li>Los métodos que necesitan una licencia activada responden <code>ERROR: [Este método necesita una licencia válida y activada.]</code> con <code>nErrorCode</code> 3.</li>
+	</ul>
+	<div class="aviso cuidado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+		<div><p>Si cargas una licencia y envías <b>sin</b> activar (o después de una activación que falló), el mensaje sale por tu cuenta pero <b>como DEMO</b>, con el pie y el cupo de 20. Revisa siempre que la activación dé <code>nStatusCode = 200</code> antes de enviar.</p></div>
+	</div>
+	<div class="aviso info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+		<div><p><b>Cuida el ID y el token</b> como una contraseña: no los dejes escritos en el código fuente ni en un archivo que vean los usuarios. Guárdalos cifrados en tu configuración.</p></div>
+	</div>
+</section>
+
+<!-- ======================= 5. RESULTADOS ======================= -->
+<section class="seccion" id="resultados">
+	<h2><span class="num">5</span>Cómo leer los resultados</h2>
+	<p class="bajada">Después de cada método, tres propiedades te dicen qué pasó.</p>
+
+	<div class="tabla"><table>
+		<thead><tr><th style="width:22%">Propiedad</th><th>Qué tiene</th><th style="width:26%">Úsala para</th></tr></thead>
+		<tbody>
+			<tr><td><code>nStatusCode</code></td><td><b>200</b> = salió bien; <b>0</b> = falló.</td><td>Decidir.</td></tr>
+			<tr><td><code>nErrorCode</code></td><td>El código real del error: <b>0</b> si no hubo error. No depende del idioma.</td><td>Saber la causa y reaccionar.</td></tr>
+			<tr><td><code>cLastError</code></td><td>El mensaje para mostrar: <code>OK: [...]</code> o <code>ERROR: [...]</code>, en el idioma de <code>cLanguage</code>.</td><td>Mostrarlo o guardarlo. <b>No</b> para decidir.</td></tr>
+		</tbody>
+	</table></div>
+
+	<h3>Anatomía de <code>cLastError</code></h3>
+	<div class="anatomia">
+		<div class="linea"><span class="p1">ERROR:</span> <span class="p2">[El archivo C:\MiApp\factura.pdf no existe o su ruta no es válida.]</span></div>
+		<div class="linea" style="margin-top:8px"><span class="p1">ERROR:</span> <span class="p2">[No se pudo conectar con el servidor.]</span> <span class="p3">[Intento 1: …] [URL: https://…/****]</span></div>
+		<div class="leyenda">
+			<div><i style="background:#7be0b3"></i>Resultado: <b>OK:</b> o <b>ERROR:</b></div>
+			<div><i style="background:#f0c27b"></i>El mensaje, entre el primer <b>[</b> y su <b>]</b></div>
+			<div><i style="background:#9fb6ff"></i>Detalle técnico opcional, en otros corchetes</div>
+		</div>
+	</div>
+	<p>Para quedarte solo con el mensaje: <code>StrExtract(loWS.cLastError, '[', ']')</code>. Si el mensaje trae un <code>]</code> (el nombre de un grupo «Ventas [Norte]», por ejemplo), se corta ahí. Tienen formato propio <code>ShowStatus()</code> (un reporte de varias líneas), <code>SendContactsToFile()</code> (agrega una línea <code>File: …</code>) y <code>SendSMSWhatsApp()</code> con varios destinatarios (un bloque por línea).</p>
+
+	<h3>Los rangos de <code>nErrorCode</code></h3>
+	<div class="rangos">
+		<div class="rango r0"><b>0</b><span>Sin error</span></div>
+		<div class="rango r1"><b>1 – 399</b><span>Detectado por la DLL (<a href="#codigos">tabla</a>)</span></div>
+		<div class="rango r2"><b>400 – 599</b><span>Código HTTP del servidor</span></div>
+		<div class="rango r3"><b>12001 – 12999</b><span>Falla de red de Windows</span></div>
+		<div class="rango r4"><b>negativo</b><span>Error de VFP (un archivo tomado, por ejemplo)</span></div>
+	</div>
+
+	<h3>El patrón recomendado</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS.SendSMSWhatsApp(lcNumero, lcTexto)
+Do Case
+	Case loWS.nStatusCode = 200
+		*: Salió (aceptado por el servidor)
+	Case InList(loWS.nErrorCode, 6, 11)
+		*: El número no es una cuenta de WhatsApp: corrige el dato, no reintentes
+	Case loWS.nErrorCode = 3
+		*: Falta activar la licencia
+	Case Between(loWS.nErrorCode, 12001, 12999) Or loWS.nErrorCode = 204
+		*: Problema de red: reintenta más tarde
+	Otherwise
+		=MessageBox(loWS.cLastError)
+EndCase</pre></div>
+	<div class="aviso info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+		<div><p><b>Ningún error interno llega como excepción.</b> Los métodos nunca disparan un error COM en tu aplicación: devuelven su valor con <code>ERROR: [...]</code>, <code>nStatusCode</code> 0 y <code>nErrorCode</code>. La única excepción es <code>CreateObject</code>, que falla si la DLL no está bien instalada (<a href="#problemas">sección 13</a>).</p></div>
+	</div>
+
+	<h3>El log diario</h3>
+	<p>La DLL escribe <code>SMSWhatsApp_AAAAMMDD.log</code> en la carpeta de trabajo. Lo controla <code>nLogLevel</code>:</p>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:18%">Valor</th><th>Qué registra</th></tr></thead>
+		<tbody>
+			<tr><td><code>0</code></td><td>Nada.</td></tr>
+			<tr><td><code>1</code> (por defecto)</td><td>Los errores y los problemas que la DLL resolvió sola (un destinatario que falló en un envío a varios, una pausa recortada, una conexión que siguió por http). Un día sin errores no crea archivo.</td></tr>
+			<tr><td><code>2</code></td><td>Todos los resultados.</td></tr>
+		</tbody>
+	</table></div>
+	<p>Guarda el resultado tal como lo ves en <code>cLastError</code>, nunca el texto de tus mensajes ni la respuesta completa del servidor; en las URL, la cuenta va enmascarada. Se borran solos los logs de más de 7 días de esa carpeta. Si el objeto no se puede crear, el motivo queda en el log.</p>
+</section>
+
+<!-- ======================= 6. CONFIGURACIÓN ======================= -->
+<section class="seccion" id="configuracion">
+	<h2><span class="num">6</span>Configuración</h2>
+	<p class="bajada">Propiedades que puedes asignar. Un valor fuera de rango o de otro tipo se ignora y la propiedad conserva el que tenía.</p>
+	<div class="tabla"><table id="tablaConfig">
+		<thead><tr><th style="width:21%">Propiedad</th><th style="width:27%">Por defecto</th><th>Qué hace</th></tr></thead>
+		<tbody></tbody>
+	</table></div>
+</section>
+
+<!-- ======================= 7. MÉTODOS ======================= -->
+<section class="seccion" id="metodos">
+	<h2><span class="num">7</span>Los 38 métodos</h2>
+	<p class="bajada">Agrupados por tarea. Abre una ficha para ver su firma, sus parámetros, un ejemplo y la salida real.</p>
+	<div class="herramientas" id="filtrosGrupo"></div>
+	<div class="aviso info" style="margin-top:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+		<div><p>Los ejemplos usan números de muestra (<code>5939876543NN</code>). Escribe los números <b>con el código de país y sin el 0 inicial</b> (<code>593987654321</code>); la DLL quita sola el <code>+</code>, los espacios, los puntos y los guiones. <span class="marca-m lic">Licencia</span> = necesita la licencia activada. <span class="marca-m cambia">Cambia la cuenta</span> = modifica algo en el WhatsApp vinculado.</p></div>
+	</div>
+	<div id="listaMetodos"></div>
+</section>
+
+<!-- ======================= 8. PROPIEDADES DE RESULTADO ======================= -->
+<section class="seccion" id="propiedades">
+	<h2><span class="num">8</span>Propiedades de resultado</h2>
+	<p class="bajada">De solo lectura: las llena la DLL. Asignarles un valor no hace nada.</p>
+	<div class="tabla"><table id="tablaResultados">
+		<thead><tr><th style="width:24%">Propiedad</th><th style="width:22%">La llena</th><th>Qué tiene</th></tr></thead>
+		<tbody></tbody>
+	</table></div>
+	<h3>Datos de un contacto (<code>WC_*</code>)</h3>
+	<p>Las llena <a href="#m-GetInfoContactWhatsApp"><code>GetInfoContactWhatsApp()</code></a>, que las vacía al empezar: si falla, no quedan datos del contacto anterior.</p>
+	<div class="tabla"><table id="tablaWC">
+		<thead><tr><th style="width:34%">Propiedad</th><th style="width:10%">Tipo</th><th>Qué tiene</th></tr></thead>
+		<tbody></tbody>
+	</table></div>
+</section>
+
+<!-- ======================= 9. TABLAS ======================= -->
+<section class="seccion" id="tablas">
+	<h2><span class="num">9</span>Tablas que crea la DLL</h2>
+	<p class="bajada">Tablas DBF libres, en la carpeta de trabajo (o en la ruta que asignes a su propiedad). Las fechas ya vienen en hora local.</p>
+
+	<div class="relacion">
+		<div class="ent"><b>ChatsUnRead</b><div class="clave">USERPHONE</div><div>NAMEUSER</div><div>UNREAD</div><div>SERIALIZED (ID del chat)</div></div>
+		<div class="une"><svg viewBox="0 0 60 20"><path d="M2 10h56" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="10" r="3" fill="currentColor"/><path d="M50 4l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>1 chat · N mensajes</div>
+		<div class="ent"><b>MsgChats</b><div class="clave">USERPHONE</div><div>BODYTEXT, TYPEMSG, ACK</div><div>MEDIAKEY, FILENAME</div><div>SERIALIZED (ID del mensaje)</div></div>
+	</div>
+	<div class="relacion">
+		<div class="ent"><b>Groups</b><div class="clave">IDGROUP</div><div>NAMEGROUP</div><div>ISREADONLY · ISMUTED</div></div>
+		<div class="une"><svg viewBox="0 0 60 20"><path d="M2 10h56" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="10" r="3" fill="currentColor"/><path d="M50 4l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>1 grupo · N integrantes</div>
+		<div class="ent"><b>Members</b><div class="clave">IDGROUP</div><div>NUMERO · NAME</div><div>ISADMIN · ISSUPERADM</div></div>
+	</div>
+
+	<div id="estructuras"></div>
+
+	<div class="aviso cuidado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+		<div>
+			<p><b>Cierra tus tablas de salida antes de llamar al método que las rehace.</b> Si siguen abiertas, la DLL reintenta unos 3 segundos y, si siguen tomadas, las deja como estaban con <code>ERROR</code> y el nombre del archivo.</p>
+			<p>Si una consulta falla, su tabla <b>queda como estaba</b>, con los datos anteriores. Con <code>nStatusCode</code> 200, los datos son de esta llamada (salvo <code>GetContacts</code> sin <code>tlOnline</code> y <code>GetContactsByGroup</code> con <code>tlDbfMembers</code>, que reúsan o agregan).</p>
+			<p>Dos objetos de <b>cuentas distintas</b> en la misma carpeta comparten las tablas: dale a cada uno sus propias rutas.</p>
+		</div>
+	</div>
+</section>
+
+<!-- ======================= 10. CÓDIGOS ======================= -->
+<section class="seccion" id="codigos">
+	<h2><span class="num">10</span>Códigos de error</h2>
+	<p class="bajada">Los valores de <code>nErrorCode</code> que más vas a ver. Escribe uno para saber qué significa.</p>
+	<div class="panel">
+		<div class="busca-codigo">
+			<label for="codigoBuscado"><b>nErrorCode</b></label>
+			<input id="codigoBuscado" type="text" inputmode="numeric" placeholder="ej. 131" autocomplete="off">
+			<span style="color:var(--muted);font-size:.88rem">Acepta cualquier número: HTTP, red de Windows o negativo.</span>
+		</div>
+		<div class="respuesta-codigo" id="respuestaCodigo" aria-live="polite">Escribe un código.</div>
+	</div>
+	<div class="tabla"><table id="tablaCodigos">
+		<thead><tr><th style="width:12%">Código</th><th>Qué pasó</th><th style="width:34%">Qué hacer</th></tr></thead>
+		<tbody></tbody>
+	</table></div>
+</section>
+
+<!-- ======================= 11. RECETAS ======================= -->
+<section class="seccion" id="recetas">
+	<h2><span class="num">11</span>Recetas</h2>
+	<p class="bajada">Flujos completos para los casos más comunes.</p>
+
+	<div class="panel" id="constructor">
+		<h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/></svg>Arma tu llamada a <code>SendSMSWhatsApp</code></h4>
+		<div class="form">
+			<label class="ancho">Destino: número, números separados por coma (hasta 50), grupo o lista de difusión
+				<input type="text" id="bDestino" value="593987654321"></label>
+			<label class="ancho">Texto del mensaje (o pie del archivo)
+				<input type="text" id="bTexto" value="Hola, tu pedido está listo."></label>
+			<label>Archivo local o URL (opcional)
+				<input type="text" id="bArchivo" placeholder="C:\MiApp\factura.pdf"></label>
+			<label>Tipo MIME (solo para una URL)
+				<select id="bTipo">
+					<option value="">(no es una URL)</option>
+					<option>image/jpeg</option><option>image/png</option><option>application/pdf</option>
+					<option>video/mp4</option><option>audio/ogg; codecs=opus</option><option>audio/mpeg</option>
+				</select></label>
+			<label>ID del mensaje al que respondes (opcional)
+				<input type="text" id="bResponde" placeholder="false_593987654321@c.us_3EB0…"></label>
+			<label>Nombre que se muestra del documento (opcional)
+				<input type="text" id="bNombre" placeholder="Factura-001.pdf"></label>
+			<div class="casillas">
+				<label><input type="radio" name="bClase" value="contacto" checked> Contacto(s)</label>
+				<label><input type="radio" name="bClase" value="grupo"> Grupo</label>
+				<label><input type="radio" name="bClase" value="difusion"> Lista de difusión</label>
+			</div>
+		</div>
+		<div class="codigo" data-lang="vfp"><div class="cab"><span>Tu llamada</span><button class="copiar">Copiar</button></div><pre id="bSalida"></pre></div>
+	</div>
+
+	<h3>Envío masivo con ritmo</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS.nWaitTime        = 8      && al menos 8 s entre un mensaje y el siguiente
+loWS.lValidRegistered = .T.    && valida antes de enviar (usa la caché DNSContacts)
+
+Select Clientes
+Scan
+	loWS.SendSMSWhatsApp(Alltrim(Clientes.Celular), 'Hola ' + Alltrim(Clientes.Nombre) + ', tu factura está lista.')
+	Replace Clientes.Estado With Iif(loWS.nStatusCode = 200, 'ENVIADO', 'ERROR ' + Transform(loWS.nErrorCode))
+EndScan</pre></div>
+	<p>El ritmo lo cuida la DLL: con <code>nWaitTime</code> mayor que 0, la pausa entre dos envíos de la <b>misma cuenta</b> se respeta aunque los hagan objetos o programas distintos del mismo usuario de Windows. Además, en ráfagas largas hace descansos cortos cada cierta cantidad de mensajes. Para una sola llamada a varios números, usa <code>SendSMSWhatsApp('n1,n2,n3', …)</code> (hasta 50) y revisa <code>cContactsNoSend</code>.</p>
+
+	<h3>Botones y su respuesta</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS.lNoWait = .F.     && necesario para recibir el ID del mensaje en cLastIdMessage
+loWS.SendButtons('593987654301', '¿Confirmas tu cita del lunes?', 'Sí;No;Reprogramar', 'Cita', 'Clínica Central')
+lcIdMio = loWS.cLastIdMessage
+
+*: … más tarde (el cliente ya respondió):
+lcRespuesta = loWS.GetResponseChat('593987654301', lcIdMio)
+If loWS.nStatusCode = 200 Then
+	? 'Eligió: ' + lcRespuesta      && p. ej. «Confirmar»
+EndIf</pre></div>
+
+	<h3>Bandeja de entrada: leer, descargar y marcar</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>loWS.lIncludeMediaKey = .T.            && para poder descargar los archivos
+loWS.GetChats(.T., .F., .T.)           && solo no leídos, sin marcarlos, con sus mensajes
+If loWS.nStatusCode = 200 Then
+	Use MsgChats Again Shared In 0 Alias Bandeja
+	Select Bandeja
+	Scan For !Empty(Bandeja.MediaKey)
+		loWS.DownloadMedia(Alltrim(Bandeja.UserPhone), Alltrim(Bandeja.Serialized), Alltrim(Bandeja.MediaKey), 'C:\MiApp\Adjuntos\')
+	EndScan
+	Use In Bandeja
+
+	*: Marcar como leídos los chats ya procesados
+	Use ChatsUnRead Again Shared In 0 Alias Chats
+	Select Chats
+	Scan
+		loWS.MarkReadChats(Alltrim(Chats.Serialized))
+	EndScan
+	Use In Chats
+EndIf</pre></div>
+
+	<h3>Validar una lista de números antes de una campaña</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>Select Clientes
+Scan
+	llTiene = loWS.IsWhatsAppContact(Alltrim(Clientes.Celular))
+	Do Case
+		Case llTiene
+			Replace Clientes.WhatsApp With 'SI'
+		Case InList(loWS.nErrorCode, 6, 11)
+			Replace Clientes.WhatsApp With 'NO'          && confirmado: no es una cuenta
+		Otherwise
+			Replace Clientes.WhatsApp With 'REVISAR'     && no se pudo saber (red, servidor)
+	EndCase
+EndScan</pre></div>
+
+	<h3>Vincular la cuenta (o volver a vincularla)</h3>
+	<div class="codigo" data-lang="vfp"><div class="cab"><span>Visual FoxPro</span><button class="copiar">Copiar</button></div><pre>If !loWS.ShowStatus(.F., .T.) Then
+	? loWS.cLastState                  && p. ej. UNPAIRED
+	loWS.GetQR()                       && abre la página del QR en el navegador
+	*: En el teléfono: WhatsApp › Dispositivos vinculados › Vincular un dispositivo, y escanea el QR
+EndIf</pre></div>
+</section>
+
+<!-- ======================= 12. BUENAS PRÁCTICAS ======================= -->
+<section class="seccion" id="buenas-practicas">
+	<h2><span class="num">12</span>Buenas prácticas y límites</h2>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:28%">Tema</th><th>Qué saber</th></tr></thead>
+		<tbody>
+			<tr><td><b>«OK» no es «entregado»</b></td><td>Un <code>OK</code> de un envío quiere decir que el servidor lo <b>aceptó</b>. La entrega la informa <code>GetAckMessage()</code> (2 = recibido, 3 = leído), y puede decir 0 un rato aunque ya haya llegado. Si necesitas certeza, confírmalo con el destinatario.</td></tr>
+			<tr><td><b>Mensajes duplicados</b></td><td>Una falla de conexión que no es un tiempo agotado se reintenta hasta dos veces. Si la conexión se cortó después de que el servidor recibió el envío, el mensaje puede llegar dos o tres veces. Si un envío falló por tiempo agotado (12002), revisa el chat antes de reenviar.</td></tr>
+			<tr><td><b>Doble clic</b></td><td>Tu aplicación espera mientras la DLL trabaja; un clic hecho durante la espera se atiende al terminar. Un segundo clic en tu botón «Enviar» envía otra vez: desactiva el botón mientras envías.</td></tr>
+			<tr><td><b>Notas de voz</b></td><td>Envía audios en <code>.ogg</code> (Opus), como las notas de voz de WhatsApp. Un <code>.mp3</code> puede llegar sin poder escucharse. El texto de un audio va en un mensaje aparte, enseguida.</td></tr>
+			<tr><td><b>Barras en el texto</b></td><td>El texto se toma como JSON: <code>\n</code> es un salto de línea, <code>\t</code> un tabulador. <code>C:\nuevo</code> llega como «C:», salto de línea y «uevo». Para mostrar una ruta, duplica la barra (<code>C:\\nuevo</code>) o usa <code>/</code>.</td></tr>
+			<tr><td><b>50 destinatarios</b></td><td>Es el máximo por llamada (código 40). Parte la lista.</td></tr>
+			<tr><td><b>Tamaño de los adjuntos</b></td><td>Lo fija tu licencia: lo muestra <code>ShowStatus()</code> («Máximo MB permitido en adjuntos»). Un archivo vacío se rechaza (198).</td></tr>
+			<tr><td><b>Ritmo entre programas</b></td><td>Se coordina entre los programas del <b>mismo usuario</b> de Windows en el <b>mismo equipo</b>. Equipos distintos o sesiones distintas de un Terminal Server no se coordinan: cada uno respeta <code>nWaitTime</code> por su cuenta.</td></tr>
+			<tr><td><b>Windows antiguos</b></td><td>En Windows 7 y anteriores la DLL se conecta por http (sin cifrar). En Windows 8 / Server 2012 sin la actualización de TLS 1.2, el primer intento por https falla y la DLL sigue por http hasta el día siguiente, con una línea en el log.</td></tr>
+			<tr><td><b>La caché de contactos</b></td><td><code>DNSContacts</code> guarda los números que el servidor confirmó, sin fecha. Si un número deja de usar WhatsApp, bórrala (<code>DNSContacts.dbf</code> y <code>.cdx</code>) o apágala con <code>lUseDNSContacts = .F.</code>.</td></tr>
+			<tr><td><b>GetQR en equipos compartidos</b></td><td>La página del QR lleva la cuenta del servicio en su dirección: queda en el historial del navegador. Úsalo en un equipo de confianza.</td></tr>
+			<tr><td><b>Programas de 64 bits</b></td><td>No pueden crear esta DLL (<code>0x800A01AD</code>).</td></tr>
+			<tr><td><b>Datos que el servidor no entrega</b></td><td><code>cPushName</code>, <code>cPlataform</code> y varias <code>WC_*</code> (empresa, verificación, correo, sitio web, dirección, ubicación) quedan vacías. En <code>Members</code>, algunos integrantes llegan con un identificador <code>@lid</code> en lugar de su número.</td></tr>
+		</tbody>
+	</table></div>
+</section>
+
+<!-- ======================= 13. PROBLEMAS ======================= -->
+<section class="seccion" id="problemas">
+	<h2><span class="num">13</span>Solución de problemas</h2>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:32%">Síntoma</th><th>Causa</th><th style="width:32%">Solución</th></tr></thead>
+		<tbody>
+			<tr><td><code>regsvr32</code> falla con «No se pudo cargar el módulo» (código 3)</td><td>Falta el runtime de VFP 9.</td><td>Copia los <a href="#runtime">tres archivos</a> junto a la DLL o instala el runtime.</td></tr>
+			<tr><td><code>regsvr32</code> dice que no tiene permisos</td><td>La consola no se abrió como administrador.</td><td>Ábrela con <i>Ejecutar como administrador</i>.</td></tr>
+			<tr><td><code>CreateObject</code>: <code>0x8007007E</code> «No se encontró el módulo especificado»</td><td>Falta el runtime.</td><td>Igual que la primera fila.</td></tr>
+			<tr><td><code>CreateObject</code>: <code>0x80004005</code> «Error no especificado», solo con usuarios sin permisos</td><td>La DLL está en <code>Program Files</code> y el runtime no puede crear <code>smswhatsappr1.dll</code>.</td><td>Ver el <a href="#program-files">aviso de la sección 2</a>.</td></tr>
+			<tr><td><code>CreateObject</code>: <code>0x800A01AD</code> «El componente ActiveX no puede crear el objeto»</td><td>Programa de 64 bits, o la DLL no está registrada.</td><td>Compila para x86 o usa el <code>cscript</code> de <code>SysWOW64</code>, y regístrala.</td></tr>
+			<tr><td>VFP: «Class definition SMSWHATSAPP.APIWHATSAPP is not found»</td><td>La DLL no está registrada en ese equipo.</td><td>Regístrala con <code>regsvr32</code>.</td></tr>
+			<tr><td><code>GetInfoDeveloper()</code> muestra otra versión</td><td>Quedó registrada otra copia de la DLL.</td><td>Vuelve a registrar esta con <code>regsvr32</code>.</td></tr>
+			<tr><td>Todo da <code>nErrorCode</code> 3</td><td>El objeto está en DEMO.</td><td>Activa con <code>ActivateWithApiToken()</code> o <code>LoadLicense()</code> + <code>ValidateClient()</code>.</td></tr>
+			<tr><td>Los mensajes llegan con un pie con datos del equipo</td><td>El objeto envía como DEMO: no se activó o la activación falló.</td><td>Revisa que la activación dé 200 antes de enviar.</td></tr>
+			<tr><td><code>ShowStatus(.F., .T.)</code> da <code>.F.</code> y <code>cLastState</code> dice <code>UNPAIRED</code></td><td>La cuenta de WhatsApp no está vinculada al servicio.</td><td>Vincúlala con <code>GetQR()</code>.</td></tr>
+			<tr><td><code>nErrorCode</code> 204</td><td>Respondió una página web (filtro, portal de acceso a Internet) en lugar del servidor.</td><td>Revisa la red o el proxy.</td></tr>
+			<tr><td><code>nErrorCode</code> 12002, 12007, 12029</td><td>Tiempo agotado, nombre no resuelto, sin conexión.</td><td>Revisa la conexión a Internet y el firewall.</td></tr>
+			<tr><td>Las tablas no se actualizan, con <code>ERROR</code> y el nombre del archivo</td><td>Tu aplicación (o un antivirus o una copia de seguridad) las tiene abiertas.</td><td>Ciérralas antes de llamar al método.</td></tr>
+			<tr><td><code>nErrorCode</code> 134</td><td>Llamaste a un método del mismo objeto mientras otro trabajaba (desde un Timer, por ejemplo).</td><td>Espera a que termine, o usa otro objeto.</td></tr>
+			<tr><td>El log dice que la conexión «sigue con http»</td><td>Ese Windows no conecta por https (falta TLS 1.2).</td><td>Actualiza Windows o instala la actualización de TLS 1.2.</td></tr>
+		</tbody>
+	</table></div>
+
+	<h3>Preguntas frecuentes</h3>
+	<div class="faq">
+		<details><summary>¿Puedo crear varios objetos a la vez?</summary><p>Sí. Cada uno tiene su sesión de datos y su resultado. Si son de cuentas distintas y trabajan en la misma carpeta, dale a cada uno sus propias rutas de tablas.</p></details>
+		<details><summary>¿Tengo que activar cada vez que creo el objeto?</summary><p>Sí: la activación es del objeto. Por eso conviene crear uno al iniciar tu aplicación y reusarlo.</p></details>
+		<details><summary>¿Puedo cambiar el idioma de los mensajes?</summary><p>Sí, con <code>cLanguage</code>: <code>'ES'</code> (español, por defecto) o <code>'EN'</code> (inglés). <code>'FR'</code>, <code>'PT_BR'</code>, <code>'PT_PT'</code> e <code>'IT'</code> se aceptan y usan el inglés donde no tienen texto propio. Ejemplo en inglés: <code>OK: [593987654301 is an active WhatsApp account.]</code></p></details>
+		<details><summary>¿Cómo sé el ID de un mensaje recibido?</summary><p>En la columna <code>SERIALIZED</code> de <code>MsgChats</code>. Los recibidos empiezan con <code>false_</code> y los que envió tu cuenta con <code>true_</code>.</p></details>
+		<details><summary>¿Qué pasa a la medianoche si el objeto sigue abierto?</summary><p>Nada especial: un objeto puede seguir abierto de un día al otro, y las esperas que cruzan la medianoche terminan cuando deben. El cupo diario vuelve a 0.</p></details>
+		<details><summary>¿Dónde están los datos de soporte?</summary><p>En la <a href="#soporte">sección 15</a>. <code>GetInfoDeveloper()</code> también los devuelve, junto con la versión de la DLL.</p></details>
+	</div>
+</section>
+
+<!-- ======================= 14. VERSIÓN ANTERIOR ======================= -->
+<section class="seccion" id="version-anterior">
+	<h2><span class="num">14</span>Si vienes de la versión anterior</h2>
+	<p class="bajada">El ProgID, los 38 métodos con sus parámetros, las propiedades, las tablas y el archivo de licencia son los mismos. Si tu código decide con <code>nStatusCode</code> y no compara textos, casi nada te afecta. Revisa esto:</p>
+	<div class="tabla"><table>
+		<thead><tr><th style="width:34%">Si tu código…</th><th>Ahora…</th></tr></thead>
+		<tbody>
+			<tr><td>Compara el texto de <code>cLastError</code></td><td>Los textos se revisaron (el formato <code>OK: [...]</code> / <code>ERROR: [...]</code> no cambia). Decide con <code>nStatusCode</code> y la causa con <code>nErrorCode</code>.</td></tr>
+			<tr><td>Reintenta todo un envío a varios cuando <code>nStatusCode</code> es 0</td><td>Da 200 si salió a alguno. Reintenta solo los de <code>cContactsNoSend</code>.</td></tr>
+			<tr><td>Toma como OK un <code>LoadLicense()</code> de un archivo que no existe</td><td>Carga la DEMO como antes, pero lo dice: <code>ERROR</code> con <code>nErrorCode</code> 35.</td></tr>
+			<tr><td>Usa una tabla vacía como señal de que la consulta falló</td><td>Si falla, la tabla queda como estaba. Decide con <code>nStatusCode</code>.</td></tr>
+			<tr><td>Atrapa excepciones COM de la DLL</td><td>Ya no llegan: los métodos devuelven <code>ERROR</code> y <code>nErrorCode</code> negativo.</td></tr>
+			<tr><td>Usa <code>lAsynchronousPro = .T.</code></td><td>Se acepta pero no hace nada: toda petición espera su respuesta, sin congelar la aplicación.</td></tr>
+			<tr><td>Usa <code>WaitTime()</code> de más de 60 s</td><td>La pausa nunca pasa de 60 s.</td></tr>
+			<tr><td>Toma todo <code>.F.</code> de <code>IsWhatsAppContact()</code> como «no tiene WhatsApp»</td><td>Solo <code>nErrorCode</code> 6 u 11 es «no es una cuenta»; otro código es «no se pudo saber».</td></tr>
+			<tr><td>Usa enlace temprano (referencia COM en .NET o VB6) o el CLSID</td><td>Cambiaron los identificadores internos: vuelve a generar la referencia. Con <code>CreateObject</code> (enlace tardío) no te afecta.</td></tr>
+			<tr><td>Usa miembros genéricos de VFP (<code>Name</code>, <code>Tag</code>, <code>AddProperty</code>…)</td><td>Ya no se publican; tampoco eran parte de la API.</td></tr>
+			<tr><td>Envía notas de voz en <code>.webm</code> o <code>.3gp</code></td><td>Salen como video. Usa <code>.ogg</code> (Opus).</td></tr>
+			<tr><td>Instala sobre la versión anterior</td><td>Borra una vez <code>DNSContacts.dbf</code> y <code>DNSContacts.cdx</code> de la carpeta de trabajo; la DLL la vuelve a crear.</td></tr>
+		</tbody>
+	</table></div>
+	<p>Nuevo: <code>nErrorCode</code> (la causa en número) y <code>nLogLevel</code> (el log diario).</p>
+</section>
+
+<!-- ======================= 15. SOPORTE ======================= -->
+<section class="seccion" id="soporte">
+	<h2><span class="num">15</span>Soporte</h2>
+	<p class="bajada">Para licencias, el ID del servicio, dudas de implementación o para reportar un problema.</p>
+	<div class="datos" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))">
+		<div class="dato"><b>Jairo Hernán Cedeño Adrián</b><span>Desarrollador</span></div>
+		<div class="dato"><b><a href="tel:+593984958499">+593 984 958 499</a></b><span>Teléfono y <a href="https://wa.me/593984958499" target="_blank" rel="noopener">WhatsApp</a></span></div>
+		<div class="dato"><b><a href="mailto:soporte@jca.ec">soporte@jca.ec</a></b><span>Correo electrónico</span></div>
+		<div class="dato"><b><a href="https://mywhatsapp.jca.ec/" target="_blank" rel="noopener">mywhatsapp.jca.ec</a></b><span>Sitio web y panel de control (ahí está también el ID del servicio)</span></div>
+	</div>
+	<p>Al reportar un problema, incluye la versión (<code>GetInfoDeveloper()</code>), el método que llamaste, <code>cLastError</code> y <code>nErrorCode</code>, y si puedes el log del día con <code>nLogLevel = 2</code> (<a href="#resultados">sección 5</a>). Nunca envíes tu token ni tu archivo <code>.cfg</code> por un canal público.</p>
+</section>
+
+<footer>
+	<p><b>SMSWhatsApp</b> · <code>smswhatsapp.ApiWhatsApp</code> · versión 2026.10.09 · DLL COM de 32 bits para el runtime de Visual FoxPro 9. Soporte: <a href="mailto:soporte@jca.ec">soporte@jca.ec</a> · <a href="#soporte">más datos</a>.</p>
+	<p>Los ejemplos usan datos de muestra: números <code>5939876543NN</code>, IDs de grupo <code>120363…@g.us</code> e IDs de mensaje inventados. Los textos de salida son los que devuelve la DLL con <code>cLanguage = 'ES'</code>.</p>
+</footer>
+
+</main>
+</div>
+
+<script>
+(function () {
+'use strict';
+var R = String.raw;
+
+/* ======================= CONFIGURACIÓN ======================= */
+var CONFIG = [
+	['nWaitTime', '0', R`Segundos mínimos entre un mensaje y el siguiente de la misma cuenta (0 a 120). Con 0, sin pausa. Rige también <code>SendButtons</code>, <code>ReactMessage</code> y <code>ResendMessage</code>.`],
+	['lValidRegistered', '.T.', R`<code>.T.</code>: antes de cada envío, valida que el destino sea una cuenta de WhatsApp (con la caché <code>DNSContacts</code>). <code>IsWhatsAppContact()</code> valida siempre.`],
+	['lNoWait', '.T.', R`<code>.T.</code>: el servidor responde sin esperar la confirmación de WhatsApp (más rápido). <code>.F.</code>: espera esa confirmación y deja el ID del mensaje en <code>cLastIdMessage</code>.`],
+	['cLanguage', "'ES'", R`Idioma de <code>cLastError</code>, de <code>cStatusMessage</code> y del pie de fecha: <code>'ES'</code> o <code>'EN'</code> (<code>'FR'</code>, <code>'PT_BR'</code>, <code>'PT_PT'</code> e <code>'IT'</code> usan el inglés donde no tienen texto).`],
+	['lAddDateTime', '.F.', R`<code>.T.</code>: agrega la fecha y la hora al pie de cada mensaje, en el idioma de <code>cLanguage</code>.`],
+	['lSeparateTextAdj', '.F.', R`<code>.F.</code>: el texto va como pie del archivo adjunto. <code>.T.</code>: se envía en un mensaje aparte.`],
+	['nTyping', '0', R`Segundos que se muestra «escribiendo…» antes del mensaje (0 a 120).`],
+	['lRandonTyping', '.F.', R`<code>.T.</code>: usa un tiempo de «escribiendo…» al azar, de 0 a 3 segundos, cuando <code>lNoWait = .F.</code>.`],
+	['lControlBan', '.F.', R`<code>.T.</code>: evita enviar a números que tienen bloqueada a tu cuenta.`],
+	['lCheckInternet', '.F.', R`<code>.T.</code>: antes de <code>SendSMSWhatsApp</code> comprueba que haya Internet (si no, 31) y que el servidor responda (si no, 32). Cada prueba se corta a los 10 s como máximo.`],
+	['nMaxAllMsgChats', '10', R`Máximo de mensajes por chat cuando <code>GetChats()</code> trae los mensajes (hasta 50).`],
+	['lIncludeMediaKey', '.F.', R`<code>.T.</code>: <code>GetChats()</code> y <code>GetChat()</code> llenan <code>MEDIAKEY</code> en <code>MsgChats</code>, para descargar los archivos con <code>DownloadMedia()</code>.`],
+	['lUseDNSContacts', '.T.', R`<code>.F.</code>: no usa la caché local de números validados (<code>DNSContacts</code>).`],
+	['nLogLevel', '1', R`Log diario: 0 = apagado, 1 = errores, 2 = todo (<a href="#resultados">sección 5</a>). Otro valor se ignora.`],
+	['cDNSContacts', R`<carpeta>\DNSContacts.dbf`, R`Ruta de la caché de números validados.`],
+	['cCurContacts', R`<carpeta>\WSContacts.dbf`, R`Ruta de la tabla de contactos de <code>GetContacts()</code>.`],
+	['cTableGroups', R`<carpeta>\Groups.dbf`, R`Ruta de la tabla de grupos.`],
+	['cTableMembers', R`<carpeta>\Members.dbf`, R`Ruta de la tabla de integrantes de los grupos.`],
+	['cTableChats', R`<carpeta>\ChatsUnRead.dbf`, R`Ruta de la tabla de chats.`],
+	['cTableMsgChats', R`<carpeta>\MsgChats.dbf`, R`Ruta de la tabla de mensajes.`],
+	['lAuthenticate', '.F.', R`Estado de autenticación de la cuenta: lo actualiza <code>ShowStatus()</code>.`],
+	['lAsynchronousPro', '.F.', R`Sin efecto: se conserva por compatibilidad. Toda petición espera su respuesta sin congelar la aplicación.`],
+	['aDataFile', '—', R`Arreglo declarado por compatibilidad, sin uso.`]
+];
+
+/* ======================= RESULTADOS ======================= */
+var RESULTADOS = [
+	['nStatusCode', 'Todos', R`200 = bien, 0 = error.`],
+	['nErrorCode', 'Todos', R`Código real del error, 0 sin error (<a href="#codigos">sección 10</a>).`],
+	['cLastError', 'Todos', R`<code>OK: [...]</code> o <code>ERROR: [...]</code>. <code>WaitTime()</code> y <code>GetInfoDeveloper()</code> no lo cambian.`],
+	['cLastIdMessage', 'Envíos', R`ID del último mensaje que salió (con <code>lNoWait = .F.</code>). En un envío a varios, el del último que salió. En un audio con texto, el del audio.`],
+	['cContactsSend', 'SendSMSWhatsApp', R`Destinatarios a los que se envió, cada uno seguido de una coma: <code>593987654301,593987654302,</code>.`],
+	['cContactsNoSend', 'SendSMSWhatsApp', R`Destinatarios a los que no se pudo enviar (mismo formato). Son los que debes reintentar.`],
+	['cContactsNoReg', 'IsWhatsAppContact, envíos, grupos', R`Números confirmados como no registrados en WhatsApp; en los métodos de grupos, los que no se pudieron agregar, quitar, promover o degradar.`],
+	['cLastSendTime', 'SendSMSWhatsApp', R`Tiempo que tomó el último envío: <code>00:00:00:031 (031 milisegundos)</code>.`],
+	['cLastIdGroup', 'CreateGroup', R`ID del grupo creado; vacío si no se creó.`],
+	['cJsonContactWA', 'SendContactsToFile', R`Los contactos en JSON: <code>{"1":{"numero":"593987654301","nombre":"Ana Prueba"},…}</code>.`],
+	['cAckMessage', 'GetAckMessage', R`El ACK del mensaje como texto (<code>'-1'</code> a <code>'4'</code>); vacío si no se encontró.`],
+	['cStatusMessage', 'GetAckMessage', R`Su estado en palabras: Con error, Pendiente, Enviado, Recibido, Leído, Reproducido.`],
+	['cIdMsgAnswered', 'GetResponseChat', R`ID del mensaje que respondió.`],
+	['cMsgAnswered', 'GetResponseChat', R`Texto de la respuesta (el botón elegido o el mensaje que cita al tuyo).`],
+	['cLastState', 'ShowStatus', R`Estado de la cuenta en el servidor: <code>CONNECTED</code>, <code>UNPAIRED</code>, <code>UNPAIRED_IDLE</code>…`],
+	['cExpire', 'ShowStatus', R`Fecha y hora de vencimiento del servicio.`],
+	['cAliasService', 'ShowStatus', R`Alias o descripción del servicio.`],
+	['cPhone', 'ShowStatus', R`Número del teléfono vinculado.`],
+	['cTechnicianPhone', 'ShowStatus', R`Teléfono del responsable o técnico del servicio.`],
+	['cPushName', 'ShowStatus', R`Nombre de perfil de la cuenta. El servidor no lo entrega: queda vacío.`],
+	['cPlataform', 'ShowStatus', R`Plataforma del teléfono vinculado. El servidor no la entrega: queda vacía.`]
+];
+
+var WC = [
+	['WC_PhoneNumber', 'C', R`Número del contacto.`],
+	['WC_Name', 'C', R`Nombre con que lo tienes guardado.`],
+	['WC_PushName', 'C', R`Su nombre de perfil de WhatsApp.`],
+	['WC_ShortName', 'C', R`Nombre corto.`],
+	['WC_isWaContact', 'L', R`.T. si es una cuenta de WhatsApp.`],
+	['WC_isMyContact', 'L', R`.T. si está en tu agenda.`],
+	['WC_isWaBlocked', 'L', R`.T. si lo bloqueaste.`],
+	['WC_isMe', 'L', R`.T. si es tu propia cuenta.`],
+	['WC_UrlProfilePicture', 'C', R`URL de su foto de perfil; vacía si no tiene o no es pública.`],
+	['WC_VerifiedLevel', 'N', R`Nivel de verificación: siempre un número entero (0 sin verificación).`],
+	['WC_isWaBusiness, WC_isWaEnterprise, WC_isActiveUser', 'L', R`El servidor no los entrega: quedan en .F.`],
+	['WC_VerifiedName, WC_Description, WC_Categories, WC_Email, WC_WebSite, WC_Address, WC_Latitude, WC_Longitude, WC_TimeZone', 'C', R`El servidor no los entrega: quedan vacías.`]
+];
+
+/* ======================= TABLAS ======================= */
+var TABLAS = [
+	{ n: 'WSContacts', p: 'cCurContacts', m: 'GetContacts()', d: 'Los contactos de la cuenta vinculada.', c: [
+		['NUMERO', 'C(20)', 'Número del contacto (vacío en una fila de grupo).'],
+		['NOMBRE', 'C(60)', 'Nombre de agenda; si no tiene, su nombre de perfil; si no tiene ninguno, «<<Sin Registrar>>».'],
+		['TIPO', 'C(1)', 'C = contacto, G = grupo.']] },
+	{ n: 'Groups', p: 'cTableGroups', m: 'GetContactsGroups()', d: 'Los grupos de la cuenta vinculada.', c: [
+		['IDGROUP', 'C(40)', 'ID del grupo: 120363000000000001@g.us.'],
+		['NAMEGROUP', 'C(80)', 'Nombre del grupo.'],
+		['ISREADONLY', 'L', '.T. si solo los administradores pueden enviar.'],
+		['ISMUTED', 'L', '.T. si está silenciado.']] },
+	{ n: 'Members', p: 'cTableMembers', m: 'GetContactsGroups(…, .T.) · GetContactsByGroup()', d: 'Los integrantes de los grupos.', c: [
+		['IDGROUP', 'C(40)', 'ID del grupo.'],
+		['IDCHAT', 'C(20)', 'ID del integrante: 593987654301@c.us (o un @lid).'],
+		['NUMERO', 'C(20)', 'Su número (o el @lid, si WhatsApp no da el número).'],
+		['NAME', 'C(80)', 'Nombre de agenda.'],
+		['PUSHNAME', 'C(80)', 'Nombre de perfil.'],
+		['SHORTNAME', 'C(80)', 'Nombre corto.'],
+		['ISADMIN', 'L', '.T. si es administrador.'],
+		['ISSUPERADM', 'L', '.T. si es el creador del grupo.']] },
+	{ n: 'ChatsUnRead', p: 'cTableChats', m: 'GetChats() · DeleteChats()', d: 'Los chats (todos, o solo los no leídos).', c: [
+		['REGISTRO', 'I', 'Número de fila.'],
+		['USERPHONE', 'C(30)', 'Número del contacto o ID del grupo.'],
+		['NAMEUSER', 'C(80)', 'Nombre del chat, entero.'],
+		['LASTUPDATE', 'T', 'Último movimiento, en hora local.'],
+		['UNREAD', 'N(4)', 'Mensajes sin leer.'],
+		['SERIALIZED', 'C(40)', 'ID del chat: 593987654301@c.us o 120363…@g.us.'],
+		['ARCHIVED', 'L', '.T. si está archivado.'],
+		['PINNED', 'L', '.T. si está fijado.'],
+		['ISMUTED', 'L', '.T. si está silenciado.']] },
+	{ n: 'MsgChats', p: 'cTableMsgChats', m: 'GetChats(…, …, .T.) · GetChat()', d: 'Los mensajes de los chats. Tiene campos memo (.fpt).', c: [
+		['REGISTRO', 'I', 'Número de fila.'],
+		['USERPHONE', 'C(30)', 'Número del chat (une con ChatsUnRead).'],
+		['NAMEUSER', 'C(80)', 'Nombre del chat.'],
+		['SENDFROM', 'C(30)', 'Quién lo envió (ID).'],
+		['SENDTO', 'C(30)', 'A quién (ID).'],
+		['DATE_TIME', 'T', 'Fecha y hora, en hora local.'],
+		['ACK', 'C(1)', 'Estado de entrega (ver GetAckMessage).'],
+		['TYPEMSG', 'C(20)', 'Tipo: chat, image, video, ptt, audio, document, location…'],
+		['ISREACTION', 'L', '.T. si es una reacción.'],
+		['ISQUOTED', 'L', '.T. si cita a otro mensaje.'],
+		['ISFORWARDE', 'L', '.T. si es reenviado.'],
+		['BODYTEXT', 'M', 'Texto del mensaje, entero y sin escapes.'],
+		['DEVICETYPE', 'C(15)', 'Dispositivo de origen (android, ios, web…).'],
+		['MEDIAKEY', 'C(80)', 'Clave del archivo (con lIncludeMediaKey = .T.).'],
+		['FILENAME', 'C(80)', 'Nombre del archivo adjunto.'],
+		['CAPTIONADJ', 'C(150)', 'Pie del archivo adjunto.'],
+		['SERIALIZED', 'C(80)', 'ID del mensaje: false_… (recibido) o true_… (enviado por tu cuenta).'],
+		['QUOTEDID', 'C(80)', 'ID del mensaje citado.'],
+		['QUOTEDTYPE', 'C(20)', 'Tipo del mensaje citado.'],
+		['QUOTEDBODY', 'M', 'Texto del mensaje citado.'],
+		['LATITUDE', 'C(40)', 'Latitud (mensajes de ubicación).'],
+		['LONGITUDE', 'C(40)', 'Longitud (mensajes de ubicación).']] },
+	{ n: 'DNSContacts', p: 'cDNSContacts', m: 'las validaciones (IsWhatsAppContact y los envíos)', d: 'Caché de números y grupos ya confirmados por el servidor. Se crea con la primera validación.', c: [
+		['REGISTRO', 'I', 'Número de fila.'],
+		['CONTACTO', 'C(30)', 'Número validado.'],
+		['GRUPO_DIFU', 'C(80)', 'Nombre de grupo o lista de difusión validado.']] }
+];
+
+/* ======================= CÓDIGOS ======================= */
+var CODIGOS = [
+	[0, 'Sin error.', '—'],
+	[3, 'Este método necesita una licencia válida y activada.', 'Activa el objeto (sección 4).'],
+	[4, 'Se agotó el cupo diario de mensajes (DEMO: 20 por día y por objeto).', 'Activa la licencia o espera al día siguiente.'],
+	[6, 'El número está vacío o empieza con 0: así escrito no puede ser una cuenta de WhatsApp (no se consulta al servidor).', 'Escríbelo con el código de país y sin el 0 inicial (593987654321).'],
+	[11, 'El servidor confirmó que el número (o el grupo) no está registrado en WhatsApp.', 'Corrige el dato; no reintentes.'],
+	[14, 'El grupo es de solo lectura: solo sus administradores pueden enviar mensajes.', 'Envía desde una cuenta administradora o cambia la regla con SetOnlyAdmins.'],
+	[26, 'El contacto no tiene foto de perfil o no es pública (GetUrlProfilePicture devuelve «ERROR: [Not Found]»).', 'Nada que corregir.'],
+	[29, 'El archivo o la carpeta no existe, o su ruta no es válida.', 'Revisa la ruta.'],
+	[31, 'Con lCheckInternet = .T.: no hay conexión a Internet.', 'Revisa la red.'],
+	[32, 'Con lCheckInternet = .T.: hay Internet, pero el servidor de SMSWhatsApp no responde.', 'Intenta más tarde.'],
+	[33, 'No se pudo activar: el token (o el ID) está vacío o no es válido.', 'Revisa el dato que te entregó el proveedor.'],
+	[35, 'No se encontró el archivo de licencia: se cargó la DEMO.', 'Revisa la ruta del .cfg.'],
+	[40, 'Solo se permiten 50 destinatarios por envío.', 'Parte la lista.'],
+	[107, 'ReactMessage sin el ID del mensaje o sin el emoji.', 'Pasa los dos parámetros.'],
+	[131, 'El servidor respondió con un error; su motivo va en cLastError.', 'Lee cLastError: el motivo lo da el servidor.'],
+	[134, 'Llegó una llamada mientras el objeto atendía otra.', 'Espera a que termine la llamada en curso.'],
+	[136, 'El archivo está abierto en otro programa (en LoadLicense: se cargó la DEMO).', 'Ciérralo y vuelve a intentarlo.'],
+	[197, 'El servidor respondió a un envío sin confirmarlo; su motivo, si lo dio, va en cLastError.', 'Revisa el chat antes de reenviar.'],
+	[198, 'El archivo que se quiere enviar está vacío.', 'Revisa el archivo.'],
+	[199, 'La desvinculación (DeAuthenticate) solo se puede pedir al servidor de SMSWhatsApp.', '—'],
+	[201, 'GetQR no pudo abrir el navegador.', 'Revisa el navegador predeterminado del equipo.'],
+	[204, 'La respuesta no es del servidor: un filtro web, un portal de acceso a Internet o una página de error. En un envío, aunque la página diga «success».', 'Trátalo como un error de conexión: revisa la red o el proxy.'],
+	[205, 'SendContactsToFile o DownloadMedia: la extensión es de una tabla, un programa o una configuración (.dbf, .prg, .exe, .cfg, .ini, .js…).', 'Usa otra extensión (.txt, .csv, .jpg, .pdf…).'],
+	[12002, 'Falla de red de Windows: tiempo agotado.', 'Si era un envío, revisa el chat antes de reenviar.'],
+	[12007, 'Falla de red de Windows: no se pudo resolver el nombre del servidor.', 'Revisa el DNS o la conexión.'],
+	[12029, 'Falla de red de Windows: no se pudo conectar.', 'Revisa la conexión y el firewall.'],
+	[12157, 'Falla de red de Windows: canal seguro incompatible.', 'Actualiza Windows (TLS 1.2).'],
+	[12175, 'Falla de red de Windows: error de seguridad del canal (típico de un Windows sin TLS 1.2).', 'La DLL reintenta por http; actualiza Windows.'],
+	[-1705, 'Error de VFP: un archivo abierto en otro programa o sin permiso.', 'Cierra el archivo o revisa los permisos de la carpeta.'],
+	[-108, 'Error de VFP: una tabla que otro programa tiene tomada.', 'Cierra la tabla y vuelve a llamar.'],
+	[-109, 'Error de VFP: un registro que otro programa tiene tomado.', 'Vuelve a llamar.'],
+	[-3, 'Error de VFP: el archivo está en uso.', 'Cierra la tabla y vuelve a llamar.'],
+	[-1, 'Error de VFP: un archivo no existe (por ejemplo, SendContactsToFile sin haber llamado antes a GetContacts).', 'Revisa el orden de las llamadas; el detalle va en cLastError.']
+];
+
+function describirCodigo(n) {
+	for (var i = 0; i < CODIGOS.length; i++) {
+		if (CODIGOS[i][0] === n) { return { t: CODIGOS[i][1], h: CODIGOS[i][2] }; }
+	}
+	if (n >= 400 && n <= 599) { return { t: 'El servidor respondió con el código HTTP ' + n + (n === 404 ? ' (no encontrado)' : n >= 500 ? ' (error del servidor)' : '') + '.', h: 'Trátalo como cualquier error; si se repite, consulta al proveedor del servicio.' }; }
+	if (n >= 12001 && n <= 12999) { return { t: 'Falla de red de Windows (WinHTTP ' + n + ').', h: 'Revisa la conexión a Internet, el proxy y el firewall.' }; }
+	if (n <= -1426 && n >= -1429) { return { t: 'Falla del componente HTTP de Windows sin código de red.', h: 'Revisa la conexión; el detalle va en cLastError.' }; }
+	if (n < 0) { return { t: 'Error interno de VFP número ' + (-n) + '. No siempre es una falla de programación (un archivo tomado, por ejemplo).', h: 'Lee cLastError: trae el mensaje y, entre corchetes, el procedimiento y la línea.' }; }
+	if (n > 0 && n < 400) { return { t: 'Código de mensaje de la DLL: el texto exacto está en cLastError.', h: 'Lee cLastError.' }; }
+	return null;
+}
+
+/* ======================= MÉTODOS ======================= */
+var GRUPOS = [
+	{ id: 'licencia', t: 'Licencia y activación', d: 'Activan el objeto. Sin activar, funciona como DEMO.' },
+	{ id: 'envios', t: 'Envíos', d: 'Todo lo que sale desde tu cuenta: mensajes, archivos, botones, reacciones y reenvíos.' },
+	{ id: 'contactos', t: 'Contactos', d: 'Validar números y consultar la agenda y los perfiles.' },
+	{ id: 'grupos', t: 'Grupos', d: 'Consultar y administrar los grupos de la cuenta.' },
+	{ id: 'chats', t: 'Chats y mensajes', d: 'Leer lo recibido, descargar archivos, saber si un mensaje llegó y ordenar los chats.' },
+	{ id: 'sesion', t: 'Sesión y estado', d: 'El estado de la cuenta en el servidor y su vinculación con el teléfono.' },
+	{ id: 'utiles', t: 'Utilidades', d: 'Pausas y datos del proveedor.' }
+];
+
+var M = [
+/* ---------- LICENCIA ---------- */
+{ n: 'ActivateWithApiToken', g: 'licencia', firma: R`ActivateWithApiToken(tcToken As String) As String`,
+  r: 'Activa el objeto con el ID del servicio (token de la API REST). La forma recomendada.',
+  d: R`<p>Deja el objeto activado con el ID de tu servicio, sin archivo de licencia. No consulta al servidor: confírmalo enseguida con <a href="#m-ShowStatus"><code>ShowStatus(.F., .T.)</code></a>. Un ID vacío solo avisa (33) y deja el objeto como estaba.</p>`,
+  p: [['tcToken', 'C', R`El ID del servicio que te entregó el proveedor (también está en el panel de control de tu servicio).`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`lcRes = loWS.ActivateWithApiToken('TU-ID-DE-SERVICIO')
+If loWS.nStatusCode = 200 And loWS.ShowStatus(.F., .T.) Then
+	? 'Activada y vinculada'
+EndIf`,
+  sal: R`OK: [La activación se realizó correctamente.]
+nStatusCode = 200   nErrorCode = 0
+
+* Con el ID vacío:
+ERROR: [No se pudo realizar la activación: el token está vacío o no es válido.]
+nStatusCode = 0     nErrorCode = 33` },
+
+{ n: 'LoadLicense', g: 'licencia', firma: R`LoadLicense(tcFileLicense As String) As String`,
+  r: 'Carga un archivo de licencia .cfg. No activa: después va ValidateClient().',
+  d: R`<p>Lee los datos cifrados del <code>.cfg</code>. El objeto sigue como DEMO hasta que <a href="#m-ValidateClient"><code>ValidateClient()</code></a> acepte el token. Al crear el objeto, si hay un <code>SMSWhatsApp.cfg</code> en la carpeta de trabajo, se carga solo.</p>`,
+  p: [['tcFileLicense', 'C', R`Ruta y nombre del <code>.cfg</code>. Sin carpeta, se busca en la carpeta de trabajo del objeto.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.LoadLicense('C:\MiApp\SMSWhatsApp.cfg')
+? loWS.nStatusCode, loWS.cLastError`,
+  sal: R`OK: [Licencia cargada correctamente.]
+
+* Si el archivo no existe (queda la DEMO):
+ERROR: [No se encontró el archivo de configuración. Se cargó la versión DEMO. Para usar todas las funciones, adquiere una licencia.]
+nStatusCode = 0     nErrorCode = 35`,
+  notas: [R`Si otro programa tiene el archivo abierto en exclusiva, espera hasta medio segundo y, si sigue tomado, carga la DEMO con el código 136.`] },
+
+{ n: 'ValidateClient', g: 'licencia', firma: R`ValidateClient(tcToken As String) As String`,
+  r: 'Activa la licencia cargada con su token.',
+  d: R`<p>Comprueba el token contra la licencia que cargó <a href="#m-LoadLicense"><code>LoadLicense()</code></a>. Si coincide, el objeto deja la DEMO y funciona completo. La comprobación es local: no consulta al servidor.</p>`,
+  p: [['tcToken', 'C', R`El token de activación que vino con tu <code>.cfg</code>.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.LoadLicense('C:\MiApp\SMSWhatsApp.cfg')
+loWS.ValidateClient('TU-TOKEN-DE-ACTIVACION')
+? loWS.nStatusCode, loWS.cLastError`,
+  sal: R`OK: [La activación se realizó correctamente.]
+
+* Con un token que no corresponde a la licencia:
+ERROR: [No se pudo realizar la activación: el token está vacío o no es válido.]
+nStatusCode = 0     nErrorCode = 33` },
+
+/* ---------- ENVÍOS ---------- */
+{ n: 'SendSMSWhatsApp', g: 'envios', firma: R`SendSMSWhatsApp(tcDestination, tcMessage [, tcType, tcFile, tlGroup, tlDiffusion, tcIdMessageReply, tcNameFileShort, tcLangConvText]) As String`,
+  r: 'Envía un texto o un archivo a uno o varios contactos, a un grupo o a una lista de difusión.',
+  d: R`<p>El método principal. Con un archivo local, el tipo sale de su extensión; con una URL, pásale el tipo en <code>tcType</code>. Los destinatarios quedan en <code>cContactsSend</code>, <code>cContactsNoSend</code> y <code>cContactsNoReg</code>, y el tiempo en <code>cLastSendTime</code>. Arma la llamada con el <a href="#constructor">constructor de la sección 11</a>.</p>`,
+  p: [
+	['tcDestination', 'C', R`Número (<code>593987654321</code>), varios separados por coma (hasta 50), nombre o ID de un grupo (con <code>tlGroup</code>), o nombre de una lista de difusión (con <code>tlDiffusion</code>).`],
+	['tcMessage', 'C', R`El texto, o el pie del archivo. <code>\n</code> es un salto de línea.`],
+	['tcType', 'C', R`Solo para un archivo por URL: su tipo MIME (<code>'image/jpeg'</code>, <code>'application/pdf'</code>, <code>'video/mp4'</code>, <code>'audio/ogg; codecs=opus'</code>). Con un archivo local, déjalo vacío.`],
+	['tcFile', 'C', R`Ruta del archivo local, o su URL. Vacío: solo texto.`],
+	['tlGroup', 'L', R`<code>.T.</code> si el destino es un grupo.`],
+	['tlDiffusion', 'L', R`<code>.T.</code> si el destino es una lista de difusión.`],
+	['tcIdMessageReply', 'C', R`ID del mensaje al que respondes (aparece citado). Lo tienes en <code>SERIALIZED</code> de <code>MsgChats</code>.`],
+	['tcNameFileShort', 'C', R`Nombre que verá el destinatario para el documento, con su extensión (<code>'Factura-001.pdf'</code>).`],
+	['tcLangConvText', 'C', R`Idioma para convertir el texto en audio (por ejemplo <code>'es'</code>). Vacío: sin conversión.`]],
+  ret: R`<code>cLastError</code>. Con varios destinatarios, un bloque por línea.`,
+  ej: R`*: Un texto
+loWS.SendSMSWhatsApp('593987654301', 'Hola, tu pedido está listo.')
+
+*: Varios destinatarios
+loWS.SendSMSWhatsApp('593987654301,593987654302,593987654309', 'Aviso de corte programado')
+? loWS.cContactsNoSend           && los que hay que reintentar
+
+*: Un archivo local, con texto al pie
+loWS.SendSMSWhatsApp('593987654301', 'Adjunto tu factura', '', 'C:\MiApp\factura.pdf')
+
+*: Una imagen por URL
+loWS.SendSMSWhatsApp('593987654301', 'Catálogo', 'image/jpeg', 'https://www.ejemplo.com/catalogo.jpg')
+
+*: A un grupo (por su ID o su nombre) y a una lista de difusión
+loWS.SendSMSWhatsApp('120363000000000001@g.us', 'Reunión a las 10:00', '', '', .T.)
+loWS.SendSMSWhatsApp('Clientes VIP', 'Promoción de fin de mes', '', '', .F., .T.)
+
+*: Responder citando un mensaje recibido
+loWS.SendSMSWhatsApp('593987654301', 'Sí, hay stock', '', '', .F., .F., 'false_593987654301@c.us_3EB0A0000000000001')
+
+*: Una nota de voz con su texto (el texto sale en un mensaje aparte)
+loWS.SendSMSWhatsApp('593987654301', 'Te explico por audio', '', 'C:\MiApp\voz.ogg')`,
+  sal: R`OK: [El mensaje se ha enviado correctamente al contacto 593987654301]
+
+* Varios (uno falló):
+OK: [El mensaje se ha enviado correctamente a los contactos: 593987654301,593987654302]
+ERROR: [No se pudo enviar al contacto 593987654309]
+nStatusCode = 200   cContactsSend = 593987654301,593987654302,   cContactsNoSend = 593987654309,
+
+OK: [El PDF se ha enviado correctamente al contacto 593987654301]
+OK: [La imagen se ha enviado correctamente al contacto 593987654301]
+OK: [El mensaje se ha enviado correctamente al grupo 120363000000000001@g.us]
+OK: [El mensaje se ha enviado correctamente a la lista de difusión Clientes VIP]
+OK: [El audio se ha enviado correctamente al contacto 593987654301]
+
+* Errores típicos:
+ERROR: [El archivo C:\MiApp\NoExiste.pdf no existe o su ruta no es válida.]     nErrorCode = 29
+ERROR: [Solo se permiten 50 destinatarios por envío.]                           nErrorCode = 40`,
+  notas: [
+	R`<b>nStatusCode</b> es 200 si el mensaje salió a <b>alguno</b> de los destinatarios: reintenta solo <code>cContactsNoSend</code>. Si un envío falla sin red, por tiempo agotado (12002) o porque respondió una página web (204), no se intentan los que faltaban.`,
+	R`<b>Audios:</b> usa <code>.ogg</code> (Opus). Cada audio sale con su tipo real (<code>.mp3</code> como <code>audio/mpeg</code>; <code>.ogg</code> y <code>.opus</code> como <code>audio/ogg; codecs=opus</code>). Su texto va enseguida en un mensaje aparte; si ese texto no sale, el resultado es OK (el audio ya salió) con un aviso: no reenvíes el audio, manda solo el texto. <code>.webm</code> y <code>.3gp</code> salen como video.`,
+	R`<b>Cupo diario:</b> cuenta 1 por destinatario, y 2 cuando el archivo no es imagen ni video y lleva texto. En la DEMO siempre hay texto (el pie).`,
+	R`Con <code>lValidRegistered = .T.</code> valida cada número antes de enviarlo. Los números que empiezan con 0 y los grupos de solo lectura no se intentan.`,
+	R`Con <code>lNoWait = .F.</code> el servidor espera la confirmación de WhatsApp y te deja el ID en <code>cLastIdMessage</code>.`] },
+
+{ n: 'SendButtons', g: 'envios', lic: true, firma: R`SendButtons(tcDestination, tcMessageBody, tcButtons [, tcTitle, tcFooter]) As String`,
+  r: 'Envía un mensaje con hasta tres botones de respuesta.',
+  d: R`<p>La respuesta del destinatario se lee después con <a href="#m-GetResponseChat"><code>GetResponseChat()</code></a>, pasándole el ID de tu mensaje (<code>cLastIdMessage</code>, con <code>lNoWait = .F.</code>).</p>`,
+  p: [
+	['tcDestination', 'C', R`Número o ID del chat.`],
+	['tcMessageBody', 'C', R`Texto del mensaje.`],
+	['tcButtons', 'C', R`El texto de cada botón, separados por punto y coma: <code>'Sí;No;Reprogramar'</code> (hasta tres).`],
+	['tcTitle', 'C', R`Título (opcional).`],
+	['tcFooter', 'C', R`Pie (opcional).`]],
+  ret: R`<code>cLastError</code>; el ID del mensaje en <code>cLastIdMessage</code> (con <code>lNoWait = .F.</code>).`,
+  ej: R`loWS.lNoWait = .F.
+loWS.SendButtons('593987654301', '¿Confirmas tu cita?', 'Sí;No;Reprogramar', 'Cita', 'Clínica')
+lcIdMio = loWS.cLastIdMessage`,
+  sal: R`OK: [Los botones se enviaron correctamente a 593987654301]
+cLastIdMessage = true_593987654301@c.us_3EB0A1B2C3D4E5FF` },
+
+{ n: 'ReactMessage', g: 'envios', lic: true, firma: R`ReactMessage(tcIDMessage As String, tcEmojis As String) As String`,
+  r: 'Reacciona con un emoji a un mensaje.',
+  d: R`<p>El emoji se indica por su nombre corto, con o sin los dos puntos.</p>`,
+  p: [['tcIDMessage', 'C', R`ID del mensaje (columna <code>SERIALIZED</code> de <code>MsgChats</code>).`], ['tcEmojis', 'C', R`Nombre del emoji: <code>'thumbsup'</code> o <code>':thumbsup:'</code>.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.ReactMessage('false_593987654301@c.us_3EB0A0000000000001', 'thumbsup')`,
+  sal: R`OK: [La reacción al mensaje se envió correctamente.]
+
+* Sin el ID o sin el emoji:
+ERROR: [Indica el ID del mensaje y el nombre del emoji.]     nErrorCode = 107` },
+
+{ n: 'ResendMessage', g: 'envios', lic: true, firma: R`ResendMessage(tcIdMessage As String, tcDestination As String) As String`,
+  r: 'Reenvía un mensaje recibido a otro chat.',
+  d: R`<p>Reenvía el mensaje tal como llegó (texto o archivo) a otro contacto o grupo. Respeta el ritmo de <code>nWaitTime</code>.</p>`,
+  p: [['tcIdMessage', 'C', R`ID del mensaje a reenviar.`], ['tcDestination', 'C', R`Número o ID del chat de destino.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.ResendMessage('false_593987654301@c.us_3EB0A0000000000001', '593987654302')`,
+  sal: R`OK: [El mensaje se reenvió correctamente.]` },
+
+/* ---------- CONTACTOS ---------- */
+{ n: 'IsWhatsAppContact', g: 'contactos', firma: R`IsWhatsAppContact(tcNumber As String) As Logical`,
+  r: 'Dice si un número es una cuenta de WhatsApp activa.',
+  d: R`<p>Consulta siempre (aunque <code>lValidRegistered</code> sea <code>.F.</code>), usando la caché <code>DNSContacts</code> si está activa. Con <code>.F.</code>, mira <code>nErrorCode</code>: <b>6 u 11</b> = no es una cuenta; cualquier otro = no se pudo saber (sin red, servidor caído…). Los números confirmados sin WhatsApp se acumulan en <code>cContactsNoReg</code>.</p>`,
+  p: [['tcNumber', 'C', R`Número con el código de país: <code>'593987654321'</code>.`]],
+  ret: R`<code>.T.</code> si es una cuenta activa; <code>.F.</code> si no lo es o no se pudo saber.`,
+  ej: R`If loWS.IsWhatsAppContact('593987654301') Then
+	? 'Tiene WhatsApp'
+EndIf
+? loWS.cLastError`,
+  sal: R`.T.   OK: [593987654301 es una cuenta de WhatsApp activa.]
+
+* Un número que empieza con 0:
+.F.   ERROR: [0987654321 NO es una cuenta de WhatsApp activa.]     nErrorCode = 6
+
+* Con cLanguage = 'EN':
+.T.   OK: [593987654301 is an active WhatsApp account.]` },
+
+{ n: 'GetContacts', g: 'contactos', lic: true, firma: R`GetContacts([tlOnline, tlContacts, tlGroups, tlUnRegistered]) As String`,
+  r: 'Trae los contactos de la cuenta vinculada a la tabla WSContacts.',
+  d: R`<p>Llena <a href="#t-WSContacts"><code>WSContacts</code></a>. Sin <code>tlOnline = .T.</code>, si la tabla ya tiene filas no consulta al servidor y la usa como está (y lo dice).</p>`,
+  p: [
+	['tlOnline', 'L', R`<code>.T.</code>: consulta siempre al servidor. <code>.F.</code> (por defecto): reúsa <code>WSContacts</code> si ya tiene filas.`],
+	['tlContacts', 'L', R`<code>.T.</code> (por defecto): los contactos de la agenda.`],
+	['tlGroups', 'L', R`<code>.T.</code>: también los grupos (filas con <code>TIPO = 'G'</code>).`],
+	['tlUnRegistered', 'L', R`<code>.T.</code>: también los que no están en la agenda.`]],
+  ret: R`<code>cLastError</code>; sin licencia activada, <code>''</code> (el error queda en <code>cLastError</code>).`,
+  ej: R`loWS.GetContacts(.T., .T., .T., .F.)
+If loWS.nStatusCode = 200 Then
+	Use WSContacts Again Shared In 0
+	Browse
+EndIf`,
+  sal: R`OK: [Se cargaron 4 contactos.]
+
+* Sin tlOnline, con la tabla ya llena:
+OK: [Se usarán 4 contactos guardados antes, sin consultar al servidor (Offline).]
+
+* Sin activar:
+''    ERROR: [Este método necesita una licencia válida y activada.]     nErrorCode = 3` },
+
+{ n: 'SendContactsToFile', g: 'contactos', firma: R`SendContactsToFile([tcDestinationFile]) As String`,
+  r: 'Pasa los contactos de WSContacts a un archivo de texto y a cJsonContactWA.',
+  d: R`<p>Lee <code>WSContacts</code>: llama antes a <a href="#m-GetContacts"><code>GetContacts()</code></a>. Además del archivo, deja los contactos en JSON en <code>cJsonContactWA</code>.</p>`,
+  p: [['tcDestinationFile', 'C', R`Archivo de destino (<code>.txt</code>, <code>.csv</code>, <code>.dat</code> o sin extensión). Vacío: <code>WSContacts.txt</code> en la carpeta de trabajo. Una extensión de tabla, programa o configuración (<code>.dbf</code>, <code>.prg</code>, <code>.cfg</code>, <code>.ini</code>, <code>.js</code>…) se rechaza con 205.`]],
+  ret: R`<code>cLastError</code>, con una línea más: <code>File: </code> y la ruta.`,
+  ej: R`loWS.GetContacts(.T.)
+loWS.SendContactsToFile('C:\MiApp\contactos.txt')
+? loWS.cJsonContactWA`,
+  sal: R`OK: [Se cargaron 3 contactos.]
+File: C:\MiApp\contactos.txt
+
+cJsonContactWA = {"1":{"numero":"593987654301","nombre":"Ana Prueba"},"2":{"numero":"593987654316","nombre":"Rosa"},"3":{"numero":"593987654310","nombre":"Carla Final"}}`,
+  notas: [R`Si no pudo escribir (carpeta que no existe, archivo abierto en otro programa), el resultado es <code>ERROR</code>.`] },
+
+{ n: 'GetInfoContactWhatsApp', g: 'contactos', lic: true, firma: R`GetInfoContactWhatsApp(tcContact As String) As String`,
+  r: 'Carga los datos de un contacto en las propiedades WC_*.',
+  d: R`<p>Vacía las <a href="#propiedades"><code>WC_*</code></a> al empezar y las llena con lo que da el servidor. Sin foto de perfil, el resultado es OK con ese aviso y <code>WC_UrlProfilePicture</code> vacía. Un número sin WhatsApp es <code>ERROR</code> (11).</p>`,
+  p: [['tcContact', 'C', R`Número con el código de país.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.GetInfoContactWhatsApp('593987654301')
+? loWS.WC_Name, loWS.WC_PushName, loWS.WC_isMyContact
+? loWS.WC_UrlProfilePicture`,
+  sal: R`OK: [Se cargó la URL de la foto de perfil.]
+WC_PhoneNumber = 593987654301      WC_Name = Ana Prueba      WC_PushName = Ana Prueba
+WC_ShortName = Ana   WC_isWaContact = .T.   WC_isMyContact = .T.   WC_isWaBlocked = .F.
+WC_VerifiedLevel = 0   WC_isMe = .F.
+WC_UrlProfilePicture = https://…/perfil/593987654301.jpg?…
+
+* Un número sin WhatsApp:
+ERROR: [El número 593987654310 no está registrado en WhatsApp; revisa que esté bien escrito.]     nErrorCode = 11` },
+
+{ n: 'GetUrlProfilePicture', g: 'contactos', lic: true, firma: R`GetUrlProfilePicture(tcContactUrl As String) As String`,
+  r: 'Devuelve la URL de la foto de perfil de un contacto.',
+  d: R`<p>Acepta el número con formato (<code>'+593 98-765-4321'</code>).</p>`,
+  p: [['tcContactUrl', 'C', R`Número del contacto.`]],
+  ret: R`La URL. Si no tiene foto o falló la consulta, <code>cLastError</code>.`,
+  ej: R`lcUrl = loWS.GetUrlProfilePicture('593987654301')
+If loWS.nStatusCode = 200 Then
+	? lcUrl
+EndIf`,
+  sal: R`https://…/perfil/593987654301.jpg?…
+cLastError = OK: [Se cargó la URL de la foto de perfil.]
+
+* Sin foto o no pública:
+ERROR: [Not Found]     nErrorCode = 26` },
+
+/* ---------- GRUPOS ---------- */
+{ n: 'GetContactsGroups', g: 'grupos', lic: true, firma: R`GetContactsGroups([tcIdGroup, tlGetMembers]) As String`,
+  r: 'Trae los grupos a Groups y, si los pides, sus integrantes a Members.',
+  d: R`<p>Llena <a href="#t-Groups"><code>Groups</code></a> y, con <code>tlGetMembers</code>, <a href="#t-Members"><code>Members</code></a>. Si fallan los integrantes de un grupo, el error dice de cuál y por qué.</p>`,
+  p: [['tcIdGroup', 'C', R`ID de un grupo para traer solo sus integrantes. Vacío: todos.`], ['tlGetMembers', 'L', R`<code>.T.</code>: también los integrantes.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.GetContactsGroups('', .T.)`,
+  sal: R`OK: [Se cargaron 3 grupos y 7 integrantes.]
+
+Groups:  IDGROUP = 120363000000000001@g.us   NAMEGROUP = Grupo de Prueba   ISREADONLY = .F.   ISMUTED = .F.
+Members: IDGROUP = 120363000000000001@g.us   NUMERO = 593987654301   NAME = Ana Prueba   ISADMIN = .T.   ISSUPERADM = .T.` },
+
+{ n: 'GetContactsByGroup', g: 'grupos', lic: true, firma: R`GetContactsByGroup(tcIdGroup As String [, tlDbfMembers]) As Logical`,
+  r: 'Trae a Members los integrantes de un grupo.',
+  d: R`<p>Llena <a href="#t-Members"><code>Members</code></a> con los integrantes de un grupo.</p>`,
+  p: [['tcIdGroup', 'C', R`ID del grupo.`], ['tlDbfMembers', 'L', R`<code>.T.</code>: los agrega a los que ya tiene <code>Members</code>. <code>.F.</code> (por defecto): <code>Members</code> queda solo con los de este grupo.`]],
+  ret: R`<code>.T.</code>; el resultado real, en <code>nStatusCode</code> y <code>cLastError</code>.`,
+  ej: R`loWS.GetContactsByGroup('120363000000000001@g.us')
+? loWS.nStatusCode, loWS.cLastError`,
+  sal: R`.T.   OK: [Se cargaron 4 integrantes del grupo Grupo de Prueba.]` },
+
+{ n: 'CreateGroup', g: 'grupos', lic: true, cambia: true, firma: R`CreateGroup(tcGrupo As String, tcParticipants As String) As String`,
+  r: 'Crea un grupo con sus participantes.',
+  d: R`<p>El ID del grupo nuevo queda en <code>cLastIdGroup</code> (vacío si no se creó). Los que no se pudieron agregar, en <code>cContactsNoReg</code>.</p>`,
+  p: [['tcGrupo', 'C', R`Nombre del grupo.`], ['tcParticipants', 'C', R`Números separados por coma.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.CreateGroup('Ventas Norte', '593987654301,593987654302')
+If !Empty(loWS.cLastIdGroup) Then
+	? 'Grupo creado: ' + loWS.cLastIdGroup
+EndIf`,
+  sal: R`OK: [Se creó el grupo con el ID 120363000000000009@g.us. Contactos agregados: 2 de 2.]
+cLastIdGroup = 120363000000000009@g.us` },
+
+{ n: 'AddParticipants', g: 'grupos', lic: true, cambia: true, firma: R`AddParticipants(tcIdGrupo, tcParticipants [, tlNews]) As String`,
+  r: 'Agrega participantes a un grupo.',
+  d: R`<p>Tu cuenta debe ser administradora del grupo.</p>`,
+  p: [['tcIdGrupo', 'C', R`ID del grupo.`], ['tcParticipants', 'C', R`Números separados por coma.`], ['tlNews', 'L', R`<code>.T.</code>: suma a <code>cContactsNoReg</code> los que no se agreguen, sin vaciarla antes.`]],
+  ret: R`<code>cLastError</code>; los que no se agregaron, en <code>cContactsNoReg</code>.`,
+  ej: R`loWS.AddParticipants('120363000000000001@g.us', '593987654303')`,
+  sal: R`OK: [Contactos agregados: 1 de 1.]` },
+
+{ n: 'RemoveParticipants', g: 'grupos', lic: true, cambia: true, firma: R`RemoveParticipants(tcIdGrupo As String, tcParticipants As String) As String`,
+  r: 'Quita participantes de un grupo.', d: R`<p>Tu cuenta debe ser administradora del grupo.</p>`,
+  p: [['tcIdGrupo', 'C', R`ID del grupo.`], ['tcParticipants', 'C', R`Números separados por coma.`]],
+  ret: R`<code>cLastError</code>; los que no se quitaron, en <code>cContactsNoReg</code>.`,
+  ej: R`loWS.RemoveParticipants('120363000000000001@g.us', '593987654303')`,
+  sal: R`OK: [Contactos quitados del grupo: 1 de 1.]` },
+
+{ n: 'PromoteParticipants', g: 'grupos', lic: true, cambia: true, firma: R`PromoteParticipants(tcIdGrupo As String, tcParticipants As String) As String`,
+  r: 'Hace administradores a participantes del grupo.', d: R`<p>Tu cuenta debe ser administradora del grupo.</p>`,
+  p: [['tcIdGrupo', 'C', R`ID del grupo.`], ['tcParticipants', 'C', R`Números separados por coma.`]],
+  ret: R`<code>cLastError</code>; los que no se promovieron, en <code>cContactsNoReg</code>.`,
+  ej: R`loWS.PromoteParticipants('120363000000000001@g.us', '593987654301')`,
+  sal: R`OK: [Contactos promovidos a administradores: 1 de 1.]` },
+
+{ n: 'DemoteParticipants', g: 'grupos', lic: true, cambia: true, firma: R`DemoteParticipants(tcIdGrupo As String, tcParticipants As String) As String`,
+  r: 'Quita a participantes como administradores.', d: R`<p>Tu cuenta debe ser administradora del grupo.</p>`,
+  p: [['tcIdGrupo', 'C', R`ID del grupo.`], ['tcParticipants', 'C', R`Números separados por coma.`]],
+  ret: R`<code>cLastError</code>; los que no se degradaron, en <code>cContactsNoReg</code>.`,
+  ej: R`loWS.DemoteParticipants('120363000000000001@g.us', '593987654301')`,
+  sal: R`OK: [Contactos que dejaron de ser administradores: 1 de 1.]` },
+
+{ n: 'SetOnlyAdmins', g: 'grupos', lic: true, cambia: true, firma: R`SetOnlyAdmins(tcIdGrupo As String, tlOnlyAdmins As Boolean) As String`,
+  r: 'Decide quién puede enviar mensajes al grupo.', d: R`<p>Tu cuenta debe ser administradora del grupo.</p>`,
+  p: [['tcIdGrupo', 'C', R`ID del grupo.`], ['tlOnlyAdmins', 'L', R`<code>.T.</code>: solo los administradores. <code>.F.</code>: todos los integrantes.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.SetOnlyAdmins('120363000000000001@g.us', .T.)`,
+  sal: R`OK: [Solo los administradores pueden enviar mensajes al grupo.]` },
+
+/* ---------- CHATS ---------- */
+{ n: 'GetChats', g: 'chats', lic: true, firma: R`GetChats([tlUnRead, tlMarkRead, tlLoadMsgs]) As String`,
+  r: 'Trae los chats a ChatsUnRead y, si los pides, sus mensajes a MsgChats.',
+  d: R`<p>Sin parámetros trae <b>todos</b> los chats, sin marcarlos ni traer sus mensajes. Con <code>tlLoadMsgs</code>, hasta <code>nMaxAllMsgChats</code> mensajes por chat. Si falla un chat, sigue con los demás y guarda lo que cargó.</p>`,
+  p: [['tlUnRead', 'L', R`<code>.T.</code>: solo los chats con mensajes sin leer.`], ['tlMarkRead', 'L', R`<code>.T.</code>: los marca como leídos.`], ['tlLoadMsgs', 'L', R`<code>.T.</code>: trae sus mensajes a <code>MsgChats</code>.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.lIncludeMediaKey = .T.
+loWS.GetChats(.T., .F., .T.)       && no leídos, sin marcarlos, con sus mensajes`,
+  sal: R`OK: [Se cargaron 3 chats y 4 mensajes.]
+
+* GetChats() sin parámetros:
+OK: [Se cargaron 4 chats.]
+
+ChatsUnRead: USERPHONE = 593987654301   NAMEUSER = Ana Prueba   UNREAD = 2   SERIALIZED = 593987654301@c.us   PINNED = .T.
+MsgChats:    SENDFROM = 593987654301@c.us   TYPEMSG = image   MEDIAKEY = AbC+dE/fG=   FILENAME = foto.jpg
+             CAPTIONADJ = Mira esta foto   SERIALIZED = false_593987654301@c.us_3EB0MEDIA1`,
+  notas: [
+	R`Con <code>tlMarkRead</code> hace una pausa de 0,1 s entre chats (unos 100 s con 1000 chats).`,
+	R`<b>Con <code>tlMarkRead = .T.</code>, cierra antes <code>ChatsUnRead</code> y <code>MsgChats</code>.</b> Si están abiertas, el resultado es <code>ERROR</code> antes de marcar ninguno. Si otro programa puede abrirlas mientras trabaja, trae los mensajes sin marcarlos y márcalos después con <code>MarkReadChats()</code>.`] },
+
+{ n: 'GetChat', g: 'chats', lic: true, firma: R`GetChat(tcFrom As String [, tcNameUser, tnLimit, tlTickRead]) As String`,
+  r: 'Trae a MsgChats los últimos mensajes de un chat.',
+  d: R`<p>Reemplaza el contenido de <a href="#t-MsgChats"><code>MsgChats</code></a> con los mensajes de ese chat.</p>`,
+  p: [['tcFrom', 'C', R`Número o ID del chat (contacto, grupo o <code>@lid</code>).`], ['tcNameUser', 'C', R`Nombre que se guarda en <code>NAMEUSER</code>.`], ['tnLimit', 'N', R`Cuántos de sus últimos mensajes. Por defecto, 1.`], ['tlTickRead', 'L', R`<code>.T.</code>: lo marca como leído si sus mensajes se cargaron.`]],
+  ret: R`<code>cLastError</code>; sin chat, <code>''</code> con el motivo en <code>cLastError</code>.`,
+  ej: R`loWS.GetChat('593987654301', 'Ana Prueba', 5)`,
+  sal: R`OK: [Se cargaron 3 mensajes del chat 593987654301@c.us.]
+
+MsgChats (3 filas):
+  false_593987654301@c.us_3EB0A0000000000001   chat    «Hola, ¿tienes stock?»
+  false_593987654301@c.us_3EB0MEDIA1            image   foto.jpg «Mira esta foto»
+  true_593987654301@c.us_3EB0A0000000000003    chat    «Sí, confirmo»  (ISQUOTED = .T., QUOTEDID = …0001)` },
+
+{ n: 'MarkReadChats', g: 'chats', lic: true, cambia: true, firma: R`MarkReadChats(tcChat As String [, tlIsGroup]) As Logical`,
+  r: 'Marca un chat como leído.',
+  d: R`<p>Las marcas de leído le llegan al remitente.</p>`,
+  p: [['tcChat', 'C', R`Número o ID del chat.`], ['tlIsGroup', 'L', R`<code>.T.</code> si <code>tcChat</code> es el ID de un grupo escrito sin <code>@g.us</code>.`]],
+  ret: R`<code>.T.</code> si quedó marcado; <code>.F.</code> si no.`,
+  ej: R`If loWS.MarkReadChats('593987654301') Then
+	? 'Marcado'
+EndIf`,
+  sal: R`.T.   OK: [El chat 593987654301@c.us se marcó como leído.]` },
+
+{ n: 'GetAckMessage', g: 'chats', lic: true, firma: R`GetAckMessage(tcIDChat As String, tcIDMessage As String [, tnLimit]) As String`,
+  r: 'Consulta el estado de entrega (ACK) de un mensaje que enviaste.',
+  d: R`<div class="ack"><div class="neg"><b>-1</b>Con error</div><div class="pen"><b>0</b>Pendiente</div><div><b>1</b>Enviado</div><div class="bien"><b>2</b>Recibido</div><div class="bien"><b>3</b>Leído</div><div class="bien"><b>4</b>Reproducido</div></div><p>El ACK queda en <code>cAckMessage</code> y su nombre en <code>cStatusMessage</code>; las dos se vacían al empezar. Lo actualiza WhatsApp: puede decir 0 un rato aunque el mensaje ya haya llegado.</p>`,
+  p: [['tcIDChat', 'C', R`Número o ID del chat.`], ['tcIDMessage', 'C', R`ID del mensaje (<code>cLastIdMessage</code> o <code>SERIALIZED</code>).`], ['tnLimit', 'N', R`En cuántos de los últimos mensajes lo busca. Por defecto, 10.`]],
+  ret: R`<code>cLastError</code>.`,
+  ej: R`loWS.GetAckMessage('593987654301', lcIdMio)
+? loWS.cAckMessage, loWS.cStatusMessage`,
+  sal: R`OK: [El estado actual del mensaje es 3 (Leído).]
+cAckMessage = 3     cStatusMessage = Leído
+
+OK: [El estado actual del mensaje es 0 (Pendiente).]
+cAckMessage = 0     cStatusMessage = Pendiente` },
+
+{ n: 'GetResponseChat', g: 'chats', lic: true, firma: R`GetResponseChat(tcIdChat As String, tcIDMessage As String [, tnLimit]) As String`,
+  r: 'Lee la respuesta a un mensaje tuyo: un botón elegido o un mensaje que lo cita.',
+  d: R`<p>Pásale el ID de <b>tu</b> mensaje (el de <code>cLastIdMessage</code>). El texto de la respuesta queda en <code>cMsgAnswered</code> y su ID en <code>cIdMsgAnswered</code>.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat.`], ['tcIDMessage', 'C', R`ID de tu mensaje.`], ['tnLimit', 'N', R`En cuántos mensajes la busca. Por defecto 20, hasta 100.`]],
+  ret: R`El texto de la respuesta; <code>''</code> si no tiene o si falló.`,
+  ej: R`lcResp = loWS.GetResponseChat('593987654301', lcIdMio)
+If loWS.nStatusCode = 200 Then
+	? lcResp, loWS.cIdMsgAnswered
+EndIf`,
+  sal: R`Confirmar
+cLastError = OK: [Se obtuvo la respuesta del mensaje.]
+cIdMsgAnswered = false_593987654301@c.us_3A5F…R6     cMsgAnswered = Confirmar
+
+* Todavía sin respuesta (el motivo lo da el servidor):
+''    ERROR: [No response for the indicated message ID]     nErrorCode = 131` },
+
+{ n: 'DownloadMedia', g: 'chats', lic: true, firma: R`DownloadMedia(tcIDChat, tcIDMessage, tcMediaKey [, tcDestinationRoute, tcNameFile]) As String`,
+  r: 'Descarga a una carpeta el archivo de un mensaje (imagen, audio, documento…).',
+  d: R`<p>Necesita la <code>MEDIAKEY</code> del mensaje: pon <code>lIncludeMediaKey = .T.</code> antes de <code>GetChats()</code> o <code>GetChat()</code>.</p>`,
+  p: [
+	['tcIDChat', 'C', R`Número o ID del chat.`], ['tcIDMessage', 'C', R`ID del mensaje.`], ['tcMediaKey', 'C', R`Su <code>MEDIAKEY</code>.`],
+	['tcDestinationRoute', 'C', R`Carpeta de destino; debe existir. Vacía: la carpeta temporal de Windows del usuario.`],
+	['tcNameFile', 'C', R`Nombre del archivo, sin carpeta. Sin extensión, lleva la de su tipo (<code>.jpg</code>, <code>.ogg</code>, <code>.docx</code>…). Vacío: un nombre único. Una extensión de tabla, programa o configuración se rechaza (205).`]],
+  ret: R`<code>cLastError</code>; con éxito, <code>Archivo guardado:</code> y la ruta completa.`,
+  ej: R`loWS.DownloadMedia('593987654301', 'false_593987654301@c.us_3EB0MEDIA1', 'AbC+dE/fG=', 'C:\MiApp\Descargas\', 'foto_cliente')
+lcRuta = StrExtract(loWS.cLastError, 'Archivo guardado: ', ']')`,
+  sal: R`OK: [Archivo guardado: C:\MiApp\Descargas\foto_cliente.jpg]
+
+* Sin nombre:
+OK: [Archivo guardado: C:\MiApp\Descargas\_7LG18RE70.jpg]
+
+* Carpeta que no existe:
+ERROR: [La carpeta C:\NoExiste\ no existe o su ruta no es válida.]     nErrorCode = 29`,
+  notas: [R`Si el archivo ya existe, lo reemplaza sin avisar. La DLL nunca borra lo que descarga: borra tú los archivos que ya usaste.`] },
+
+{ n: 'TranscribeAudio', g: 'chats', lic: true, firma: R`TranscribeAudio(tcIdChat As String, tcIdMessage As String [, tnLimit]) As String`,
+  r: 'Devuelve el texto de un mensaje de audio.',
+  d: R`<p>El texto llega con saltos de línea reales. El log no guarda la transcripción.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat.`], ['tcIdMessage', 'C', R`ID del mensaje de audio.`], ['tnLimit', 'N', R`En cuántos mensajes lo busca. Por defecto, 50.`]],
+  ret: R`El texto (con <code>nStatusCode = 200</code>); si no se obtuvo, <code>cLastError</code> con <code>ERROR</code>.`,
+  ej: R`lcTexto = loWS.TranscribeAudio('593987654301', 'false_593987654301@c.us_3EB0AUDIO1')
+If loWS.nStatusCode = 200 Then
+	? lcTexto
+EndIf`,
+  sal: R`Hola, ¿cómo estás?
+Dijo "ya" y colgó.
+
+cLastError = OK: [Hola, ¿cómo estás?
+Dijo "ya" y colgó.]` },
+
+{ n: 'ArchiveChatById', g: 'chats', lic: true, cambia: true, firma: R`ArchiveChatById(tcIdChat As String [, tlArchive]) As String`,
+  r: 'Archiva o desarchiva un chat.', d: R`<p>Sin el segundo parámetro, <b>desarchiva</b>.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat.`], ['tlArchive', 'L', R`<code>.T.</code>: archivar. <code>.F.</code> (por defecto): desarchivar.`]],
+  ret: R`<code>cLastError</code>.`, ej: R`loWS.ArchiveChatById('593987654301', .T.)`, sal: R`OK: [El chat 593987654301@c.us se archivó.]` },
+
+{ n: 'MuteChatById', g: 'chats', lic: true, cambia: true, firma: R`MuteChatById(tcIdChat As String [, tlMute]) As String`,
+  r: 'Silencia o quita el silencio de un chat.', d: R`<p>Sin el segundo parámetro, <b>quita</b> el silencio.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat.`], ['tlMute', 'L', R`<code>.T.</code>: silenciar. <code>.F.</code> (por defecto): quitar el silencio.`]],
+  ret: R`<code>cLastError</code>.`, ej: R`loWS.MuteChatById('593987654301', .T.)`, sal: R`OK: [El chat 593987654301@c.us se silenció.]` },
+
+{ n: 'PinChatById', g: 'chats', lic: true, cambia: true, firma: R`PinChatById(tcIdChat As String [, tlFijar]) As String`,
+  r: 'Fija o desfija un chat.', d: R`<p>Sin el segundo parámetro, <b>desfija</b>.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat.`], ['tlFijar', 'L', R`<code>.T.</code>: fijar. <code>.F.</code> (por defecto): desfijar.`]],
+  ret: R`<code>cLastError</code>.`, ej: R`loWS.PinChatById('593987654301', .T.)`, sal: R`OK: [El chat 593987654301@c.us se fijó.]` },
+
+{ n: 'DeleteChatById', g: 'chats', lic: true, cambia: true, peligro: true, firma: R`DeleteChatById(tcIdChat As String) As String`,
+  r: 'Elimina un chat del teléfono vinculado, con sus mensajes.',
+  d: R`<p>Borra el chat y todos sus mensajes del WhatsApp vinculado.</p>`,
+  p: [['tcIdChat', 'C', R`Número o ID del chat (contacto, grupo o <code>@lid</code>).`]],
+  ret: R`<code>cLastError</code>.`, ej: R`loWS.DeleteChatById('593987654302')`, sal: R`OK: [El chat 593987654302@c.us se eliminó.]` },
+
+{ n: 'DeleteChats', g: 'chats', lic: true, cambia: true, peligro: true, firma: R`DeleteChats([tnTimes]) As Logical`,
+  r: 'Elimina TODOS los chats individuales del teléfono vinculado.',
+  d: R`<p>En cada vuelta consulta los chats, los elimina y pide la reconexión. Entre una vuelta y la siguiente espera 60 s.</p>`,
+  p: [['tnTimes', 'N', R`Cuántas vueltas. Por defecto, 1.`]],
+  ret: R`<code>.T.</code>; el resultado real, en <code>nStatusCode</code> y <code>cLastError</code>.`,
+  ej: R`If MessageBox('¿Eliminar todos los chats?', 4 + 32) = 6 Then
+	loWS.DeleteChats(1)
+	? loWS.cLastError
+EndIf`,
+  sal: R`.T.   OK: [Chats eliminados: 4 de 4.]` },
+
+/* ---------- SESIÓN ---------- */
+{ n: 'ShowStatus', g: 'sesion', firma: R`ShowStatus([tlConsola, tlSoloCheckStatus]) As Variant`,
+  r: 'Consulta el estado de la cuenta en el servidor y los datos de la licencia.',
+  d: R`<p>Llena <code>lAuthenticate</code>, <code>cLastState</code>, <code>cExpire</code>, <code>cAliasService</code>, <code>cPhone</code> y <code>cTechnicianPhone</code>. Es la forma de <b>verificar una activación</b> sin enviar nada.</p>`,
+  p: [['tlConsola', 'L', R`<code>.T.</code>: muestra el reporte en columnas en la pantalla de VFP y devuelve <code>''</code>.`], ['tlSoloCheckStatus', 'L', R`<code>.T.</code>: solo consulta si la cuenta está autenticada y devuelve <code>.T.</code> o <code>.F.</code>.`]],
+  ret: R`Con <code>tlSoloCheckStatus</code>: <code>.T.</code> o <code>.F.</code>. Con <code>tlConsola</code>: <code>''</code>. Sin parámetros: el reporte (también en <code>cLastError</code>, sin el formato <code>OK: [...]</code>).`,
+  ej: R`*: Verificación rápida
+If loWS.ShowStatus(.F., .T.) Then
+	? 'Autenticada', loWS.cLastState, loWS.cExpire
+EndIf
+
+*: Reporte completo
+? loWS.ShowStatus()`,
+  sal: R`.T.   OK: [La cuenta está autenticada en WhatsApp.]
+lAuthenticate = .T.   cLastState = CONNECTED   cExpire = 31/12/2026 23:59:59   cPhone = 593987654321
+
+Licencia:
+Tipo de Licencia...............................: De Pago
+Vigencia actual.................................: 31/12/2026 23:59:59
+Nro. Línea vinculada........................: 593987654321
+Nick Name / PushName....................:
+Alias del Servicio...............................: Servicio de Prueba
+Plataforma de ejecución..................:
+Persona/Empresa Propietaria..........:
+Nro. Contacto Responsable............: 593987654399
+Máximo mensajes por día...............: (el de tu licencia)
+Mensajes enviados hoy...................: 0
+Máximo MB permitido en adjuntos: 10 MB
+Protocolo y Puerto...........................: https - …
+Autenticada......................................: SI
+Estado Actual / Ultimo Estado........: CONNECTED`,
+  notas: [R`Sin red, el reporte sale igual, con una línea que dice el motivo. Si la cuenta no está vinculada, <code>cLastState</code> lo dice (por ejemplo <code>UNPAIRED</code>): vincúlala con <a href="#m-GetQR"><code>GetQR()</code></a>.`] },
+
+{ n: 'GetQR', g: 'sesion', lic: true, firma: R`GetQR() As Variant`,
+  r: 'Abre en el navegador la página del código QR para vincular la cuenta.',
+  d: R`<p>En el teléfono: <b>WhatsApp › Dispositivos vinculados › Vincular un dispositivo</b>, y escanea el QR. La página lleva la cuenta del servicio en su dirección: úsalo en un equipo de confianza.</p>`,
+  p: [],
+  ret: R`<code>.T.</code> si abrió el navegador; <code>''</code> sin licencia de pago; <code>.F.</code> con el código 201 si no pudo abrirlo.`,
+  ej: R`If !loWS.ShowStatus(.F., .T.) Then
+	loWS.GetQR()
+EndIf`,
+  sal: R`.T.     (se abre la página del QR en el navegador predeterminado)
+
+* Si el navegador no se pudo abrir:
+.F.   ERROR: [No se pudo abrir el código QR en el navegador.]     nErrorCode = 201` },
+
+{ n: 'Reconnect', g: 'sesion', lic: true, cambia: true, firma: R`Reconnect() As String`,
+  r: 'Pide al servidor que reconecte la cuenta vinculada.',
+  d: R`<p>Útil si la cuenta quedó desconectada en el servidor. No desvincula el teléfono.</p>`,
+  p: [], ret: R`<code>cLastError</code>.`, ej: R`loWS.Reconnect()`,
+  sal: R`OK: [Se pidió la reconexión al servidor de SMSWhatsApp.]` },
+
+{ n: 'DeAuthenticate', g: 'sesion', lic: true, cambia: true, peligro: true, firma: R`DeAuthenticate() As String`,
+  r: 'Desvincula la cuenta: cierra la sesión de WhatsApp en el servidor.',
+  d: R`<p>Después, para volver a usar el servicio, hay que vincular otra vez la cuenta con <a href="#m-GetQR"><code>GetQR()</code></a>.</p>`,
+  p: [], ret: R`<code>cLastError</code>.`,
+  ej: R`If MessageBox('¿Desvincular la cuenta de WhatsApp?', 4 + 32) = 6 Then
+	loWS.DeAuthenticate()
+EndIf`,
+  sal: R`OK: [La cuenta se desvinculó del servidor de SMSWhatsApp.]
+
+* Con un servidor que no es el de SMSWhatsApp:
+ERROR: [La desvinculación solo se puede pedir al servidor de SMSWhatsApp.]     nErrorCode = 199` },
+
+/* ---------- UTILIDADES ---------- */
+{ n: 'WaitTime', g: 'utiles', firma: R`WaitTime(tnSeconds As Number) As Logical`,
+  r: 'Hace una pausa sin congelar la aplicación (máximo 60 s).',
+  d: R`<p>Acepta fracciones (<code>0.5</code>). Con <code>nWaitTime</code> en 0 espera los segundos pedidos. Si <code>nWaitTime</code> es mayor que 0 y <code>tnSeconds</code> lo supera, espera solo la diferencia. No cambia <code>cLastError</code>, y durante la pausa tu aplicación sigue atendiendo sus eventos.</p>`,
+  p: [['tnSeconds', 'N', R`Segundos de pausa. Una pausa de más de 60 s se recorta a 60 (queda en el log).`]],
+  ret: R`<code>.T.</code>.`, ej: R`loWS.WaitTime(2.5)`, sal: R`.T.` },
+
+{ n: 'GetInfoDeveloper', g: 'utiles', firma: R`GetInfoDeveloper() As String`,
+  r: 'Devuelve la versión de la DLL y los datos de contacto del proveedor.',
+  d: R`<p>Sirve para confirmar qué versión está registrada. No usa el servidor ni cambia <code>cLastError</code>.</p>`,
+  p: [], ret: R`Un texto, una línea por dato.`, ej: R`? loWS.GetInfoDeveloper()`,
+  sal: R`Nombre de Aplicación: SMSWhatsApp
+Versión [YYYY-MM-DD]: 2026.10.09
+Desarrollador.......: …
+Teléfono de contacto: …
+Correo electrónico..: …
+Sitio Web...........: …
+Repositorio GitHub..: …
+
+(…: los datos de la sección 15, Soporte)` }
+];
+
+/* ======================= RESALTADO DE CÓDIGO ======================= */
+var KW = ('local,public,private,if,then,else,endif,for,endfor,each,next,do,case,otherwise,endcase,while,enddo,scan,endscan,' +
+	'return,with,endwith,try,catch,endtry,set,default,to,use,in,again,shared,alias,select,replace,browse,and,or,not,' +
+	'createobject,newobject,messagebox,inlist,between,alltrim,transform,empty,strextract,iif,function,procedure,endfunc,endproc,lparameters').split(',');
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function resaltarVfp(code) {
+	var re = /(^[ \t]*\*[^\n]*|&&[^\n]*)|('[^'\n]*'|"[^"\n]*")|(\.T\.|\.F\.|\.Null\.)|\.([A-Za-z_]\w*)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gmi;
+	var out = '', last = 0, m;
+	while ((m = re.exec(code)) !== null) {
+		out += esc(code.slice(last, m.index));
+		if (m[1]) { out += '<span class="tk-com">' + esc(m[1]) + '</span>'; }
+		else if (m[2]) { out += '<span class="tk-str">' + esc(m[2]) + '</span>'; }
+		else if (m[3]) { out += '<span class="tk-lit">' + esc(m[3]) + '</span>'; }
+		else if (m[4]) { out += '.<span class="tk-prop">' + esc(m[4]) + '</span>'; }
+		else if (m[5]) { out += '<span class="tk-num">' + esc(m[5]) + '</span>'; }
+		else if (m[6]) { out += KW.indexOf(m[6].toLowerCase()) >= 0 ? '<span class="tk-kw">' + esc(m[6]) + '</span>' : esc(m[6]); }
+		last = re.lastIndex;
+	}
+	return out + esc(code.slice(last));
+}
+function bloque(code, titulo, salida) {
+	return '<div class="codigo' + (salida ? ' salida' : '') + '"' + (salida ? '' : ' data-lang="vfp"') + '><div class="cab"><span>' + titulo + '</span><button class="copiar">Copiar</button></div><pre>' +
+		(salida ? esc(code) : resaltarVfp(code)) + '</pre></div>';
+}
+
+/* ======================= DIBUJAR ======================= */
+function filas(tabla, datos, fn) {
+	document.querySelector(tabla + ' tbody').innerHTML = datos.map(fn).join('');
+}
+filas('#tablaConfig', CONFIG, function (c) { return '<tr><td><code>' + c[0] + '</code></td><td><code>' + esc(c[1]) + '</code></td><td>' + c[2] + '</td></tr>'; });
+filas('#tablaResultados', RESULTADOS, function (c) { return '<tr><td><code>' + c[0] + '</code></td><td>' + c[1] + '</td><td>' + c[2] + '</td></tr>'; });
+filas('#tablaWC', WC, function (c) { return '<tr><td><code>' + c[0].split(', ').join('</code>, <code>') + '</code></td><td><code>' + c[1] + '</code></td><td>' + c[2] + '</td></tr>'; });
+filas('#tablaCodigos', CODIGOS.filter(function (c) { return c[0] !== 0; }), function (c) { return '<tr><td><code>' + c[0] + '</code></td><td>' + esc(c[1]) + '</td><td>' + esc(c[2]) + '</td></tr>'; });
+
+document.getElementById('estructuras').innerHTML = TABLAS.map(function (t) {
+	return '<h3 id="t-' + t.n + '"><code>' + t.n + '.dbf</code></h3><p>' + t.d + ' La llena <code>' + esc(t.m) + '</code>; su ruta está en <code>' + t.p + '</code>.</p>' +
+		'<div class="tabla"><table><thead><tr><th style="width:22%">Campo</th><th style="width:14%">Tipo</th><th>Contenido</th></tr></thead><tbody>' +
+		t.c.map(function (c) { return '<tr><td><code>' + c[0] + '</code></td><td><code>' + c[1] + '</code></td><td>' + esc(c[2]) + '</td></tr>'; }).join('') +
+		'</tbody></table></div>';
+}).join('');
+
+var giro = '<svg class="giro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>';
+function parametrosCortos(firma) {
+	var i = firma.indexOf('('), j = firma.lastIndexOf(')');
+	return '(' + esc(firma.slice(i + 1, j).replace(/ As \w+/g, '')) + ')';
+}
+document.getElementById('listaMetodos').innerHTML = GRUPOS.map(function (g) {
+	var ms = M.filter(function (m) { return m.g === g.id; });
+	return '<div class="grupo-metodos" data-grupo="' + g.id + '"><h3 class="grupo-titulo" id="g-' + g.id + '">' + g.t + ' <span class="cuenta">' + ms.length + '</span></h3><p class="grupo-desc">' + g.d + '</p>' +
+		ms.map(function (m) {
+			var marcas = (m.lic ? '<span class="marca-m lic">Licencia</span>' : '') + (m.cambia ? '<span class="marca-m cambia">' + (m.peligro ? 'Irreversible' : 'Cambia la cuenta') + '</span>' : '') + giro;
+			var params = m.p.length ? '<h5>Parámetros</h5><div class="tabla"><table class="params"><thead><tr><th>Nombre</th><th>Tipo</th><th>Qué es</th></tr></thead><tbody>' +
+				m.p.map(function (p) { return '<tr><td>' + p[0] + '</td><td>' + p[1] + '</td><td>' + p[2] + '</td></tr>'; }).join('') + '</tbody></table></div>' : '<h5>Parámetros</h5><p>No tiene.</p>';
+			var notas = m.notas ? '<h5>Ten en cuenta</h5><ul>' + m.notas.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' : '';
+			var peligro = m.peligro ? '<div class="aviso peligro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg><div><p><b>No se puede deshacer.</b> Pide confirmación al usuario antes de llamarlo.</p></div></div>' : '';
+			var firma = esc(m.firma).replace(/ As (\w+)/g, ' <span class="t">As $1</span>');
+			return '<details class="metodo" id="m-' + m.n + '" data-buscar="' + esc((m.n + ' ' + m.r + ' ' + g.t).toLowerCase()) + '"><summary><span class="nombre">' + m.n + '<span class="par">' + parametrosCortos(m.firma) + '</span></span><span class="marcas">' + marcas + '</span><span class="resumen">' + esc(m.r) + '</span></summary>' +
+				'<div class="cuerpo-m"><div class="firma">' + firma + '</div>' + m.d + peligro + params +
+				'<h5>Devuelve</h5><p>' + m.ret + '</p>' + notas +
+				'<h5>Ejemplo</h5>' + bloque(m.ej, 'Visual FoxPro', false) + bloque(m.sal, 'Salida real', true) + '</div></details>';
+		}).join('') + '</div>';
+}).join('');
+
+document.getElementById('navMetodos').innerHTML = GRUPOS.map(function (g) {
+	return '<div class="nav-grupo" data-grupo-nav="' + g.id + '">' + g.t + '</div>' + M.filter(function (m) { return m.g === g.id; }).map(function (m) {
+		return '<a class="nav metodo" href="#m-' + m.n + '" data-buscar="' + esc((m.n + ' ' + m.r).toLowerCase()) + '" data-grupo-nav-item="' + g.id + '">' + m.n + '</a>';
+	}).join('');
+}).join('');
+
+document.getElementById('filtrosGrupo').innerHTML = '<button class="chip" aria-pressed="true" data-g="">Todos</button>' +
+	GRUPOS.map(function (g) { return '<button class="chip" aria-pressed="false" data-g="' + g.id + '">' + g.t + '</button>'; }).join('');
+
+/* Resaltar los bloques escritos a mano */
+Array.prototype.forEach.call(document.querySelectorAll('.codigo[data-lang="vfp"] pre'), function (pre) {
+	if (!pre.querySelector('span')) { pre.innerHTML = resaltarVfp(pre.textContent); }
+});
+
+/* ======================= INTERACCIÓN ======================= */
+/* Copiar */
+document.addEventListener('click', function (e) {
+	var b = e.target.closest('.copiar');
+	if (!b) { return; }
+	var texto = b.closest('.codigo').querySelector('pre').innerText;
+	var ok = function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1400); };
+	if (navigator.clipboard && window.isSecureContext) {
+		navigator.clipboard.writeText(texto).then(ok, function () { copiarViejo(texto); ok(); });
+	} else { copiarViejo(texto); ok(); }
+});
+function copiarViejo(texto) {
+	var ta = document.createElement('textarea');
+	ta.value = texto; ta.style.position = 'fixed'; ta.style.opacity = '0';
+	document.body.appendChild(ta); ta.select();
+	try { document.execCommand('copy'); } catch (err) { /* sin portapapeles */ }
+	document.body.removeChild(ta);
+}
+
+/* Pestañas */
+Array.prototype.forEach.call(document.querySelectorAll('[data-pestanas]'), function (caja) {
+	var tabs = caja.querySelectorAll('[role="tab"]');
+	var panels = caja.querySelectorAll('[role="tabpanel"]');
+	Array.prototype.forEach.call(tabs, function (t, i) {
+		t.addEventListener('click', function () {
+			Array.prototype.forEach.call(tabs, function (x, j) { x.setAttribute('aria-selected', i === j ? 'true' : 'false'); });
+			Array.prototype.forEach.call(panels, function (p, j) { p.hidden = i !== j; });
+		});
+	});
+});
+
+/* Tema */
+var raiz = document.documentElement;
+function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sin almacenamiento */ } }
+var temaGuardado = leer('smswa-tema');
+if (temaGuardado === 'light' || temaGuardado === 'dark') { raiz.setAttribute('data-theme', temaGuardado); }
+document.getElementById('tema').addEventListener('click', function () {
+	var actual = raiz.getAttribute('data-theme');
+	var oscuro = actual ? actual === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+	var nuevo = oscuro ? 'light' : 'dark';
+	raiz.setAttribute('data-theme', nuevo);
+	guardar('smswa-tema', nuevo);
+});
+
+/* Menú en pantallas chicas */
+var lateral = document.getElementById('lateral');
+var abrir = document.getElementById('abrirMenu');
+abrir.addEventListener('click', function () {
+	var a = lateral.classList.toggle('abierto');
+	abrir.setAttribute('aria-expanded', a ? 'true' : 'false');
+});
+lateral.addEventListener('click', function (e) {
+	if (e.target.closest('a')) { lateral.classList.remove('abierto'); abrir.setAttribute('aria-expanded', 'false'); }
+});
+
+/* Abrir la ficha al llegar por un enlace */
+function abrirDesdeHash() {
+	var id = decodeURIComponent(location.hash.slice(1));
+	var el = id && document.getElementById(id);
+	if (el && el.tagName === 'DETAILS') { el.open = true; }
+}
+window.addEventListener('hashchange', abrirDesdeHash);
+abrirDesdeHash();
+
+/* Expandir o cerrar todas */
+document.getElementById('expandirTodo').addEventListener('click', function () {
+	var todas = document.querySelectorAll('details.metodo');
+	var abrirTodas = Array.prototype.some.call(todas, function (d) { return !d.open; });
+	Array.prototype.forEach.call(todas, function (d) { d.open = abrirTodas; });
+	if (abrirTodas) { document.getElementById('metodos').scrollIntoView(); }
+});
+
+/* Filtro por grupo */
+var grupoActivo = '';
+document.getElementById('filtrosGrupo').addEventListener('click', function (e) {
+	var b = e.target.closest('.chip');
+	if (!b) { return; }
+	grupoActivo = b.getAttribute('data-g');
+	Array.prototype.forEach.call(this.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+	aplicarFiltros();
+});
+
+/* Búsqueda */
+var filtro = document.getElementById('filtro');
+filtro.addEventListener('input', aplicarFiltros);
+function aplicarFiltros() {
+	var q = filtro.value.trim().toLowerCase();
+	var hay = 0;
+	Array.prototype.forEach.call(document.querySelectorAll('#navSecciones a.nav'), function (a) {
+		var v = !q || a.textContent.toLowerCase().indexOf(q) >= 0;
+		a.classList.toggle('oculto', !v); if (v) { hay++; }
+	});
+	Array.prototype.forEach.call(document.querySelectorAll('#navSecciones .nav-grupo'), function (g) { g.classList.toggle('oculto', !!q); });
+	Array.prototype.forEach.call(document.querySelectorAll('#navMetodos a.nav'), function (a) {
+		var v = !q || a.getAttribute('data-buscar').indexOf(q) >= 0;
+		a.classList.toggle('oculto', !v); if (v) { hay++; }
+	});
+	Array.prototype.forEach.call(document.querySelectorAll('#navMetodos .nav-grupo'), function (g) {
+		var id = g.getAttribute('data-grupo-nav');
+		var visibles = document.querySelectorAll('#navMetodos a[data-grupo-nav-item="' + id + '"]:not(.oculto)').length;
+		g.classList.toggle('oculto', visibles === 0);
+	});
+	document.getElementById('sinResultados').style.display = hay ? 'none' : 'block';
+	Array.prototype.forEach.call(document.querySelectorAll('.grupo-metodos'), function (gm) {
+		var enGrupo = !grupoActivo || gm.getAttribute('data-grupo') === grupoActivo;
+		var visibles = 0;
+		Array.prototype.forEach.call(gm.querySelectorAll('details.metodo'), function (d) {
+			var v = enGrupo && (!q || d.getAttribute('data-buscar').indexOf(q) >= 0);
+			d.classList.toggle('oculto', !v); if (v) { visibles++; }
+		});
+		gm.classList.toggle('oculto', visibles === 0);
+	});
+}
+
+/* Índice activo según la sección visible */
+var enlaces = document.querySelectorAll('.lateral a.nav');
+var porId = {};
+Array.prototype.forEach.call(enlaces, function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+if ('IntersectionObserver' in window) {
+	var obs = new IntersectionObserver(function (entradas) {
+		entradas.forEach(function (en) {
+			if (en.isIntersecting && porId[en.target.id]) {
+				Array.prototype.forEach.call(enlaces, function (a) { a.classList.remove('activo'); });
+				porId[en.target.id].classList.add('activo');
+			}
+		});
+	}, { rootMargin: '-70px 0px -70% 0px' });
+	Array.prototype.forEach.call(document.querySelectorAll('section[id], details.metodo'), function (s) { obs.observe(s); });
+}
+
+/* Buscador de códigos */
+var cb = document.getElementById('codigoBuscado');
+var rc = document.getElementById('respuestaCodigo');
+cb.addEventListener('input', function () {
+	var v = cb.value.trim();
+	if (v === '') { rc.textContent = 'Escribe un código.'; return; }
+	var n = Number(v);
+	if (!isFinite(n) || Math.floor(n) !== n) { rc.textContent = 'Escribe un número entero (puede ser negativo).'; return; }
+	var d = describirCodigo(n);
+	rc.innerHTML = d ? '<b>' + n + '</b> · ' + esc(d.t) + '<br><span style="color:var(--muted)">Qué hacer: ' + esc(d.h) + '</span>' : 'Sin descripción para ese código.';
+});
+
+/* Constructor de SendSMSWhatsApp */
+function lit(s) {
+	if (s.indexOf("'") < 0) { return "'" + s + "'"; }
+	if (s.indexOf('"') < 0) { return '"' + s + '"'; }
+	return '[' + s + ']';
+}
+function construir() {
+	var dest = document.getElementById('bDestino').value.trim();
+	var texto = document.getElementById('bTexto').value;
+	var archivo = document.getElementById('bArchivo').value.trim();
+	var tipo = document.getElementById('bTipo').value;
+	var resp = document.getElementById('bResponde').value.trim();
+	var nombre = document.getElementById('bNombre').value.trim();
+	var clase = document.querySelector('input[name="bClase"]:checked').value;
+	var esUrl = /^https?:/i.test(archivo);
+	var args = [lit(dest), lit(texto), lit(esUrl ? tipo : ''), lit(archivo), clase === 'grupo' ? '.T.' : '.F.', clase === 'difusion' ? '.T.' : '.F.', lit(resp), lit(nombre)];
+	while (args.length > 2 && (args[args.length - 1] === "''" || args[args.length - 1] === '.F.')) { args.pop(); }
+	var linea = 'loWS.SendSMSWhatsApp(' + args.join(', ') + ')';
+	var avisos = [];
+	var cuantos = dest.split(',').filter(function (x) { return x.trim() !== ''; }).length;
+	if (clase === 'contacto' && cuantos > 50) { avisos.push('*: Ojo: más de 50 destinatarios: la DLL lo rechaza (código 40).'); }
+	if (clase === 'contacto' && /(^|,)\s*0/.test(dest)) { avisos.push('*: Ojo: un número que empieza con 0 no se intenta (código 6): escríbelo con el código de país.'); }
+	if (esUrl && !tipo) { avisos.push('*: Ojo: para un archivo por URL, elige su tipo MIME.'); }
+	if (/\.(webm|3gp)$/i.test(archivo)) { avisos.push('*: Ojo: .webm y .3gp salen como video; para una nota de voz usa .ogg (Opus).'); }
+	if (/\\[ntrbf]/.test(texto)) { avisos.push('*: Ojo: \\n, \\t, \\r, \\b y \\f en el texto se toman como códigos de JSON (\\n = salto de línea).'); }
+	var codigo = (avisos.length ? avisos.join('\n') + '\n' : '') + linea + '\n? loWS.nStatusCode, loWS.nErrorCode, loWS.cLastError' + (clase === 'contacto' && cuantos > 1 ? '\n? loWS.cContactsNoSend        && los que hay que reintentar' : '');
+	document.getElementById('bSalida').innerHTML = resaltarVfp(codigo);
+}
+Array.prototype.forEach.call(document.querySelectorAll('#constructor input, #constructor select'), function (el) {
+	el.addEventListener('input', construir); el.addEventListener('change', construir);
+});
+construir();
+
+/* Lista de control */
+var marcasLista = document.querySelectorAll('#listaControl input');
+function avance() {
+	var hechas = 0;
+	Array.prototype.forEach.call(marcasLista, function (m) { m.closest('li').classList.toggle('hecho', m.checked); if (m.checked) { hechas++; } });
+	document.getElementById('avance').style.width = (100 * hechas / marcasLista.length) + '%';
+}
+Array.prototype.forEach.call(marcasLista, function (m) {
+	m.checked = leer('smswa-' + m.id) === '1';
+	m.addEventListener('change', function () { guardar('smswa-' + m.id, m.checked ? '1' : '0'); avance(); });
+});
+avance();
+})();
+</script>
+</body>
+</html>
