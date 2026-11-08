@@ -1304,7 +1304,7 @@ var CODIGOS = [
 	[11, 'El servidor confirmó que el número (o el grupo) no está registrado en WhatsApp.', 'Corrige el dato; no reintentes.'],
 	[14, 'El grupo es de solo lectura: solo sus administradores pueden enviar mensajes.', 'Envía desde una cuenta administradora o cambia la regla con SetOnlyAdmins.'],
 	[26, 'El contacto no tiene foto de perfil o no es pública (GetUrlProfilePicture devuelve «ERROR: [Not Found]»).', 'Nada que corregir.'],
-	[29, 'El archivo o la carpeta no existe, o su ruta no es válida.', 'Revisa la ruta.'],
+	[29, 'El archivo o la carpeta no existe, o su ruta no es válida (ej. SendContactsToFile sin haber llamado antes a GetContacts).', 'Revisa la ruta o el orden de las llamadas.'],
 	[31, 'Con lCheckInternet = .T.: no hay conexión a Internet.', 'Revisa la red.'],
 	[32, 'Con lCheckInternet = .T.: hay Internet, pero el servidor de SMSWhatsApp no responde.', 'Intenta más tarde.'],
 	[33, 'No se pudo activar: el token (o el ID) está vacío o no es válido.', 'Revisa el dato que te entregó el proveedor.'],
@@ -1329,7 +1329,7 @@ var CODIGOS = [
 	[-108, 'Error de VFP: una tabla que otro programa tiene tomada.', 'Cierra la tabla y vuelve a llamar.'],
 	[-109, 'Error de VFP: un registro que otro programa tiene tomado.', 'Vuelve a llamar.'],
 	[-3, 'Error de VFP: el archivo está en uso.', 'Cierra la tabla y vuelve a llamar.'],
-	[-1, 'Error de VFP: un archivo no existe (por ejemplo, SendContactsToFile sin haber llamado antes a GetContacts).', 'Revisa el orden de las llamadas; el detalle va en cLastError.']
+	[-1, 'Error genérico de VFP no mapeado a código específico.', 'Revisa el detalle en cLastError.']
 ];
 
 function describirCodigo(n) {
